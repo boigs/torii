@@ -11,7 +11,7 @@ COPY postcss.config.js postcss.config.js
 COPY tailwind.config.js tailwind.config.js
 COPY tsconfig.json tsconfig.json
 
-RUN npm install
+RUN npm ci
 RUN npm run build
 
 ENTRYPOINT ["npm", "run", "start"]
