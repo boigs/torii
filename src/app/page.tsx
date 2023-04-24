@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+
+const random: (min: number, max: number) => number = (min, max) =>
+  Math.floor(Math.random() * (max - min)) + min;
 
 const Home: React.FC = () => {
   const [count, setCount] = useState(0);
+  const minCountValueToShowMessage = useMemo(() => random(0, 5), []);
 
   return (
     <div className="flex justify-center">
@@ -20,7 +24,9 @@ const Home: React.FC = () => {
         </button>
         <br />
         <br />
-        {count > 0 ? <p>El contador cuenta, sí señor</p> : null}
+        {count >= minCountValueToShowMessage ? (
+          <p>El contador cuenta, sí señor</p>
+        ) : null}
       </div>
     </div>
   );
