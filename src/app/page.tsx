@@ -2,12 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 
+const MAX_RANDOM: number = 5
+
 const random: (min: number, max: number) => number = (min, max) =>
   Math.floor(Math.random() * (max - min)) + min;
 
 const Home: React.FC = () => {
   const [count, setCount] = useState(0);
-  const minCountValueToShowMessage = useMemo(() => random(0, 5), []);
+  const minCountValueToShowMessage = useMemo(() => random(1, MAX_RANDOM + 1), []);
 
   return (
     <div className="flex justify-center">
