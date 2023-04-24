@@ -11,7 +11,7 @@ const Home: React.FC = () => {
   const [count, setCount] = useState(0);
   const minCountValueToShowMessage = useMemo(
     () => random(1, MAX_RANDOM + 1),
-    []
+    [],
   );
 
   return (
