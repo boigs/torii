@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { Button, Center, Container } from "@chakra-ui/react";
 
 const MAX_RANDOM: number = 5;
 
@@ -15,25 +16,18 @@ const Home: React.FC = () => {
   );
 
   return (
-    <div className="flex justify-center">
-      <div className="text-center">
-        <br />
+    <Center>
+      <Container centerContent>
         <p>Hello world</p>
         <p>Counter: {count}</p>
-        <br />
-        <button
-          className="py-2 px-3 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-semibold rounded-md shadow focus:outline-none"
-          onClick={() => setCount(count + 1)}
-        >
+        <Button colorScheme="blue" onClick={() => setCount(count + 1)}>
           Count
-        </button>
-        <br />
-        <br />
+        </Button>
         {count >= minCountValueToShowMessage ? (
           <p>El contador cuenta, sí señor</p>
         ) : null}
-      </div>
-    </div>
+      </Container>
+    </Center>
   );
 };
 
