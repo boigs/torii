@@ -1,31 +1,29 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Button, Center, Container } from "@chakra-ui/react";
-
-const MAX_RANDOM: number = 5;
-
-const random: (min: number, max: number) => number = (min, max) =>
-  Math.floor(Math.random() * (max - min)) + min;
+import React, { useState } from "react";
+import { Button, Center, Container, Input } from "@chakra-ui/react";
+import { addPlayer } from "src/app/api/route";
 
 const Home: React.FC = () => {
-  const [count, setCount] = useState(0);
-  const minCountValueToShowMessage = useMemo(
-    () => random(1, MAX_RANDOM + 1),
-    [],
-  );
+  const [name, setName] = useState("");
+
+  const add = async () => {
+    const result = await addPlayer(name);
+    console.log(result);
+  };
 
   return (
     <Center>
       <Container centerContent>
-        <p>Hello world</p>
-        <p>Counter: {count}</p>
-        <Button colorScheme="blue" onClick={() => setCount(count + 1)}>
-          Count
-        </Button>
-        {count >= minCountValueToShowMessage ? (
-          <p>El contador cuenta, sí señor</p>
-        ) : null}
+        <p>Player name:</p>
+        <br></br>
+        <Input
+          placeholder="xXx Hunter420 xXx"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+
+        <Button onClick={add}>Add player</Button>
       </Container>
     </Center>
   );
