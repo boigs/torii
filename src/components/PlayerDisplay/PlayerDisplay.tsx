@@ -10,9 +10,7 @@ const PlayerDisplay: React.FC = () => {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/lobby', {
-      method: 'GET',
-    })
+    fetch('http://localhost:4000/lobby')
       .then((response: any) => response.json())
       .then((response: any) => {
         setPlayers(response?.players ?? []);
