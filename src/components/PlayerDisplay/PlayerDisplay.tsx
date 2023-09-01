@@ -1,25 +1,23 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
 
-import { Card } from "@chakra-ui/react";
+import { Card } from '@chakra-ui/react';
 
-import Player from "src/components/PlayerDisplay/Player";
-import { PlayerProps } from "src/components/PlayerDisplay/Player";
+import Player, { PlayerProps } from 'src/components/PlayerDisplay/Player';
 
 import styles from './PlayerDisplay.module.scss';
 
 const players: PlayerProps[] = [
   {
-    id: "cccc",
-    name: "ccc",
+    id: 'cccc',
+    name: 'ccc',
   },
   {
-    id: "aaaa",
-    name: "aaaa",
+    id: 'aaaa',
+    name: 'aaaa',
   },
   {
-    id: "bbb",
-    name: "bbb",
+    id: 'bbb',
+    name: 'bbb',
   },
 ];
 

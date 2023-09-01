@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Text, Button, Center, Container, Input } from "@chakra-ui/react";
-import PlayerDisplay from "src/components/PlayerDisplay";
+import { Center, Container } from '@chakra-ui/react';
+import React from 'react';
+import PlayerDisplay from 'src/components/PlayerDisplay';
 
 const Home: React.FC = () => {
-  
   return (
     <Center>
       <Container centerContent>
