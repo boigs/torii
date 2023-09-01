@@ -2,34 +2,33 @@ name: Build and deploy
 
 on:
   push:
-    branches: [ "release" ]
+    branches: ['release']
   workflow_dispatch:
 
 jobs:
-
   build:
     name: Build and deploy
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '19.7.0'
-    - name: Get next image name and version
-      id: next_name
-      run: echo "value=frontend:$(npm pkg get version)"  >> $GITHUB_OUTPUT
-    - name: Build the Docker image
-      run: docker build . --tag localhost:32000/${{ steps.next_name.outputs.value }}
-    - name: Push the Docker image to microk8s's registry
-      run: docker push localhost:32000/${{ steps.next_name.outputs.value }}
-    - name: Set version to deploy in k8s.yaml
-      run: sed -i -E "s/frontend:(.+)/${{ steps.next_name.outputs.value }}/g" k8s.yaml
-    - name: Deploy
-      run: microk8s kubectl apply -f k8s.yaml
-    - name: Increment version for next release
-      run: npm version patch -git-tag-version false
-    - name: Commit new version
-      run: |
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19.7.0'
+      - name: Get next image name and version
+        id: next_name
+        run: echo "value=frontend:$(npm pkg get version)"  >> $GITHUB_OUTPUT
+      - name: Build the Docker image
+        run: docker build . --tag localhost:32000/${{ steps.next_name.outputs.value }}
+      - name: Push the Docker image to microk8s's registry
+        run: docker push localhost:32000/${{ steps.next_name.outputs.value }}
+      - name: Set version to deploy in k8s.yaml
+        run: sed -i -E "s/frontend:(.+)/${{ steps.next_name.outputs.value }}/g" k8s.yaml
+      - name: Deploy
+        run: microk8s kubectl apply -f k8s.yaml
+      - name: Increment version for next release
+        run: npm version patch -git-tag-version false
+      - name: Commit new version
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .

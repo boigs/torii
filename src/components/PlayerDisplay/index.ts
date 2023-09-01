@@ -1,3 +1,3 @@
-import PlayerDisplay from "./PlayerDisplay";
+import PlayerDisplay from './PlayerDisplay';
 
 export default PlayerDisplay;
