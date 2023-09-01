@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Heading,
   List,
   ListItem,
@@ -25,10 +26,11 @@ const PlayerList: React.FC = () => {
 
   return (
     <Card className={styles.playerDisplay} size='sm' width='sm'>
-      <CardHeader>
+      <CardHeader paddingBottom={0}>
         <Heading as='h3' textAlign='center' size='md'>
           Players ({players.length})
         </Heading>
+        <Divider marginTop={'12px'} />
       </CardHeader>
       <CardBody>
         <List spacing='12px'>
