@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { Card } from '@chakra-ui/react';
 
-import Player, { PlayerProps } from 'src/components/PlayerDisplay/Player';
+import Player, { PlayerProps } from 'src/components/PlayerList/Player';
 
-import styles from './PlayerDisplay.module.scss';
+import styles from './PlayerList.module.scss';
 
 const PlayerDisplay: React.FC = () => {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
