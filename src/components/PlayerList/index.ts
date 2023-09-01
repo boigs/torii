@@ -1,3 +1,2 @@
-import PlayerDisplay from './PlayerDisplay';
+export { default } from './PlayerList';
 
-export default PlayerDisplay;
