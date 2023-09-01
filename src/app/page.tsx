@@ -1,14 +1,15 @@
 'use client';
 
-import { Center, Container } from '@chakra-ui/react';
 import React from 'react';
-import PlayerDisplay from 'src/components/PlayerDisplay';
+
+import { Center, Container } from '@chakra-ui/react'; 
+import PlayerList from 'src/components/PlayerList';
 
 const Home: React.FC = () => {
   return (
     <Center>
       <Container centerContent>
-        <PlayerDisplay />
+        <PlayerList />
       </Container>
     </Center>
   );

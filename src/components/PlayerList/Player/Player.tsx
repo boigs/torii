@@ -1,7 +1,5 @@
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-
-import styles from './Player.module.scss';
 
 type PlayerProps = {
   id: string;
@@ -10,14 +8,13 @@ type PlayerProps = {
 
 const Player: React.FC<PlayerProps> = ({ name }) => {
   return (
-    <Flex className={styles.porro}>
+    <Flex alignItems='center' gap='8px'>
       <Avatar src='https://bit.ly/sage-adebayo' />
-      <Box>
-        <Text fontWeight='bold'>{name}</Text>
-      </Box>
+      <Text>{name}</Text>
     </Flex>
   );
 };
 
 export default Player;
 export type { PlayerProps };
+
