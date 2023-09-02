@@ -5,10 +5,19 @@ import {
   CardHeader,
   Flex,
   FormControl,
+  FormErrorMessage,
   Heading,
   Input,
 } from '@chakra-ui/react';
 import React from 'react';
+import { Formik, Field, Form } from 'formik';
+
+const validateField = (value: string, fieldName: string) => {
+  if (!value) {
+    return `${fieldName} is required`
+  }
+  return null
+}
 
 const HostForm: React.FC = () => {
   return (
@@ -18,24 +27,42 @@ const HostForm: React.FC = () => {
           New Game
         </Heading>
       </CardHeader>
-      <form>
-        <CardBody>
-          <Flex flexDirection='column' gap='12px'>
-            <FormControl isRequired>
-              <Input placeholder='Nickname' />
-            </FormControl>
-            <Button
-              type='submit'
-              colorScheme='teal'
-              variant='solid'
-              size='md'
-              width='100%'
-            >
-              Create
-            </Button>
-          </Flex>
-        </CardBody>
-      </form>
+      <Formik
+        initialValues={{
+          nickname: ''
+        }}
+        onSubmit={async (values) => {
+          await new Promise((r) => setTimeout(r, 500));
+          alert(JSON.stringify(values, null, 2));
+        }}
+      >
+        {(props) => (
+          <Form>
+            <CardBody>
+              <Flex flexDirection='column' gap='12px'>
+                <Field name='nickname' validate={(value: string) => validateField(value, 'Nickname')}>
+                  {({ field, form }: any) => (
+                    <FormControl isInvalid={form.errors.nickname && form.touched.nickname}>
+                    <Input {...field} placeholder='Nickname' />
+                    <FormErrorMessage>{form.errors.nickname}</FormErrorMessage>
+                  </FormControl>
+                  )}
+                </Field>
+                <Button
+                  type='submit'
+                  isLoading={props.isSubmitting}
+                  colorScheme='teal'
+                  variant='solid'
+                  size='md'
+                  width='100%'
+                >
+                  Create
+                </Button>
+              </Flex>
+            </CardBody>
+          </Form>
+        )}       
+      </Formik>
     </Card>
   );
 };
