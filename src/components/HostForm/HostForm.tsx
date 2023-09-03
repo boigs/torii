@@ -48,7 +48,7 @@ const HostForm: React.FC = () => {
                   colorScheme='teal'
                   variant='solid'
                   size='md'
-                  width='100%'
+                  width='full'
                 >
                   Create
                 </Button>
