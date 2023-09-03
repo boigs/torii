@@ -31,8 +31,8 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.3",
-    "prettier-plugin-organize-imports": "^3.2.3"
+    "prettier": "^3.0.3"
   }
 }

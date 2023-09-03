@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Link } from '@chakra-ui/next-js';
 import {
   Button,
@@ -16,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 type FormValues = {

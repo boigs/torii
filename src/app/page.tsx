@@ -3,7 +3,8 @@
 import React from 'react';
 
 import { Center } from '@chakra-ui/react';
-import HostForm from 'src/components/HostForm/HostForm';
+
+import HostForm from 'src/components/HostForm';
 
 const Home: React.FC = () => {
   return (
