@@ -1,5 +1,6 @@
-import { Avatar, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
+
+import { Avatar, Flex, Text } from '@chakra-ui/react';
 
 type PlayerProps = {
   id: string;
