@@ -62,7 +62,11 @@ const JoinForm: React.FC = () => {
                       <FormControl
                         isInvalid={form.errors.gameId && form.touched.gameId}
                       >
-                        <Input {...field} placeholder='Game Id' />
+                        <Input
+                          {...field}
+                          placeholder='Game Id'
+                          autoComplete='off'
+                        />
                         <FormErrorMessage>
                           {form.errors.gameId}
                         </FormErrorMessage>
@@ -81,7 +85,11 @@ const JoinForm: React.FC = () => {
                           form.errors.nickname && form.touched.nickname
                         }
                       >
-                        <Input {...field} placeholder='Nickname' />
+                        <Input
+                          {...field}
+                          placeholder='Nickname'
+                          autoComplete='off'
+                        />
                         <FormErrorMessage>
                           {form.errors.nickname}
                         </FormErrorMessage>
