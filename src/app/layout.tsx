@@ -17,9 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className} style={{ backgroundColor: 'rgb(175, 215, 217)', padding: 24}}>
+      <body
+        className={inter.className}
+        style={{ backgroundColor: 'rgb(175, 215, 215)', padding: 24 }}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+

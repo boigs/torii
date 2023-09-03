@@ -1,19 +1,37 @@
+import { Link } from '@chakra-ui/next-js';
 import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
+  Center,
+  Container,
   Flex,
   FormControl,
   FormErrorMessage,
   Heading,
   Input,
+  Text,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
+type FormValues = {
+  gameId: string;
+  nickname: string;
+};
+
 const JoinForm: React.FC = () => {
+  const router = useRouter();
+
+  const onSubmit = async (values: FormValues) => {
+    await new Promise((r) => setTimeout(r, 500));
+    router.push('/lobby');
+  };
+
   return (
     <Card size='sm' width='sm'>
       <CardHeader>
@@ -26,10 +44,7 @@ const JoinForm: React.FC = () => {
           gameId: '',
           nickname: '',
         }}
-        onSubmit={async (values) => {
-          await new Promise((r) => setTimeout(r, 500));
-          alert(JSON.stringify(values, null, 2));
-        }}
+        onSubmit={onSubmit}
       >
         {(props) => (
           <Form>
@@ -46,7 +61,11 @@ const JoinForm: React.FC = () => {
                       <FormControl
                         isInvalid={form.errors.gameId && form.touched.gameId}
                       >
-                        <Input {...field} placeholder='Game Id' />
+                        <Input
+                          {...field}
+                          placeholder='Game Id'
+                          autoComplete='off'
+                        />
                         <FormErrorMessage>
                           {form.errors.gameId}
                         </FormErrorMessage>
@@ -65,7 +84,11 @@ const JoinForm: React.FC = () => {
                           form.errors.nickname && form.touched.nickname
                         }
                       >
-                        <Input {...field} placeholder='Nickname' />
+                        <Input
+                          {...field}
+                          placeholder='Nickname'
+                          autoComplete='off'
+                        />
                         <FormErrorMessage>
                           {form.errors.nickname}
                         </FormErrorMessage>
@@ -85,6 +108,18 @@ const JoinForm: React.FC = () => {
                 </Button>
               </Flex>
             </CardBody>
+            <CardFooter paddingTop='2px'>
+              <Container>
+                <Center>
+                  <Text fontSize='xs'>
+                    Looking to create a new game?{' '}
+                    <Link color='teal' href='/'>
+                      Click here
+                    </Link>
+                  </Text>
+                </Center>
+              </Container>
+            </CardFooter>
           </Form>
         )}
       </Formik>
