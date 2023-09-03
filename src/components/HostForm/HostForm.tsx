@@ -1,19 +1,37 @@
+import { Link } from '@chakra-ui/next-js';
 import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
+  Center,
+  Container,
   Flex,
   FormControl,
   FormErrorMessage,
   Heading,
   Input,
+  Text,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
+type FormValues = {
+  nickname: string;
+};
+
 const HostForm: React.FC = () => {
+  const router = useRouter();
+
+  const onSubmit = async (values: FormValues) => {
+    await new Promise((r) => setTimeout(r, 500));
+    alert(JSON.stringify(values, null, 2));
+    router.push('/lobby');
+  };
+
   return (
     <Card size='sm' width='sm'>
       <CardHeader>
@@ -25,10 +43,7 @@ const HostForm: React.FC = () => {
         initialValues={{
           nickname: '',
         }}
-        onSubmit={async (values) => {
-          await new Promise((r) => setTimeout(r, 500));
-          alert(JSON.stringify(values, null, 2));
-        }}
+        onSubmit={onSubmit}
       >
         {(props) => (
           <Form>
@@ -63,6 +78,18 @@ const HostForm: React.FC = () => {
                 </Button>
               </Flex>
             </CardBody>
+            <CardFooter paddingTop='2px'>
+              <Container>
+                <Center>
+                  <Text fontSize='xs'>
+                    Looking to join an existing game?{' '}
+                    <Link color='teal' href='/join'>
+                      Click here
+                    </Link>
+                  </Text>
+                </Center>
+              </Container>
+            </CardFooter>
           </Form>
         )}
       </Formik>
