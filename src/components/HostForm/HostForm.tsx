@@ -11,13 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
-
-const validateField = (value: string, fieldName: string) => {
-  if (!value) {
-    return `${fieldName} is required`
-  }
-  return null
-}
+import { validateNonEmpty } from 'src/helpers/formValidators';
 
 const HostForm: React.FC = () => {
   return (
@@ -40,7 +34,7 @@ const HostForm: React.FC = () => {
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
-                <Field name='nickname' validate={(value: string) => validateField(value, 'Nickname')}>
+                <Field name='nickname' validate={(value: string) => validateNonEmpty(value, 'Nickname')}>
                   {({ field, form }: any) => (
                     <FormControl isInvalid={form.errors.nickname && form.touched.nickname}>
                     <Input {...field} placeholder='Nickname' />

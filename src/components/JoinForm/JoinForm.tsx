@@ -9,15 +9,9 @@ import {
   Heading,
   Input,
 } from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
-
-const validateField = (value: string, fieldName: string) => {
-  if (!value) {
-    return `${fieldName} is required`
-  }
-  return null
-}
+import { validateNonEmpty } from 'src/helpers/formValidators';
 
 const JoinForm: React.FC = () => {
   return (
@@ -30,7 +24,7 @@ const JoinForm: React.FC = () => {
       <Formik
         initialValues={{
           gameId: '',
-          nickname: ''
+          nickname: '',
         }}
         onSubmit={async (values) => {
           await new Promise((r) => setTimeout(r, 500));
@@ -42,20 +36,40 @@ const JoinForm: React.FC = () => {
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
                 <Flex flexDirection='column' gap='8px'>
-                  <Field name='gameId' validate={(value: string) => validateField(value, 'Game Id')}>
+                  <Field
+                    name='gameId'
+                    validate={(value: string) =>
+                      validateNonEmpty(value, 'Game Id')
+                    }
+                  >
                     {({ field, form }: any) => (
-                      <FormControl isInvalid={form.errors.gameId && form.touched.gameId}>
+                      <FormControl
+                        isInvalid={form.errors.gameId && form.touched.gameId}
+                      >
                         <Input {...field} placeholder='Game Id' />
-                        <FormErrorMessage>{form.errors.gameId}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {form.errors.gameId}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='nickname' validate={(value: string) => validateField(value, 'Nickname')}>
+                  <Field
+                    name='nickname'
+                    validate={(value: string) =>
+                      validateNonEmpty(value, 'Nickname')
+                    }
+                  >
                     {({ field, form }: any) => (
-                      <FormControl isInvalid={form.errors.nickname && form.touched.nickname}>
-                      <Input {...field} placeholder='Nickname' />
-                      <FormErrorMessage>{form.errors.nickname}</FormErrorMessage>
-                    </FormControl>
+                      <FormControl
+                        isInvalid={
+                          form.errors.nickname && form.touched.nickname
+                        }
+                      >
+                        <Input {...field} placeholder='Nickname' />
+                        <FormErrorMessage>
+                          {form.errors.nickname}
+                        </FormErrorMessage>
+                      </FormControl>
                     )}
                   </Field>
                 </Flex>
