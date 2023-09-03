@@ -12,8 +12,6 @@ import {
 
 import Player, { PlayerProps } from 'src/components/PlayerList/Player';
 
-import styles from './PlayerList.module.scss';
-
 const PlayerList: React.FC = () => {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
 
@@ -25,7 +23,7 @@ const PlayerList: React.FC = () => {
   }, []);
 
   return (
-    <Card className={styles.playerDisplay} size='sm' width='sm'>
+    <Card size='sm' width='sm'>
       <CardHeader paddingBottom={0}>
         <Heading as='h3' textAlign='center' size='md'>
           Players ({players.length})
