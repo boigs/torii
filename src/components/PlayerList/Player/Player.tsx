@@ -17,4 +17,3 @@ const Player: React.FC<PlayerProps> = ({ name }) => {
 
 export default Player;
 export type { PlayerProps };
-

@@ -128,4 +128,3 @@ const JoinForm: React.FC = () => {
 };
 
 export default JoinForm;
-

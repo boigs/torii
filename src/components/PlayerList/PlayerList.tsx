@@ -46,4 +46,3 @@ const PlayerList: React.FC = () => {
 };
 
 export default PlayerList;
-

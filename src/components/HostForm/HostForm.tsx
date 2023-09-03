@@ -58,7 +58,11 @@ const HostForm: React.FC = () => {
                     <FormControl
                       isInvalid={form.errors.nickname && form.touched.nickname}
                     >
-                      <Input {...field} placeholder='Nickname' autoComplete='off' />
+                      <Input
+                        {...field}
+                        placeholder='Nickname'
+                        autoComplete='off'
+                      />
                       <FormErrorMessage>
                         {form.errors.nickname}
                       </FormErrorMessage>
@@ -97,4 +101,3 @@ const HostForm: React.FC = () => {
 };
 
 export default HostForm;
-
