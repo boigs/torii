@@ -9,15 +9,9 @@ import {
   Heading,
   Input,
 } from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
-
-const validateField = (value: string, fieldName: string) => {
-  if (!value) {
-    return `${fieldName} is required`
-  }
-  return null
-}
+import { validateNonEmpty } from 'src/helpers/formValidators';
 
 const HostForm: React.FC = () => {
   return (
@@ -29,7 +23,7 @@ const HostForm: React.FC = () => {
       </CardHeader>
       <Formik
         initialValues={{
-          nickname: ''
+          nickname: '',
         }}
         onSubmit={async (values) => {
           await new Promise((r) => setTimeout(r, 500));
@@ -40,12 +34,21 @@ const HostForm: React.FC = () => {
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
-                <Field name='nickname' validate={(value: string) => validateField(value, 'Nickname')}>
+                <Field
+                  name='nickname'
+                  validate={(value: string) =>
+                    validateNonEmpty(value, 'Nickname')
+                  }
+                >
                   {({ field, form }: any) => (
-                    <FormControl isInvalid={form.errors.nickname && form.touched.nickname}>
-                    <Input {...field} placeholder='Nickname' />
-                    <FormErrorMessage>{form.errors.nickname}</FormErrorMessage>
-                  </FormControl>
+                    <FormControl
+                      isInvalid={form.errors.nickname && form.touched.nickname}
+                    >
+                      <Input {...field} placeholder='Nickname' />
+                      <FormErrorMessage>
+                        {form.errors.nickname}
+                      </FormErrorMessage>
+                    </FormControl>
                   )}
                 </Field>
                 <Button
@@ -54,14 +57,14 @@ const HostForm: React.FC = () => {
                   colorScheme='teal'
                   variant='solid'
                   size='md'
-                  width='100%'
+                  width='full'
                 >
                   Create
                 </Button>
               </Flex>
             </CardBody>
           </Form>
-        )}       
+        )}
       </Formik>
     </Card>
   );
