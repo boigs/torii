@@ -9,8 +9,8 @@ import {
   Heading,
   Input,
 } from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 const HostForm: React.FC = () => {
@@ -23,7 +23,7 @@ const HostForm: React.FC = () => {
       </CardHeader>
       <Formik
         initialValues={{
-          nickname: ''
+          nickname: '',
         }}
         onSubmit={async (values) => {
           await new Promise((r) => setTimeout(r, 500));
@@ -34,12 +34,21 @@ const HostForm: React.FC = () => {
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
-                <Field name='nickname' validate={(value: string) => validateNonEmpty(value, 'Nickname')}>
+                <Field
+                  name='nickname'
+                  validate={(value: string) =>
+                    validateNonEmpty(value, 'Nickname')
+                  }
+                >
                   {({ field, form }: any) => (
-                    <FormControl isInvalid={form.errors.nickname && form.touched.nickname}>
-                    <Input {...field} placeholder='Nickname' />
-                    <FormErrorMessage>{form.errors.nickname}</FormErrorMessage>
-                  </FormControl>
+                    <FormControl
+                      isInvalid={form.errors.nickname && form.touched.nickname}
+                    >
+                      <Input {...field} placeholder='Nickname' />
+                      <FormErrorMessage>
+                        {form.errors.nickname}
+                      </FormErrorMessage>
+                    </FormControl>
                   )}
                 </Field>
                 <Button
@@ -55,7 +64,7 @@ const HostForm: React.FC = () => {
               </Flex>
             </CardBody>
           </Form>
-        )}       
+        )}
       </Formik>
     </Card>
   );
