@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
 
 import { Center } from '@chakra-ui/react';
 
 import HostForm from 'src/components/HostForm';
 
+import React from 'react';
 const Home: React.FC = () => {
   return (
     <Center>
