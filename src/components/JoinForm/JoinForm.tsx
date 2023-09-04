@@ -56,7 +56,7 @@ const JoinForm: React.FC = () => {
                   <Field
                     name='gameId'
                     validate={(value: string) =>
-                      validateNonEmpty(value, 'Game Id')
+                      validateNonEmpty(value, 'Game id')
                     }
                   >
                     {({ field, form }: any) => (
@@ -65,7 +65,7 @@ const JoinForm: React.FC = () => {
                       >
                         <Input
                           {...field}
-                          placeholder='Game Id'
+                          placeholder='Game id'
                           autoComplete='off'
                         />
                         <FormErrorMessage>

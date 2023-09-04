@@ -1,7 +1,12 @@
+import React from 'react';
+
+import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { Providers } from './providers';
+
+import styles from './layout.module.scss';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,10 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body
-        className={inter.className}
-        style={{ backgroundColor: 'rgb(175, 215, 215)', padding: 24 }}
-      >
+      <body className={classNames(inter.className, styles.root)}>
         <Providers>{children}</Providers>
       </body>
     </html>
