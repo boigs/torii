@@ -39,7 +39,7 @@
     "prettier": "^3.0.3"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts,tsx,json,css,scss,yaml,yml}": [
       "prettier --write",
       "git add"
     ]
