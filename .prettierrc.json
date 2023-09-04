@@ -7,7 +7,7 @@
   "importOrder": [
     "^react",
     "<THIRD_PARTY_MODULES>",
-    "^([./]|src/)",
+    "^([./]|src/)(?!(.*(.css|.scss)))",
     "(.css|.scss)$"
   ],
   "importOrderSeparation": true,
