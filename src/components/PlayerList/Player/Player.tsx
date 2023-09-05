@@ -1,4 +1,5 @@
 import React from 'react';
+import { RandomAvatar } from 'react-random-avatars';
 
 import { Avatar, Flex, Text } from '@chakra-ui/react';
 
@@ -12,7 +13,7 @@ type PlayerProps = {
 const Player: React.FC<PlayerProps> = ({ name }) => {
   return (
     <Flex alignItems='center' gap='8px'>
-      <Avatar src='https://bit.ly/sage-adebayo' />
+      <RandomAvatar name={name} size={32} />
       <Text className={styles.playerName}>{name}</Text>
     </Flex>
   );
