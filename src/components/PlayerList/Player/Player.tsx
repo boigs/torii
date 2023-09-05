@@ -1,7 +1,7 @@
 import React from 'react';
-import { RandomAvatar } from 'react-random-avatars';
 
 import { Avatar, Flex, Text } from '@chakra-ui/react';
+import { RandomAvatar } from 'react-random-avatars';
 
 import styles from './Player.module.scss';
 
