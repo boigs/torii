@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: torii-deployment
   labels:
-    app: frontend
+    app: torii
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: torii
   template:
     metadata:
       labels:
-        app: frontend
+        app: torii
     spec:
       containers:
-        - name: frontend
-          image: localhost:32000/frontend:0.0.1
+        - name: torii
+          image: localhost:32000/torii:0.0.1
           ports:
             - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
+  name: torii-service
 spec:
   selector:
-    app: frontend
+    app: torii
   ports:
     - protocol: TCP
       port: 80
