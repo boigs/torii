@@ -5,13 +5,13 @@ WORKDIR /app
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
-RUN npm i
+RUN npm ci --omit=dev
 
 COPY next.config.js next.config.js
 COPY postcss.config.js postcss.config.js
 COPY public public
 COPY src src
 
-RUN npm ci --omit=dev
+RUN npm run build
 
 ENTRYPOINT ["npm", "run", "start"]
