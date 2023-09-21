@@ -19,7 +19,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 19.7.0
+          node-version: 20.7.0
       - name: Get next image name and version
         id: next_name
         run: echo "value=torii:$(npm pkg get version)" >> $GITHUB_OUTPUT

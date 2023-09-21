@@ -11,7 +11,7 @@ import styles from './layout.module.scss';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Boigs',
+  title: 'Repeti2',
   description: 'no',
 };
 
