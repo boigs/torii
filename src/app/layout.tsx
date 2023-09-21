@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Repeti2',
-  description: 'no',
+  description: 'Play the game of being as unoriginal as possible',
 };
 
 export default function RootLayout({
