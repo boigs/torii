@@ -7,6 +7,7 @@ COPY package-lock.json package-lock.json
 
 RUN npm ci --omit=dev
 
+COPY .env.production .env.production
 COPY next.config.js next.config.js
 COPY tsconfig.json tsconfig.json
 COPY postcss.config.js postcss.config.js
