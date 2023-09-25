@@ -19,9 +19,6 @@ spec:
           image: localhost:32000/torii:version
           ports:
             - containerPort: 8080
-          env:
-            - name: ENVIRONMENT
-              value: prod
 ---
 apiVersion: v1
 kind: Service
