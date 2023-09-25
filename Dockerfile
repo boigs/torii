@@ -16,6 +16,4 @@ COPY src src
 
 RUN npm run build
 
-ENV ENVIRONMENT="inject a value via the compose/k8s file, or docker run --env or --env_file"
-
 ENTRYPOINT ["npm", "run", "start"]
