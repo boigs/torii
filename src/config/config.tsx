@@ -1,4 +1,4 @@
-type Config = {
+type Configuration = {
   environment: Environment;
   headcrabBaseUrl: string;
 };
@@ -8,7 +8,7 @@ enum Environment {
   PROD = 'prod',
 }
 
-const getConfig: () => Config = () => {
+const getConfig: () => Configuration = () => {
   let environment: Environment;
   switch (process.env.NODE_ENV) {
     case 'development':
@@ -32,6 +32,8 @@ const getConfig: () => Config = () => {
   };
 };
 
-export type { Config, Environment };
+const config: Configuration = getConfig();
 
-export default getConfig;
+export type { Configuration, Environment };
+
+export default config;

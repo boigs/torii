@@ -1,3 +1,3 @@
-import getConfig from './config';
+import config from './config';
 
-export default getConfig;
+export default config;
