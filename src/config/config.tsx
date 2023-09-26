@@ -8,23 +8,29 @@ enum Environment {
   PROD = 'prod',
 }
 
-const getConfig: () => Configuration = () => {
-  let environment: Environment;
+const getEnvironment: () => Environment = () => {
   switch (process.env.NODE_ENV) {
     case 'development':
-      environment = Environment.DEV;
-      break;
+      return Environment.DEV;
     case 'production':
-      environment = Environment.PROD;
-      break;
+      return Environment.PROD;
     default:
       throw new Error('Environment not set.');
   }
+};
 
+const getHeadcrabBaseUrl: () => string = () => {
   const headcrabBaseUrl = process.env.NEXT_PUBLIC_HEADCRAB_BASE_URL;
   if (typeof headcrabBaseUrl === 'undefined') {
     throw new Error('Headcrab base url not set.');
   }
+
+  return headcrabBaseUrl;
+};
+
+const getConfig: () => Configuration = () => {
+  let environment: Environment = getEnvironment();
+  let headcrabBaseUrl: string = getHeadcrabBaseUrl();
 
   return {
     environment,
