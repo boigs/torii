@@ -30,8 +30,8 @@ const JoinForm: React.FC = () => {
   const router = useRouter();
 
   const onSubmit = async (values: FormValues) => {
-    await new Promise((r) => setTimeout(r, 500));
-    router.push('/lobby');
+    localStorage.setItem('nickname', values.nickname);
+    router.push(`/game/${values.gameId}`);
   };
 
   return (

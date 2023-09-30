@@ -1,6 +1,7 @@
 type Configuration = {
   environment: Environment;
-  headcrabBaseUrl: string;
+  headcrabHttpBaseUrl: string;
+  headcrabWsBaseUrl: string;
 };
 
 enum Environment {
@@ -29,12 +30,16 @@ const getHeadcrabBaseUrl: () => string = () => {
 };
 
 const getConfig: () => Configuration = () => {
-  let environment: Environment = getEnvironment();
-  let headcrabBaseUrl: string = getHeadcrabBaseUrl();
+  const environment: Environment = getEnvironment();
+  const headcrabBaseUrl: string = getHeadcrabBaseUrl();
+
+  const httpProtocol = environment == Environment.DEV ? 'http' : 'https';
+  const wsProtocol = environment == Environment.DEV ? 'ws' : 'wss';
 
   return {
     environment,
-    headcrabBaseUrl,
+    headcrabHttpBaseUrl: `${httpProtocol}://${headcrabBaseUrl}`,
+    headcrabWsBaseUrl: `${wsProtocol}://${headcrabBaseUrl}`,
   };
 };
 

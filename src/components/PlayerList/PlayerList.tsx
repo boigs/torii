@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   Card,
@@ -10,18 +10,13 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 
-import Player, { PlayerProps } from 'src/components/PlayerList/Player';
+import Player from 'src/components/PlayerList/Player';
 
-const PlayerList: React.FC = () => {
-  const [players, setPlayers] = useState<PlayerProps[]>([]);
+type PlayerListProps = {
+  players: { nickname: string }[];
+};
 
-  useEffect(() => {
-    fetch('http://localhost:4000/lobby')
-      .then((response: any) => response.json())
-      .then((response: any) => setPlayers(response?.players ?? []))
-      .catch((error: Error) => console.log(error));
-  }, []);
-
+const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
   return (
     <Card size='sm' width='sm'>
       <CardHeader paddingBottom={0}>
@@ -33,8 +28,8 @@ const PlayerList: React.FC = () => {
       <CardBody>
         <List spacing='12px'>
           {players.map((player) => (
-            <ListItem key={player.id}>
-              <Player {...player} />
+            <ListItem key={player.nickname}>
+              <Player nickname={player.nickname} />
             </ListItem>
           ))}
         </List>
