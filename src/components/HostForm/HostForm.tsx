@@ -19,9 +19,9 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import { validateNonEmpty } from 'src/helpers/formValidators';
 import config from 'src/config';
-  
+import { validateNonEmpty } from 'src/helpers/formValidators';
+
 type FormValues = {
   nickname: string;
 };
@@ -30,7 +30,9 @@ const HostForm: React.FC = () => {
   const router = useRouter();
 
   const onSubmit = async (values: FormValues) => {
-    let gameId = await fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
+    let gameId = await fetch(`${config.headcrabHttpBaseUrl}/game`, {
+      method: 'POST',
+    })
       .then((response: any) => response.json())
       .then((response: any) => response.id);
 

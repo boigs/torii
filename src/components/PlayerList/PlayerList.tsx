@@ -13,7 +13,7 @@ import {
 import Player from 'src/components/PlayerList/Player';
 
 type PlayerListProps = {
-  players: { nickname: string }[],
+  players: { nickname: string }[];
 };
 
 const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
