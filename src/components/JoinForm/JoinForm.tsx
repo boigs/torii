@@ -21,12 +21,16 @@ import { useRouter } from 'next/navigation';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
+type JoinFormProps = {
+  gameId?: string;
+};
+
 type FormValues = {
   gameId: string;
   nickname: string;
 };
 
-const JoinForm: React.FC = () => {
+const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
   const router = useRouter();
 
   const onSubmit = async (values: FormValues) => {
@@ -43,7 +47,7 @@ const JoinForm: React.FC = () => {
       </CardHeader>
       <Formik
         initialValues={{
-          gameId: '',
+          gameId: gameId ?? '',
           nickname: '',
         }}
         onSubmit={onSubmit}
