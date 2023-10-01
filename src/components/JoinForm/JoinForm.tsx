@@ -66,6 +66,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
                     {({ field, form }: any) => (
                       <FormControl
                         isInvalid={form.errors.gameId && form.touched.gameId}
+                        hidden={!!gameId}
                       >
                         <Input
                           {...field}
