@@ -54,7 +54,7 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
         <CardBody>
           <VStack>
             <PlayerList players={players} />
-            <Flex width='sm'>
+            <Flex width='100%'>
               <Input value={joinUrl} contentEditable='false' mr='2' />
               <Button onClick={onCopy}>{hasCopied ? 'Copied!' : 'Copy'}</Button>
             </Flex>

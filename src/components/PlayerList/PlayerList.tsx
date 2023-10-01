@@ -18,7 +18,7 @@ type PlayerListProps = {
 
 const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
   return (
-    <Card size='sm' width='sm'>
+    <Card size='sm' width='100%'>
       <CardHeader paddingBottom={0}>
         <Heading as='h4' textAlign='center' size='sm'>
           Players ({players.length})
