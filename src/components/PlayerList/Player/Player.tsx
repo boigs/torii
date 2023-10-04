@@ -10,7 +10,7 @@ type PlayerProps = {
 };
 
 const AVATAR_BASE_URL =
-  'https://api.dicebear.com/7.x/thumbs/svg?backgroundColor=transparent';
+  'https://api.dicebear.com/7.x/thumbs/png?backgroundColor=transparent';
 
 const getAvatarUrl = (nickname: string) =>
   `${AVATAR_BASE_URL}&seed=${nickname}`;
