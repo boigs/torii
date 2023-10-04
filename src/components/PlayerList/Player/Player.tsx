@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
-import { RandomAvatar } from 'react-random-avatars';
+import Image from 'next/image';
 
 import styles from './Player.module.scss';
 
@@ -9,10 +9,18 @@ type PlayerProps = {
   nickname: string;
 };
 
+const AVATAR_BASE_URL =
+  'https://api.dicebear.com/7.x/thumbs/svg?backgroundColor=transparent';
+
+const getAvatarUrl = (nickname: string) =>
+  `${AVATAR_BASE_URL}&seed=${nickname}`;
+
 const Player: React.FC<PlayerProps> = ({ nickname }) => {
+  const avatar = useMemo(() => getAvatarUrl(nickname), [nickname]);
+
   return (
     <Flex alignItems='center' gap='8px'>
-      <RandomAvatar name={nickname} size={32} />
+      <Image src={avatar} alt={nickname} width={32} />
       <Text className={styles.playerName}>{nickname}</Text>
     </Flex>
   );
