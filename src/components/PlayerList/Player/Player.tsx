@@ -20,7 +20,7 @@ const Player: React.FC<PlayerProps> = ({ nickname }) => {
 
   return (
     <Flex alignItems='center' gap='8px'>
-      <Image src={avatar} alt={nickname} width={32} />
+      <Image src={avatar} alt={nickname} width={32} height={32} />
       <Text className={styles.playerName}>{nickname}</Text>
     </Flex>
   );
