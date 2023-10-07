@@ -56,7 +56,7 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
             <PlayerList players={players} />
             <Flex width='100%'>
               <Input
-                defaultValue={joinUrl.replace(/https?:\/\/www./g, '')}
+                defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
                 isReadOnly={true}
                 mr='2'
               />
