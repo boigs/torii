@@ -57,27 +57,23 @@ const HostForm: React.FC = () => {
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
-                <Field
-                  name='nickname'
-                  validate={(value: string) =>
-                    validateNonEmpty(value, 'Nickname')
+                <FormControl
+                  isInvalid={
+                    props.errors.nickname !== null && props.touched.nickname
                   }
                 >
-                  {({ field, form }: any) => (
-                    <FormControl
-                      isInvalid={form.errors.nickname && form.touched.nickname}
-                    >
-                      <Input
-                        {...field}
-                        placeholder='Nickname'
-                        autoComplete='off'
-                      />
-                      <FormErrorMessage>
-                        {form.errors.nickname}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
+                  <Field
+                    as={Input}
+                    id='nickname'
+                    name='nickname'
+                    placeholder='Nickname'
+                    autoComplete='off'
+                    validate={(value: string) =>
+                      validateNonEmpty(value, 'Nickname')
+                    }
+                  />
+                  <FormErrorMessage>{props.errors.nickname}</FormErrorMessage>
+                </FormControl>
                 <Button
                   type='submit'
                   isLoading={props.isSubmitting}

@@ -57,51 +57,41 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
                 <Flex flexDirection='column' gap='8px'>
-                  <Field
-                    name='gameId'
-                    validate={(value: string) =>
-                      validateNonEmpty(value, 'Game id')
+                  <FormControl
+                    isInvalid={
+                      props.errors.gameId !== null && props.touched.gameId
+                    }
+                    hidden={!!gameId}
+                  >
+                    <Field
+                      as={Input}
+                      id='gameId'
+                      name='gameId'
+                      placeholder='Game id'
+                      autoComplete='off'
+                      validate={(value: string) =>
+                        validateNonEmpty(value, 'Game id')
+                      }
+                    />
+                    <FormErrorMessage>{props.errors.gameId}</FormErrorMessage>
+                  </FormControl>
+                  <FormControl
+                    isInvalid={
+                      props.errors.nickname !== null && props.touched.nickname
                     }
                   >
-                    {({ field, form }: any) => (
-                      <FormControl
-                        isInvalid={form.errors.gameId && form.touched.gameId}
-                        hidden={!!gameId}
-                      >
-                        <Input
-                          {...field}
-                          placeholder='Game id'
-                          autoComplete='off'
-                        />
-                        <FormErrorMessage>
-                          {form.errors.gameId}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                  <Field
-                    name='nickname'
-                    validate={(value: string) =>
-                      validateNonEmpty(value, 'Nickname')
-                    }
-                  >
-                    {({ field, form }: any) => (
-                      <FormControl
-                        isInvalid={
-                          form.errors.nickname && form.touched.nickname
-                        }
-                      >
-                        <Input
-                          {...field}
-                          placeholder='Nickname'
-                          autoComplete='off'
-                        />
-                        <FormErrorMessage>
-                          {form.errors.nickname}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
+                    <Field
+                      as={Input}
+                      id='nickname'
+                      name='nickname'
+                      placeholder='Nickname'
+                      autoComplete='off'
+                      validate={(value: string) =>
+                        validateNonEmpty(value, 'Nickname')
+                      }
+                    />
+                    <FormErrorMessage>{props.errors.nickname}</FormErrorMessage>
+                  </FormControl>
                 </Flex>
                 <Button
                   type='submit'
