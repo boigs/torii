@@ -59,7 +59,7 @@ const HostForm: React.FC = () => {
               <Flex flexDirection='column' gap='12px'>
                 <FormControl
                   isInvalid={
-                    props.errors.nickname !== null && props.touched.nickname
+                    props.errors.nickname !== undefined && props.touched.nickname
                   }
                 >
                   <Field
