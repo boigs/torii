@@ -76,6 +76,12 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
   );
   const { sendMessage, lastMessage } = useWebSocket(socketUrl, {
     onError: onWebsocketError,
+    heartbeat: {
+      message: 'ping',
+      returnMessage: 'pong',
+      timeout: 3000, // 3 seconds, if no response is received, the connection will be closed
+      interval: 1000, // every 1 second, a ping message will be sent
+    },
   });
 
   useEffect(() => {

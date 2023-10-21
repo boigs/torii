@@ -58,9 +58,7 @@ const HostForm: React.FC = () => {
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
                 <FormControl
-                  isInvalid={
-                    !!props.errors.nickname && props.touched.nickname
-                  }
+                  isInvalid={!!props.errors.nickname && props.touched.nickname}
                 >
                   <Field
                     as={Input}

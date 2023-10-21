@@ -58,9 +58,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
               <Flex flexDirection='column' gap='12px'>
                 <Flex flexDirection='column' gap='8px'>
                   <FormControl
-                    isInvalid={
-                      !!props.errors.gameId && props.touched.gameId
-                    }
+                    isInvalid={!!props.errors.gameId && props.touched.gameId}
                     hidden={!!gameId}
                   >
                     <Field
