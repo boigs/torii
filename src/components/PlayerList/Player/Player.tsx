@@ -7,6 +7,7 @@ import styles from './Player.module.scss';
 
 type PlayerProps = {
   nickname: string;
+  isHost: boolean;
 };
 
 const AVATAR_BASE_URL =
@@ -15,7 +16,7 @@ const AVATAR_BASE_URL =
 const getAvatarUrl = (nickname: string) =>
   `${AVATAR_BASE_URL}&seed=${nickname}`;
 
-const Player: React.FC<PlayerProps> = ({ nickname }) => {
+const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
   const avatar = useMemo(() => getAvatarUrl(nickname), [nickname]);
 
   return (

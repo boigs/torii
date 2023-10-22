@@ -16,10 +16,8 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { join } from 'path';
 import useWebSocket from 'react-use-websocket';
 
-import { PlayerProps } from 'src/components/PlayerList/Player';
 import PlayerList from 'src/components/PlayerList/PlayerList';
 import config from 'src/config';
 
@@ -30,8 +28,8 @@ type GameQuery = {
 };
 
 enum Type {
-  Error = 'Error',
-  GameState = 'GameState',
+  Error = 'error',
+  GameState = 'gameState',
 }
 
 type MessageType = {
@@ -42,8 +40,13 @@ type HeadcrabError = {
   message: string;
 };
 
+type Player = {
+  nickname: string;
+  isHost: boolean;
+}
+
 type GameState = {
-  players: PlayerProps[];
+  players: Player[];
 };
 
 type Message = MessageType & (GameState | HeadcrabError);
@@ -54,7 +57,7 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
 
   const nickname = localStorage.getItem('nickname');
   const joinUrl = `${window.location.origin}/join/${id}`;
-  const [players, setPlayers] = useState<{ nickname: string }[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
   const [socketUrl, _] = useState(
@@ -118,7 +121,7 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
         </CardHeader>
         <CardBody>
           <VStack>
-            <PlayerList players={players} />
+            <PlayerList players={players.map(player => ({ nickname: player.nickname, isHost: player.isHost }))} />
             <Flex width='100%'>
               <Input
                 defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
