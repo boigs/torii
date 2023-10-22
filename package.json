@@ -29,7 +29,7 @@
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-use-websocket": "4.4.0",
+    "react-use-websocket": "4.5.0",
     "sass": "1.67.0",
     "typescript": "5.2.2"
   },
