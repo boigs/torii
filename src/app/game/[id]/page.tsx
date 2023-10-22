@@ -43,7 +43,7 @@ type HeadcrabError = {
 type Player = {
   nickname: string;
   isHost: boolean;
-}
+};
 
 type GameState = {
   players: Player[];
@@ -121,7 +121,12 @@ const Game: React.FC<GameQuery> = ({ params: { id } }) => {
         </CardHeader>
         <CardBody>
           <VStack>
-            <PlayerList players={players.map(player => ({ nickname: player.nickname, isHost: player.isHost }))} />
+            <PlayerList
+              players={players.map((player) => ({
+                nickname: player.nickname,
+                isHost: player.isHost,
+              }))}
+            />
             <Flex width='100%'>
               <Input
                 defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
