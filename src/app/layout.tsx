@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import { Providers } from './providers';
 import { PlayerContextProvider } from 'src/state/PlayerContext';
+
+import { Providers } from './providers';
 
 import styles from './layout.module.scss';
 
