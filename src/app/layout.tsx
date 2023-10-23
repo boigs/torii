@@ -1,8 +1,8 @@
-import React from 'react';
-
 import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+
+import { PlayerContextProvider } from 'src/state/PlayerContext';
 
 import { Providers } from './providers';
 
@@ -46,7 +46,9 @@ export default function RootLayout({
         <meta name='theme-color' content='#afd7d7' />
       </head>
       <body className={classNames(inter.className, styles.root)}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <PlayerContextProvider>{children}</PlayerContextProvider>
+        </Providers>
       </body>
     </html>
   );
