@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Link } from '@chakra-ui/next-js';
 import {
@@ -29,7 +29,13 @@ type FormValues = {
 
 const HostForm: React.FC = () => {
   const router = useRouter();
-  const { setNickname, setGameId } = useContext(GameContext);
+  const { setNickname, setGameId, connected } = useContext(GameContext);
+
+  useEffect(() => {
+    if (connected) {
+      router.push('/game');
+    }
+  }, [connected, router]);
 
   const onSubmit = async (values: FormValues) => {
     let gameId = await fetch(`${config.headcrabHttpBaseUrl}/game`, {
@@ -40,7 +46,6 @@ const HostForm: React.FC = () => {
 
     setNickname(values.nickname);
     setGameId(gameId);
-    router.push(`/game`);
   };
 
   return (

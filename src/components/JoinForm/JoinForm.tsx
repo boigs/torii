@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Link } from '@chakra-ui/next-js';
 import {
@@ -33,12 +33,18 @@ type FormValues = {
 
 const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
   const router = useRouter();
-  const { setNickname, setGameId } = useContext(GameContext);
+  const { setNickname, setGameId, connected } = useContext(GameContext);
 
-  const onSubmit = (values: FormValues) => {
+  useEffect(() => {
+    if (connected) {
+      router.push('/game');
+    }
+  }, [connected, router]);
+
+  const onSubmit = async (values: FormValues) => {
+    // this function needs to be async because of Formik, don't remove it
     setNickname(values.nickname);
     setGameId(values.gameId);
-    router.push(`/game`);
   };
 
   return (
