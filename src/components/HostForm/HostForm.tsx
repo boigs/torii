@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Link } from '@chakra-ui/next-js';
 import {
@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 
 import config from 'src/config';
 import { validateNonEmpty } from 'src/helpers/formValidators';
+import GameContext from 'src/state/GameContext';
 
 type FormValues = {
   nickname: string;
@@ -28,6 +29,7 @@ type FormValues = {
 
 const HostForm: React.FC = () => {
   const router = useRouter();
+  const { setNickname, setGameId } = useContext(GameContext);
 
   const onSubmit = async (values: FormValues) => {
     let gameId = await fetch(`${config.headcrabHttpBaseUrl}/game`, {
@@ -36,8 +38,9 @@ const HostForm: React.FC = () => {
       .then((response: any) => response.json())
       .then((response: any) => response.id);
 
-    localStorage.setItem('nickname', values.nickname);
-    router.push(`/game/${gameId}`);
+    setNickname(values.nickname);
+    setGameId(gameId);
+    router.push(`/game`);
   };
 
   return (

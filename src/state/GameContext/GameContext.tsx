@@ -1,15 +1,38 @@
 'use client';
 
-import React, { ReactNode, createContext, useState } from 'react';
+import React, { ReactNode, createContext, useEffect, useState } from 'react';
 
-type GameContextType = {};
+import config from 'src/config';
 
-const GameContext = createContext<GameContextType>({});
+type GameContextType = {
+  gameId?: string;
+  nickname?: string;
+  setNickname: (nickname: string) => void;
+  setGameId: (gameId: string) => void;
+};
+
+const GameContext = createContext<GameContextType>({
+  nickname: undefined,
+  setNickname: () => {},
+  setGameId: () => {},
+});
 
 const GameContextProvider = ({ children }: { children: ReactNode }) => {
-  const [websocketUrl, setWebsocketUrl] = useState<string | null>(null);
+  const [nickname, setNickname] = useState<string | undefined>();
+  const [gameId, setGameId] = useState<string | undefined>();
+  const [websocketUrl, setWebsocketUrl] = useState<string | undefined>();
 
-  return <GameContext.Provider value={{}}>{children}</GameContext.Provider>;
+  useEffect(() => {
+    setWebsocketUrl(
+      `${config.headcrabWsBaseUrl}/game/${gameId}/player/${nickname}/ws`
+    );
+  }, [nickname, gameId]);
+
+  return (
+    <GameContext.Provider value={{ nickname, setNickname, gameId, setGameId }}>
+      {children}
+    </GameContext.Provider>
+  );
 };
 
 export { GameContext };
