@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 
 import { useToast } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import useWebSocket from 'react-use-websocket';
 
 import config from 'src/config';
@@ -34,7 +33,6 @@ const GameContext = createContext<GameContextType>({
 
 const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
-  const router = useRouter();
   const [nickname, setNickname] = useState<string | undefined>();
   const [gameId, setGameId] = useState<string | undefined>();
   const [players, setPlayers] = useState<Player[]>([]);

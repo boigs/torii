@@ -21,8 +21,7 @@ import GameContext from 'src/state/GameContext';
 
 const Game: React.FC = () => {
   const router = useRouter();
-
-  const { nickname, gameId, players } = useContext(GameContext);
+  const { gameId, players } = useContext(GameContext);
   const [joinUrl, setJoinUrl] = useState<string>('');
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
