@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import {
   Button,
@@ -20,6 +20,7 @@ import useWebSocket from 'react-use-websocket';
 
 import PlayerList from 'src/components/PlayerList/PlayerList';
 import config from 'src/config';
+import GameContext from 'src/state/GameContext';
 
 type GameQuery = {
   params: {
@@ -51,18 +52,26 @@ type GameState = {
 
 type Message = MessageType & (GameState | HeadcrabError);
 
-const Game: React.FC<GameQuery> = ({ params: { id } }) => {
+const Game: React.FC<GameQuery> = () => {
   const toast = useToast();
   const router = useRouter();
 
-  const nickname = localStorage.getItem('nickname');
-  const joinUrl = `${window.location.origin}/join/${id}`;
+  const { nickname, gameId } = useContext(GameContext);
+  const [joinUrl, setJoinUrl] = useState<string>('');
   const [players, setPlayers] = useState<Player[]>([]);
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
   const [socketUrl, _] = useState(
-    `${config.headcrabWsBaseUrl}/game/${id}/player/${nickname}/ws`
+    `${config.headcrabWsBaseUrl}/game/${gameId}/player/${nickname}/ws`
   );
+
+  useEffect(() => {
+    if (gameId) {
+      setJoinUrl(`${window.location.origin}/join/${gameId}`);
+    } else {
+      window.location.href = '/';
+    }
+  }, [gameId]);
 
   const onWebsocketError: (e: Event) => void = useCallback(
     (e) => {

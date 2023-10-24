@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Link } from '@chakra-ui/next-js';
 import {
@@ -20,6 +20,7 @@ import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
+import GameContext from 'src/state/GameContext';
 
 type JoinFormProps = {
   gameId?: string;
@@ -32,10 +33,12 @@ type FormValues = {
 
 const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
   const router = useRouter();
+  const { setNickname, setGameId } = useContext(GameContext);
 
-  const onSubmit = async (values: FormValues) => {
-    localStorage.setItem('nickname', values.nickname);
-    router.push(`/game/${values.gameId}`);
+  const onSubmit = (values: FormValues) => {
+    setNickname(values.nickname);
+    setGameId(values.gameId);
+    router.push(`/game`);
   };
 
   return (
