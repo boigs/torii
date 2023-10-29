@@ -36,4 +36,4 @@ next-env.d.ts
 
 .vscode
 
-gameState.typegen.ts
+*/**.typegen.ts
