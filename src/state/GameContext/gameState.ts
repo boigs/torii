@@ -25,6 +25,12 @@ type JoinGameService = {
   data: {};
 };
 
+type Context = {
+  gameId: string | undefined;
+  nickname: string | undefined;
+  lastMessage: string | undefined;
+};
+
 const gameMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoIEtYGMB7AO2LHwBdIBiAYQCUBRAQQBVGB9AcWYFlGA2gAYAuolAAHQrBwUcJcSAAeiAEwAOAMyYAnOtWqALKoDsARnUBWMydUAaEAE9EO3TstDPhszdM6fAL4BDqgY2HhEpORUENQAUgDyAJIActx8gqKKUjJyCkjKiIYmJpgAbJomQjqq7iZ6Bg7OCGaalphVOm3+3ma1OkEh6Fj4AE5gKHLEUFzD1BAkWDjEAG6EANZYoSPjk8szwwjLa-h7JMIiF9nSsvLEiioIptplFqqWpmWWZSbemk2INraEqqTRCHxmQyaL6WQYgbaYMYTKYHDDUMCjUaEUaYCQAG0mADNsWhMAikXtprMMEdVoRTnliBcrgUcrd8qBHq9MD5NGZLJZNOp1J0dIYAQhDK5vIL+SYyoZLPUymU4QiAFaEZb7algeaLTDHDZbYaYTXaqmHI0Mu7MrKsm6Mh6IMo6ISYdQWKHFEzqKHWCWaMEdOqqV5+kxtNWm83EHVzDFYnH4okkskxrVxy0061nJmiFmSR13Z0IQWuMFQvSWfTVf5ORAAWn8HXe6nc3jKnqBQWCIGIhAgcEU22uuRLBUerR5rX5guFou8EsbNlcBks-iD84M8ujYVwBBIZEokDH7Puk8BgswhmqAu7bS+4obCEb+g9lilqkhUK0Xj3OzIvGGBnk6l5PF8uieN+pgmBuNhmBKZgVJgHxwRCmhdF2PwAWambAWAoETpyRTyje-gWGKVQqloZSBhYmDgmU7wfEIlQfKqfYInihAAEa8c0RbjhyhQILYhjlJGwpfH07wmEh6juoYwrGJG-RaIYvYBEAA */
@@ -36,11 +42,12 @@ const gameMachine = createMachine(
         createGame: CreateGameService;
         joinGame: JoinGameService;
       },
+      context: {} as Context,
     },
     context: {
-      gameId: undefined as string | undefined,
-      nickname: undefined as string | undefined,
-      lastMessage: undefined as string | undefined,
+      gameId: undefined,
+      nickname: undefined,
+      lastMessage: undefined,
     },
     initial: 'disconnected',
     states: {
