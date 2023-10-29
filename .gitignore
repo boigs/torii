@@ -36,4 +36,4 @@ next-env.d.ts
 
 .vscode
 
-*/**.typegen.ts
+**/*.typegen.ts
