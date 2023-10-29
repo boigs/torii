@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { GameContextProvider } from 'src/state/GameContext';
+import GameFiniteStateMachineProvider from 'src/state/GameContext/gameState';
 
 import { Providers } from './providers';
 
@@ -47,7 +48,9 @@ export default function RootLayout({
       </head>
       <body className={classNames(inter.className, styles.root)}>
         <Providers>
-          <GameContextProvider>{children}</GameContextProvider>
+          <GameFiniteStateMachineProvider>
+            {children}
+          </GameFiniteStateMachineProvider>
         </Providers>
       </body>
     </html>

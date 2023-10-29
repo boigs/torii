@@ -16,12 +16,14 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+import { useActor, useInterpret } from '@xstate/react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
 import config from 'src/config';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 import GameContext from 'src/state/GameContext';
+import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 type FormValues = {
   nickname: string;
@@ -29,9 +31,12 @@ type FormValues = {
 
 const HostForm: React.FC = () => {
   const router = useRouter();
-  const { setNickname, setGameId, connected } = useContext(GameContext);
+  const { service } = useContext(GameFiniteStateMachineContext);
+  const [state] = useActor(service);
 
-  useEffect(() => {
+  console.log(state.matches('disconnected'));
+
+  /*useEffect(() => {
     if (connected) {
       router.push('/game');
     }
@@ -46,7 +51,7 @@ const HostForm: React.FC = () => {
 
     setNickname(values.nickname);
     setGameId(gameId);
-  };
+  };*/
 
   return (
     <Card size='sm' width='sm'>
@@ -59,7 +64,7 @@ const HostForm: React.FC = () => {
         initialValues={{
           nickname: '',
         }}
-        onSubmit={onSubmit}
+        onSubmit={() => {}}
       >
         {(props) => (
           <Form>
