@@ -16,13 +16,11 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import { useActor, useInterpret } from '@xstate/react';
+import { useSelector } from '@xstate/react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
-import config from 'src/config';
 import { validateNonEmpty } from 'src/helpers/formValidators';
-import GameContext from 'src/state/GameContext';
 import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 type FormValues = {
@@ -32,26 +30,19 @@ type FormValues = {
 const HostForm: React.FC = () => {
   const router = useRouter();
   const { service } = useContext(GameFiniteStateMachineContext);
-  const [state] = useActor(service);
+  var isDisconnected = useSelector(service, (state) =>
+    state.matches('disconnected')
+  );
+  var isLobby = useSelector(service, (state) => state.matches('lobby'));
 
-  console.log(state.matches('disconnected'));
-
-  /*useEffect(() => {
-    if (connected) {
+  useEffect(() => {
+    if (isLobby) {
       router.push('/game');
     }
-  }, [connected, router]);
+  }, [isLobby]);
 
-  const onSubmit = async (values: FormValues) => {
-    let gameId = await fetch(`${config.headcrabHttpBaseUrl}/game`, {
-      method: 'POST',
-    })
-      .then((response: any) => response.json())
-      .then((response: any) => response.id);
-
-    setNickname(values.nickname);
-    setGameId(gameId);
-  };*/
+  const onSubmit = async (values: FormValues) =>
+    service.send({ type: 'CREATE_GAME', value: { nickname: values.nickname } });
 
   return (
     <Card size='sm' width='sm'>
@@ -64,7 +55,7 @@ const HostForm: React.FC = () => {
         initialValues={{
           nickname: '',
         }}
-        onSubmit={() => {}}
+        onSubmit={onSubmit}
       >
         {(props) => (
           <Form>
@@ -87,7 +78,7 @@ const HostForm: React.FC = () => {
                 </FormControl>
                 <Button
                   type='submit'
-                  isLoading={props.isSubmitting}
+                  isLoading={!isDisconnected}
                   colorScheme='teal'
                   variant='solid'
                   size='md'
