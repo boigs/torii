@@ -77,7 +77,7 @@ const gameFsm = createMachine(
           },
           JOIN_GAME: {
             target: 'joiningGame',
-            actions: ['assignNicknameAndGameId'],
+            actions: 'assignNicknameAndGameId',
           },
         },
       },
@@ -99,6 +99,7 @@ const gameFsm = createMachine(
             {
               target: 'lobby',
               cond: 'isGameStateMessage',
+              actions: 'assignPlayers',
             },
             {
               target: 'disconnected',
