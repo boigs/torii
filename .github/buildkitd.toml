@@ -1,5 +1,5 @@
 debug = true
 
-[registry."127.0.0.1:32000"]
+[registry."localhost:32000"]
   http = true
   insecure = true
