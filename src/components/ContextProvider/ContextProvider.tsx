@@ -67,18 +67,21 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     connectToGame
   );
 
+  useEffect(() => console.log(state), [state]);
+
   useEffect(() => {
-    console.log(state);
     if (isDisconnected && connectToGame) {
       setConnectToGame(false);
     } else if (isJoiningGame && !connectToGame) {
       setConnectToGame(true);
     }
+  }, [isDisconnected, isJoiningGame, connectToGame]);
 
-    if (connectToGame && lastMessage) {
+  useEffect(() => {
+    if (lastMessage) {
       var message: WsMessage = JSON.parse(lastMessage.data);
       // move this into an error state of the fsm, and let each screen decide what to do?
-      // error message is print twice, probably needd to remember if we already saw it, or using an fsm for this would fix it
+      // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
       if (message.type === WsType.Error) {
         toast({
           status: 'error',
@@ -88,6 +91,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           position: 'top',
         });
       }
+
       send({
         type: 'WEBSOCKET_MESSAGE',
         value: { message: message },
@@ -95,7 +99,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     console.log(lastMessage);
-  }, [isDisconnected, isJoiningGame, connectToGame, lastMessage]);
+  }, [lastMessage, send, toast]);
 
   return (
     <Context.Provider value={{ gameFsm: gameMachineService }}>
