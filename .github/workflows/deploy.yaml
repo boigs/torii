@@ -48,9 +48,10 @@ jobs:
           context: .
           tags: ${{ steps.image-metadata.outputs.tags }}
           labels: ${{ steps.image-metadata.outputs.labels }}
+          provenance: false
 
       - name: Set version to deploy in k8s.yaml
-        run: sed -i -E "s/torii:version/torii:${{ steps.image-metadata.outputs.version }}/g" k8s.yaml
+        run: sed -i -E "s/torii_image/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-metadata.outputs.version }}/g" k8s.yaml
 
       - name: Deploy
         run: |

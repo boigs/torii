@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: torii
-          image: localhost:32000/torii:version
+          image: torii_image
           ports:
             - containerPort: 8080
 ---
