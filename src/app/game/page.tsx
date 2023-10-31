@@ -17,15 +17,15 @@ import {
 import { useActor, useSelector } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
+import { Context } from 'src/components/ContextProvider';
 import PlayerList from 'src/components/PlayerList/PlayerList';
-import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 const Game: React.FC = () => {
   const router = useRouter();
-  const { service } = useContext(GameFiniteStateMachineContext);
-  const [state] = useActor(service);
+  const { gameFsm } = useContext(Context);
+  const [state] = useActor(gameFsm);
   const [joinUrl, setJoinUrl] = useState<string>('');
-  var isDisconnected = useSelector(service, (state) =>
+  var isDisconnected = useSelector(gameFsm, (state) =>
     state.matches('disconnected')
   );
 

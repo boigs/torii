@@ -10,8 +10,8 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml}\"",
     "precommit": "lint-staged",
-    "build-xstate": "npx xstate typegen src/state/GameContext/gameState.ts",
-    "watch-xstate": "npx xstate typegen src/state/GameContext/gameState.ts --watch"
+    "build-xstate": "npx xstate typegen src/fsm/game/game.ts",
+    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch"
   },
   "dependencies": {
     "@chakra-ui/next-js": "2.1.5",
