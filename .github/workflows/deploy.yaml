@@ -9,6 +9,9 @@ concurrency:
   group: ${{ github.ref || github.run_id }}
   cancel-in-progress: true
 
+env:
+  DOCKER_IMAGE_NAME: localhost:32000/torii
+
 jobs:
   build-deploy:
     name: Build and Deploy
@@ -16,29 +19,34 @@ jobs:
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
+
       - name: Install Node
         uses: actions/setup-node@v3
         with:
           node-version: 20.7.0
-      - name: Get next image name and version
-        id: next_name
-        run: echo "value=torii:$(npm pkg get version)" >> $GITHUB_OUTPUT
-      - name: Build the Docker image
-        run: docker build . --tag localhost:32000/${{ steps.next_name.outputs.value }}
-      - name: Push the Docker image to microk8s's registry
-        run: docker push localhost:32000/${{ steps.next_name.outputs.value }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Image Metadata
+        id: image-metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_IMAGE_NAME }}
+          tags: type=sha
+
+      - name: Create Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: .
+          tags: ${{ steps.image-metadata.outputs.tags }}
+          labels: ${{ steps.image-metadata.outputs.labels }}
+
       - name: Set version to deploy in k8s.yaml
-        run: sed -i -E "s/torii:version/${{ steps.next_name.outputs.value }}/g" k8s.yaml
+        run: sed -i -E "s/torii:version/torii:${{ steps.image-metadata.outputs.version }}/g" k8s.yaml
+
       - name: Deploy
         run: |
           microk8s kubectl apply -f k8s.yaml
           microk8s kubectl rollout status deployment/torii-deployment --watch=true --timeout=60s
-      - name: Increment version for next release
-        run: npm version patch -git-tag-version false
-      - name: Commit new version
-        run: |
-          git config user.name github-actions
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          git commit -m "[AUTO] Increment version for next deployment"
-          git push
