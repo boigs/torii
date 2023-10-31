@@ -20,8 +20,8 @@ import { useSelector } from '@xstate/react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
+import { Context } from 'src/components/ContextProvider';
 import { validateNonEmpty } from 'src/helpers/formValidators';
-import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 type JoinFormProps = {
   gameId?: string;
@@ -34,20 +34,20 @@ type FormValues = {
 
 const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
   const router = useRouter();
-  const { service } = useContext(GameFiniteStateMachineContext);
-  var isDisconnected = useSelector(service, (state) =>
+  const { gameFsm } = useContext(Context);
+  var isDisconnected = useSelector(gameFsm, (state) =>
     state.matches('disconnected')
   );
-  var isLobby = useSelector(service, (state) => state.matches('lobby'));
+  var isLobby = useSelector(gameFsm, (state) => state.matches('lobby'));
 
   useEffect(() => {
     if (isLobby) {
       router.push('/game');
     }
-  }, [isLobby]);
+  }, [isLobby, router]);
 
   const onSubmit = async (values: FormValues) =>
-    service.send({
+    gameFsm.send({
       type: 'JOIN_GAME',
       value: { nickname: values.nickname, gameId: values.gameId },
     });
