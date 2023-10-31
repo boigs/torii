@@ -1,7 +1,0 @@
-debug = true
-root = "~/.config/buildkit/buildkitd.toml"
-insecure-entitlements = [ "network.host", "security.insecure" ]
-
-[registry."localhost:32000"]
-  http = true
-  insecure = true
