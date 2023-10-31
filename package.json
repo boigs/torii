@@ -1,6 +1,6 @@
 {
   "name": "torii",
-  "version": "0.0.41",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "npx concurrently npm:watch-xstate npm:next-dev",
