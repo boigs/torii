@@ -1,9 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
+import { useActor } from '@xstate/react';
+import { useRouter } from 'next/navigation';
 
+import { Context } from 'src/components/ContextProvider';
 import JoinForm from 'src/components/JoinForm/JoinForm';
 
 type JoinQuery = {
@@ -13,11 +16,26 @@ type JoinQuery = {
 };
 
 const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
+  const router = useRouter();
+  const { gameFsm } = useContext(Context);
+  const [state, send] = useActor(gameFsm);
   const realId = id?.[0];
+
+  useEffect(() => {
+    if (state.matches('lobby')) {
+      router.push('/game');
+    }
+  }, [state, router]);
 
   return (
     <Center>
-      <JoinForm gameId={realId} />
+      <JoinForm
+        gameId={realId}
+        loading={!state.matches('disconnected')}
+        onSubmit={({ gameId, nickname }) =>
+          send({ type: 'JOIN_GAME', value: { gameId, nickname } })
+        }
+      />
     </Center>
   );
 };
