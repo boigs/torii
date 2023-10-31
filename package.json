@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npx concurrently npm:watch-xstate npm:next-dev",
-    "next-dev": "next dev --turbo",
+    "next-dev": "next dev",
     "build": "npm run build-xstate && next build",
     "start": "next start -p 8080",
     "lint": "next lint",

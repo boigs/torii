@@ -16,11 +16,12 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+import { useSelector } from '@xstate/react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
-import GameContext from 'src/state/GameContext';
+import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 type JoinFormProps = {
   gameId?: string;
@@ -33,19 +34,23 @@ type FormValues = {
 
 const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
   const router = useRouter();
-  const { setNickname, setGameId, connected } = useContext(GameContext);
+  const { service } = useContext(GameFiniteStateMachineContext);
+  var isDisconnected = useSelector(service, (state) =>
+    state.matches('disconnected')
+  );
+  var isLobby = useSelector(service, (state) => state.matches('lobby'));
 
   useEffect(() => {
-    if (connected) {
+    if (isLobby) {
       router.push('/game');
     }
-  }, [connected, router]);
+  }, [isLobby]);
 
-  const onSubmit = async (values: FormValues) => {
-    // this function needs to be async because of Formik, don't remove it
-    setNickname(values.nickname);
-    setGameId(values.gameId);
-  };
+  const onSubmit = async (values: FormValues) =>
+    service.send({
+      type: 'JOIN_GAME',
+      value: { nickname: values.nickname, gameId: values.gameId },
+    });
 
   return (
     <Card size='sm' width='sm'>
@@ -102,7 +107,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId }) => {
                 </Flex>
                 <Button
                   type='submit'
-                  isLoading={props.isSubmitting}
+                  isLoading={!isDisconnected}
                   colorScheme='teal'
                   variant='solid'
                   size='md'

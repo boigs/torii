@@ -14,24 +14,29 @@ import {
   VStack,
   useClipboard,
 } from '@chakra-ui/react';
+import { useActor, useSelector } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import PlayerList from 'src/components/PlayerList/PlayerList';
-import GameContext from 'src/state/GameContext';
+import { GameFiniteStateMachineContext } from 'src/state/GameContext/gameState';
 
 const Game: React.FC = () => {
   const router = useRouter();
-  const { gameId, players } = useContext(GameContext);
+  const { service } = useContext(GameFiniteStateMachineContext);
+  const [state] = useActor(service);
   const [joinUrl, setJoinUrl] = useState<string>('');
+  var isDisconnected = useSelector(service, (state) =>
+    state.matches('disconnected')
+  );
+
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
   useEffect(() => {
-    if (gameId) {
-      setJoinUrl(`${window.location.origin}/join/${gameId}`);
-    } else {
+    setJoinUrl(`${window.location.origin}/join/${state.context.gameId}`);
+    if (isDisconnected) {
       router.replace('/');
     }
-  }, [gameId, router]);
+  }, [isDisconnected]);
 
   return (
     <Center>
@@ -44,7 +49,7 @@ const Game: React.FC = () => {
         <CardBody>
           <VStack>
             <PlayerList
-              players={players.map((player) => ({
+              players={state.context.players.map((player) => ({
                 nickname: player.nickname,
                 isHost: player.isHost,
               }))}

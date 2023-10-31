@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 
 import { useToast } from '@chakra-ui/react';
+import { last } from 'lodash';
 import useWebSocket from 'react-use-websocket';
 
 import config from 'src/config';
