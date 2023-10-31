@@ -45,7 +45,7 @@ const createGame: () => Promise<string> = () =>
 
 const gameFsm = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoIEtYGMB7AO2LHwBdIBiAYQCUBRAQQBVGB9AcWYFlGA2gAYAuolAAHQrBwUcJcSAAeiAEwB2dZgAsAVgBsADlWHtQgMzb1Q-QBoQATzXnMARn2Whp7eYCcq1R8AXyD7VAxsPCJScioIagApAHkASQA5bj5BUUUpGTkFJGVEK11MX1dzQyqPD3VzVXsnBHVVTED1bX1tQ2qhIV11QxCw9Cx8ACcwFDliKC4x6ggSLBxiADdCAGsscPGpmbX5sYQ1zfxDkmERa9zpWXliRRUEVV02oVdXQyFfKsrDL5fIYmohLK5MOYhKpuup9EZdH4hOoRiA9phJtNZscMNQwBMJoQJpgJAAbGYAMyJaEw6MxhzmCwwpw2hAuBWI11uRTyD0KoBeum0mF0hk0qj+GgC+l86lBCH0bQ02lcA0MlV8PR6qPRACtCGsjkywNQAOqMABCAGUkrQANKMVgcfhWq3MLjZMQ8+4c56IdSuYW6fxVLy6ZH+OWORBCTCaFVmOHGVxwirmHVjTD6w2Mxbm622h1Ol1uj0CVxeyQ+x5+hWqCGmcyuXRfbQaMXmeUAWl8scs9YCP1FKd8ugzEWzxCNectNvtjo4tCSaTSjFoTsY9HoSXo3Kr+RrRReAZcAXMg2Dv2+ul08rb+nKb375nUf3eqnToTRmdJhAARn+DhmrOhYLiW7qencB78sUCC9GU4YGJqTb6F81TyjCEKuB+3z6K+-iih445YL+AFAfmc5Fs6jCuhB5aViAvK+keiCAi4-jfBxOHBiC0YINhEL9CY3yfE2fjvCEX7EIQEBwIoexQXyTwsQqIpiq0kqtDCvh4d2KZaKY9YWOoBitNo2jEZEBAkGQlCQIpzECmCXSYL0KoNMiqheIE3YyuUOmVBq5moQEln0tixoOYeTmvMGkKdEMeGBj4Kq3nxKYPjKwauBUAYGA0lmTtOGBRTBgqqq5VTnl0pkVGlzRQi46pfH8PSBqKFlfuipGAaVykxQGhhuFq+hCHoyKdK48o5S4litCmL5vmeklBEAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswDoIEtYGMB7AO2LHwBdIBiAYQCUBRAQQBVGB9AcWYFlGA2gAYAuolAAHQrBwUcJcSAAeiAIwA2AMwAOTACYDAdgCsx9QBZ1ATmOrtAGhABPROeN7927atOa72oUM9cwBfEMdUDGw8IlJyKghqACkAeQBJADluPkFRRSkZOQUkZTUDD209SvUDAO1NK0NHFwQDTUwg9VMfVUNtKyrNMIj0LHwAJzAUOWIoLlHqCBIsHGIAN0IAayxIscnp1bnRhFWN-AOSYREr-OlZeWJFFQQNTXaurXM9Q0tVc0MrM1EN5MMYhOChH89FZeuDtMMQLtMBMpjMjhhqGBxuNCONMBIADbTABmuLQmCRKIOs3mGBO60I5yKxCuNxKBXuxVAzw0X0wPmM5js7is1nMmiBCAaVg6AMMqg0Xh+Qnh4URo0wACtCKtDrSwNQAOqMABCAGUUrQANKMVgcWgpDIZRi0O2Mej0FL0NmSO7Mp6IAyqTDePS2L71QyaYxWcyShpCTBfRpvPSadT9eXqBFI7W6mkLY3my02u38M1m5hcXJidl+h4B1p6YOh8ODKMxuPORBdYyYHRVMMaPTgjM5jV54h6wumi3W20ccuV6sCVS132FBslZ5BkOqIcRzQd2OS8zmRMDRqBXl9YyqkZRAmEABGz6cRtnJYXS6rNdum65UoEHUQIOiEdQMz+IRNEsO9JXcdoYUMLRvjefcvnHR8XzfD9i3nMtGArX9V3XEAOX9bc1CEMF9H8GN5VUaN1FUSUII8FDKhVDRezCNViEICA4EUXZ-05R5KIQABadRJUkvsrAUhSozsHRzxMTCsFwAgSDIShIFEijuTUf4+0sJUqjMGoM3jKxdG+RpVFjPxISGNVKX2NF9QMrcjJebxdCgqMw0McFbBY7spXlTBrAsIQzzsFzXIfLBJ2nDBvMA54vklBVTOQ0w7xQs8ow0zAn1fFoNzExsAXkiwrDeKMAh6VitH5TRBy4iDTF4kIgA */
     id: 'game',
     predictableActionArguments: true,
     tsTypes: {} as import('./game.typegen').Typegen0,
@@ -81,6 +81,7 @@ const gameFsm = createMachine(
           },
         },
       },
+
       creatingGame: {
         invoke: {
           src: 'createGame',
@@ -93,17 +94,19 @@ const gameFsm = createMachine(
       },
       joiningGame: {
         on: {
+          WEBSOCKET_CONNECT_ERROR: 'disconnected',
           WEBSOCKET_MESSAGE: [
             {
-              cond: 'isGameStateMessage',
               target: 'lobby',
-              actions: 'assignPlayers',
+              cond: 'isGameStateMessage',
             },
-            'disconnected',
+            {
+              target: 'disconnected',
+            },
           ],
-          WEBSOCKET_CONNECT_ERROR: 'disconnected',
         },
       },
+
       lobby: {
         on: {
           WEBSOCKET_MESSAGE: [
