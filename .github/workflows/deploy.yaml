@@ -40,8 +40,6 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
-          username: any
-          password: any
 
       - name: Create Docker Image
         uses: docker/build-push-action@v5
