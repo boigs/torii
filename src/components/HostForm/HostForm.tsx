@@ -16,33 +16,26 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import { useSelector } from '@xstate/react';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 
-import { Context } from 'src/components/ContextProvider';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 type FormValues = {
   nickname: string;
 };
 
-const HostForm: React.FC = () => {
-  const router = useRouter();
-  const { gameFsm } = useContext(Context);
-  var isDisconnected = useSelector(gameFsm, (state) =>
-    state.matches('disconnected')
-  );
-  var isLobby = useSelector(gameFsm, (state) => state.matches('lobby'));
+type HostFormProps = {
+  loading: boolean;
+  onSubmit: (value: HostFormValues) => void;
+};
 
-  useEffect(() => {
-    if (isLobby) {
-      router.push('/game');
-    }
-  }, [isLobby, router]);
+type HostFormValues = {
+  nickname: string;
+};
 
-  const onSubmit = async (values: FormValues) =>
-    gameFsm.send({ type: 'CREATE_GAME', value: { nickname: values.nickname } });
+const HostForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
+  const onFormSubmit = async (values: FormValues) =>
+    onSubmit({ nickname: values.nickname });
 
   return (
     <Card size='sm' width='sm'>
@@ -55,7 +48,7 @@ const HostForm: React.FC = () => {
         initialValues={{
           nickname: '',
         }}
-        onSubmit={onSubmit}
+        onSubmit={onFormSubmit}
       >
         {(props) => (
           <Form>
@@ -78,7 +71,7 @@ const HostForm: React.FC = () => {
                 </FormControl>
                 <Button
                   type='submit'
-                  isLoading={!isDisconnected}
+                  isLoading={loading}
                   colorScheme='teal'
                   variant='solid'
                   size='md'
