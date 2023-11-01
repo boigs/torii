@@ -26,6 +26,7 @@ const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
         shapeOffsetX: [0],
         shapeOffsetY: [0],
         shapeRotation: [0],
+        faceOffsetY: [-10, 15],
       }).toString(),
     [nickname]
   );
