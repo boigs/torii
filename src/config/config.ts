@@ -45,6 +45,6 @@ const getConfig: () => Configuration = () => {
 
 const config: Configuration = getConfig();
 
-export type { Configuration, Environment };
-
+export { Environment };
+export type { Configuration };
 export default config;
