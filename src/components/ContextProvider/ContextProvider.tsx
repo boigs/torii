@@ -15,6 +15,7 @@ import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
+import logger from 'src/logger';
 import { HeadcrabError, WsMessage, WsType } from 'src/websocket/types';
 
 export const Context = createContext({
@@ -50,7 +51,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   const onWebsocketError: (event: Event) => void = useCallback(
     (event) => {
-      console.log(event);
+      logger.debug({ event }, 'event');
       send({ type: 'WEBSOCKET_CONNECT_ERROR' });
       toast(UNKNOWN_WS_ERROR);
     },
@@ -67,7 +68,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     connectToGame
   );
 
-  useEffect(() => console.log(state), [state]);
+  useEffect(() => {
+    logger.debug({ state }, 'state');
+  }, [state]);
 
   useEffect(() => {
     if (isDisconnected && connectToGame) {
@@ -98,7 +101,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       });
     }
 
-    console.log(lastMessage);
+    logger.debug({ lastMessage }, 'last message');
   }, [lastMessage, send, toast]);
 
   return (
