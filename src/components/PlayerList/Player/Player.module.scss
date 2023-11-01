@@ -1,5 +1,20 @@
-.playerName {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.player {
+  align-items: center;
+  gap: 8px;
+
+  .avatarWrapper {
+    position: relative;
+
+    .crown {
+      position: absolute;
+      top: -9px;
+      left: 7px;
+    }
+  }
+
+  .playerName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

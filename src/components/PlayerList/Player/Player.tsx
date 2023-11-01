@@ -31,8 +31,8 @@ const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
   );
 
   return (
-    <Flex alignItems='center' gap='8px'>
-      <div style={{ position: 'relative' }}>
+    <Flex className={styles.player}>
+      <div className={styles.avatarWrapper}>
         <img // https://stackoverflow.com/q/44900569
           width={32}
           src={`data:image/svg+xml;utf8,${encodeURIComponent(avatar)}`}
@@ -40,7 +40,7 @@ const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
         />
         {isHost ? (
           <img
-            style={{ position: 'absolute', top: -10, left: 7 }}
+            className={styles.crown}
             width={18}
             src={CROWN_SRC}
             alt='crown'
