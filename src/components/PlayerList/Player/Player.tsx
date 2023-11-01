@@ -35,7 +35,7 @@ const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
           alt={nickname}
         />
         {isHost ? (
-          <img className={styles.crown} src='crown.svg' alt='crown' />
+          <img className={styles.crown} src='/svg/crown.svg' alt='crown' />
         ) : null}
       </div>
       <Text className={styles.playerName}>{nickname}</Text>
