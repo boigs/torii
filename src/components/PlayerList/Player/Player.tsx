@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
-import Image from 'next/image';
+import { thumbs } from '@dicebear/collection';
+import { createAvatar } from '@dicebear/core';
 
 import styles from './Player.module.scss';
 
@@ -10,18 +11,24 @@ type PlayerProps = {
   isHost: boolean;
 };
 
-const AVATAR_BASE_URL =
-  'https://api.dicebear.com/7.x/thumbs/png?backgroundColor=transparent';
-
-const getAvatarUrl = (nickname: string) =>
-  `${AVATAR_BASE_URL}&seed=${nickname}`;
-
 const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
-  const avatar = useMemo(() => getAvatarUrl(nickname), [nickname]);
+  const avatar: string = useMemo(
+    () =>
+      createAvatar(thumbs, {
+        seed: nickname,
+        backgroundColor: ['transparent'],
+      }).toString(),
+    [nickname]
+  );
 
   return (
     <Flex alignItems='center' gap='8px'>
-      <Image src={avatar} alt={nickname} width={32} height={32} />
+      {/* eslint-disable-next-line @next/next/no-img-element*/}
+      <img // https://stackoverflow.com/q/44900569
+        width={32}
+        src={`data:image/svg+xml;utf8,${encodeURIComponent(avatar)}`}
+        alt={nickname}
+      />
       <Text className={styles.playerName}>{nickname}</Text>
     </Flex>
   );
