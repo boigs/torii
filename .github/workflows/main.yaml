@@ -15,7 +15,7 @@ env:
 
 jobs:
   build-deploy:
-    name:  ${{ github.ref_name == 'main' && 'Build and Deploy' || 'Build' }}
+    name: ${{ github.ref_name == 'main' && 'Build and Deploy' || 'Build' }}
     runs-on: self-hosted
     steps:
       - name: Clone Repository
