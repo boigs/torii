@@ -23,7 +23,6 @@
     "@types/node": "20.8.9",
     "@types/react": "18.2.33",
     "@types/react-dom": "18.2.14",
-    "@xstate/cli": "0.5.7",
     "@xstate/react": "3.2.2",
     "autoprefixer": "10.4.16",
     "classnames": "2.3.2",
@@ -47,7 +46,8 @@
     "eslint-config-prettier": "9.0.0",
     "husky": "8.0.3",
     "lint-staged": "15.0.2",
-    "prettier": "3.0.3"
+    "prettier": "3.0.3",
+    "@xstate/cli": "0.5.7"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,css,scss,yaml,yml}": [

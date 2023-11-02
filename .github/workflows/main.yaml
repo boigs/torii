@@ -1,6 +1,7 @@
-name: Build and Deploy
+name: Next.js
 
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -14,16 +15,11 @@ env:
 
 jobs:
   build-deploy:
-    name: Build and Deploy
+    name: ${{ github.ref_name == 'main' && 'Build and Deploy' || 'Build' }}
     runs-on: self-hosted
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
-
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.7.0
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -40,16 +36,18 @@ jobs:
       - name: Create Docker Image
         uses: docker/build-push-action@v5
         with:
-          push: true
+          push: ${{ github.ref_name == 'main' }}
           context: .
           tags: ${{ steps.image-metadata.outputs.tags }}
           labels: ${{ steps.image-metadata.outputs.labels }}
           provenance: false
 
-      - name: Set version to deploy in k8s.yaml
+      - name: Set Docker Image to deploy in k8s.yaml
+        if: ${{ github.ref_name == 'main' }}
         run: sed -i -E "s#torii_image#${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-metadata.outputs.version }}#g" k8s.yaml
 
       - name: Deploy
+        if: ${{ github.ref_name == 'main' }}
         run: |
           microk8s kubectl apply -f k8s.yaml
           microk8s kubectl rollout status deployment/torii-deployment --watch=true --timeout=60s
