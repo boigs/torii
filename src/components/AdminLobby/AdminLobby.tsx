@@ -39,7 +39,7 @@ const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Card size='sm' width='sm'>
+    <Card size='sm'>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
           Game configuration
@@ -89,16 +89,15 @@ const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
               </Field>
             </CardBody>
             <CardFooter>
-              <Flex className={styles.createButtonContainer}>
-                <Button
-                  colorScheme='teal'
-                  variant='solid'
-                  size='md'
-                  type='submit'
-                >
-                  Start
-                </Button>
-              </Flex>
+              <Button
+                colorScheme='blue'
+                variant='solid'
+                size='md'
+                type='submit'
+                width='full'
+              >
+                Start
+              </Button>
             </CardFooter>
           </Form>
         )}

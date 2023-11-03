@@ -16,6 +16,8 @@ import { Player } from 'src/domain';
 
 import PlayerList from '../PlayerList';
 
+import styles from './WaitingLobby.module.scss';
+
 type WaitingLobbyProps = {
   gameId: string;
   players: Player[];
@@ -30,7 +32,7 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
   }, [gameId]);
 
   return (
-    <Card size='sm' width='md'>
+    <Card size='sm' className={styles.waitingLobbyCard}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
           Waiting for other players
@@ -50,7 +52,13 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
               isReadOnly={true}
               mr='2'
             />
-            <Button onClick={onCopy}>{hasCopied ? 'Copied!' : 'Copy'}</Button>
+            <Button
+              colorScheme='blue'
+              onClick={onCopy}
+              className={styles.copyButton}
+            >
+              {hasCopied ? 'Copied!' : 'Copy'}
+            </Button>
           </Flex>
         </VStack>
       </CardBody>
