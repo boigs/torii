@@ -5,7 +5,6 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import { Center, Flex } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
-import { send } from 'xstate';
 
 import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import { Context } from 'src/components/ContextProvider';
@@ -25,7 +24,9 @@ const Game: React.FC = () => {
     }
   }, [state, router]);
 
-  const onGameStart = useCallback((values: AdminLobbyValues) => {}, []);
+  const onGameStart = useCallback((values: AdminLobbyValues) => {
+    logger.debug({ values });
+  }, []);
 
   return (
     <Center>
