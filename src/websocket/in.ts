@@ -1,12 +1,12 @@
 import Player from 'src/domain/player';
 
-export enum WsType {
+export enum WsTypeIn {
   Error = 'error',
   GameState = 'gameState',
 }
 
-export type MessageType = {
-  type: WsType;
+export type MessageTypeIn = {
+  type: WsTypeIn;
 };
 
 export type HeadcrabError = {
@@ -15,6 +15,7 @@ export type HeadcrabError = {
 
 export type GameState = {
   players: Player[];
+  state: string;
 };
 
-export type WsMessage = MessageType & (GameState | HeadcrabError);
+export type WsMessageIn = MessageTypeIn & (GameState | HeadcrabError);

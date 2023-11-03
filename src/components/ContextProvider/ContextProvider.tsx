@@ -16,10 +16,17 @@ import { InterpreterFrom } from 'xstate';
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
 import logger from 'src/logger';
-import { HeadcrabError, WsMessage, WsType } from 'src/websocket/types';
+import { HeadcrabError, WsMessageIn, WsTypeIn } from 'src/websocket/in';
+import { WsMessageOut } from 'src/websocket/out';
 
-export const Context = createContext({
+type ContextType = {
+  gameFsm: InterpreterFrom<typeof gameFsm>;
+  sendWebsocketMessage: (message: WsMessageOut) => void;
+};
+
+export const Context = createContext<ContextType>({
   gameFsm: {} as InterpreterFrom<typeof gameFsm>,
+  sendWebsocketMessage: () => {},
 });
 
 const UNKNOWN_WS_ERROR: UseToastOptions = {
@@ -82,10 +89,10 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (lastMessage) {
-      var message: WsMessage = JSON.parse(lastMessage.data);
+      var message: WsMessageIn = JSON.parse(lastMessage.data);
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
-      if (message.type === WsType.Error) {
+      if (message.type === WsTypeIn.Error) {
         toast({
           status: 'error',
           isClosable: true,
@@ -105,7 +112,12 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [lastMessage, send, toast]);
 
   return (
-    <Context.Provider value={{ gameFsm: gameMachineService }}>
+    <Context.Provider
+      value={{
+        gameFsm: gameMachineService,
+        sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
+      }}
+    >
       {children}
     </Context.Provider>
   );
