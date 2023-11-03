@@ -4,7 +4,7 @@ import { assign, createMachine } from 'xstate';
 
 import config from 'src/config';
 import { Player } from 'src/domain';
-import { GameState, WsMessage, WsType } from 'src/websocket';
+import { GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -24,7 +24,7 @@ type JoinGameEvent = {
 type WebsocketMessageEvent = {
   type: 'WEBSOCKET_MESSAGE';
   value: {
-    message: WsMessage;
+    message: WsMessageIn;
   };
 };
 
@@ -153,8 +153,8 @@ const gameFsm = createMachine(
     },
     guards: {
       isGameStateMessage: (_, event) =>
-        event.value.message.type === WsType.GameState,
-      isErrorMessage: (_, event) => event.value.message.type === WsType.Error,
+        event.value.message.type === WsTypeIn.GameState,
+      isErrorMessage: (_, event) => event.value.message.type === WsTypeIn.Error,
     },
   }
 );
