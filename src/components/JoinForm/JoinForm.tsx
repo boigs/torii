@@ -98,7 +98,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId, loading, onSubmit }) => {
                 <Button
                   type='submit'
                   isLoading={loading}
-                  colorScheme='teal'
+                  colorScheme='blue'
                   variant='solid'
                   size='md'
                   width='full'
@@ -112,7 +112,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId, loading, onSubmit }) => {
                 <Center>
                   <Text fontSize='xs'>
                     Looking to create a new game?{' '}
-                    <Link color='teal' href='/'>
+                    <Link color='blue' href='/'>
                       Click here
                     </Link>
                   </Text>

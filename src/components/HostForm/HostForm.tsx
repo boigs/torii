@@ -72,7 +72,7 @@ const HostForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
                 <Button
                   type='submit'
                   isLoading={loading}
-                  colorScheme='teal'
+                  colorScheme='blue'
                   variant='solid'
                   size='md'
                   width='full'
@@ -86,7 +86,7 @@ const HostForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
                 <Center>
                   <Text fontSize='xs'>
                     Looking to join an existing game?{' '}
-                    <Link color='teal' href='/join'>
+                    <Link color='blue' href='/join'>
                       Click here
                     </Link>
                   </Text>
