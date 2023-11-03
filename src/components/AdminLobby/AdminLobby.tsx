@@ -16,8 +16,8 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Text,
 } from '@chakra-ui/react';
+import { Field, Form, Formik, FormikFormProps, FormikProps } from 'formik';
 
 import styles from './AdminLobby.module.scss';
 
@@ -29,7 +29,15 @@ type AdminLobbyProps = {
   onSubmit: (values: AdminLobbyValues) => void;
 };
 
+type FormValues = {
+  amountOfRounds: number;
+};
+
 const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
+  const onFormSubmit = async (values: FormValues) => {
+    onSubmit({ amountOfRounds: values.amountOfRounds });
+  };
+
   return (
     <Card size='sm' width='sm'>
       <CardHeader>
@@ -38,38 +46,63 @@ const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
         </Heading>
         <Divider marginTop={'12px'} />
       </CardHeader>
-      <CardBody className={styles.body}>
-        <FormControl>
-          <FormLabel className={styles.maxPlayersLabel}>
-            Amount of rounds:
-          </FormLabel>
-          <NumberInput
-            defaultValue={3}
-            min={3}
-            max={5}
-            keepWithinRange={true}
-            clampValueOnBlur={true}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </FormControl>
-      </CardBody>
-      <CardFooter>
-        <Flex className={styles.createButtonContainer}>
-          <Button
-            colorScheme='teal'
-            variant='solid'
-            size='md'
-            onClick={() => onSubmit({ amountOfRounds: 3 })}
-          >
-            Start
-          </Button>
-        </Flex>
-      </CardFooter>
+      <Formik
+        initialValues={{
+          amountOfRounds: 3,
+        }}
+        onSubmit={onFormSubmit}
+      >
+        {() => (
+          <Form>
+            <CardBody className={styles.adminLobbyForm}>
+              <Field name='amountOfRounds'>
+                {({
+                  field,
+                  form,
+                }: {
+                  field: { name: string };
+                  form: FormikProps<FormValues>;
+                }) => (
+                  <FormControl className={styles.amountOfRoundsFormItem}>
+                    <FormLabel className={styles.amountOfRoundsLabel}>
+                      Amount of rounds:
+                    </FormLabel>
+                    <NumberInput
+                      className={styles.amountOfRoundsInput}
+                      defaultValue={3}
+                      min={3}
+                      max={5}
+                      keepWithinRange={true}
+                      clampValueOnBlur={true}
+                      onChange={(val) =>
+                        form.setFieldValue(field.name, Number(val))
+                      }
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                )}
+              </Field>
+            </CardBody>
+            <CardFooter>
+              <Flex className={styles.createButtonContainer}>
+                <Button
+                  colorScheme='teal'
+                  variant='solid'
+                  size='md'
+                  type='submit'
+                >
+                  Start
+                </Button>
+              </Flex>
+            </CardFooter>
+          </Form>
+        )}
+      </Formik>
     </Card>
   );
 };

@@ -1,10 +1,22 @@
-.body {
+.adminLobbyForm {
   padding-top: 0;
   padding-bottom: 0;
 
-  .maxPlayersLabel {
-    font-weight: normal;
-    margin-left: 2px;
+  .amountOfRoundsFormItem {
+    display: flex;
+    align-items: center;
+
+    .amountOfRoundsLabel {
+      font-weight: normal;
+      margin-left: 2px;
+      margin-bottom: 0;
+    }
+
+    .amountOfRoundsInput {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 0;
+    }
   }
 }
 
