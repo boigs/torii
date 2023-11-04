@@ -17,7 +17,13 @@ import styles from './page.module.scss';
 const Game: React.FC = () => {
   const router = useRouter();
   const { gameFsm, sendWebsocketMessage } = useContext(Context);
-  const [state] = useActor(gameFsm);
+  const [state, send] = useActor(gameFsm);
+
+  useEffect(() => {
+    if (state.matches('lobby') && !state.context.gameJoined) {
+      send('GAME_JOINED');
+    }
+  }, [state, send]);
 
   useEffect(() => {
     if (state.matches('disconnected')) {

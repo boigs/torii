@@ -22,10 +22,12 @@ const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
   const realId = id?.[0];
 
   useEffect(() => {
-    if (state.matches('lobby')) {
+    if (state.context.gameJoined) {
+      send('RESET');
+    } else if (state.matches('lobby')) {
       router.push('/game');
     }
-  }, [state, router]);
+  }, [state, send, router]);
 
   return (
     <Center>
