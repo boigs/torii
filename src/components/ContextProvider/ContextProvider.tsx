@@ -4,7 +4,7 @@ import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
-import useWebSocket from 'react-use-websocket';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
@@ -26,7 +26,7 @@ export const Context = createContext<ContextType>({
 const UNKNOWN_WS_ERROR: UseToastOptions = {
   status: 'error',
   isClosable: true,
-  duration: 5000,
+  duration: 3000,
   description: 'Unknown error occurred; please contact support.',
   position: 'top',
 };
@@ -38,28 +38,34 @@ const HEARTBEAT = {
   interval: 1000, // every 1 second, a ping message will be sent
 };
 
+const isWebsocketClosed = (state: ReadyState) => {
+  return state === ReadyState.CLOSING || state === ReadyState.CLOSED;
+};
+
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const gameMachineService = useInterpret(gameFsm);
   var [state, send] = useActor(gameMachineService);
   const toast = useToast();
 
-  const onWebsocketError: (event: Event) => void = useCallback(
-    (event) => {
-      logger.debug({ event }, 'event');
-      send({ type: 'WEBSOCKET_CONNECT_ERROR' });
-      toast(UNKNOWN_WS_ERROR);
-    },
-    [toast, send]
-  );
-
   const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
-  const { sendMessage, lastMessage } = useWebSocket(
+  const { sendMessage, readyState, lastMessage } = useWebSocket(
     websocketUrl,
     {
-      onError: onWebsocketError,
+      onError: (event) => onWebsocketError(event),
       heartbeat: HEARTBEAT,
     },
     state.context.websocketShouldBeConnected
+  );
+
+  const onWebsocketError: (event: Event) => void = useCallback(
+    (event) => {
+      logger.debug({ event }, 'event');
+      if (!isWebsocketClosed(readyState)) {
+        send('WEBSOCKET_CONNECT_ERROR');
+        toast(UNKNOWN_WS_ERROR);
+      }
+    },
+    [toast, send, readyState]
   );
 
   useEffect(() => {
