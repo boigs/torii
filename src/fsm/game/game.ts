@@ -56,11 +56,6 @@ const defaultContext: Context = {
   gameJoined: false,
 };
 
-const createGame: () => Promise<string> = () =>
-  fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
-    .then((response) => response.json())
-    .then((response) => (response as { id: string }).id);
-
 const gameFsm = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGIBKBRAyrgCoDaADALqKgAOA9rAJYAujdAdtSAB6IAcAVgCMAOgAsYsgGYAbFLFShAThkAmGQBoQAT0RC+UkXzF9VUxUtkB2AL42tqDCIiNYAYw7swb5pEwBhPABBIlwAfQBxIIBZXHIqJBB6JlYOLl4EKxlRK1VhITMxdSy+LV0EASkBESEBATI+Miy8mSVbexBHMGdXD3YvHz8AKQB5AEkAOUiYuMouZJY2TkSM4VUjOqsxKyFpVSVSnUQisREZOolGsSFc5XaHdG63ACcwFFZ2KAjHzAgObsY7AAbnQANbdLoiF5vD5fR4IQEgtzvJbxeLzBiLNIrRACHYiRQKNrmARqJSqMq49RGeSqXZmRSmIR2B5OaEoz7fDCYMDPZ50Z4iGgAG3eADMBWgRJD2bCuWAEcC6MjUuw0XNEgtVel+FIrCIrAI+HIxDIrMaihSjgg5PqbsalAUxEpSWRVCzOo8RAArOiAwFw7kAdVwACF8CN-ABpYhhfwjCYTXD+IhhXDYbAjbDozWY7U4hCqAwiSqOopCbImOpSSkIKSqfV4pQNVRFukGdQeyG+-2cn4h8ORmOp2L4fBBCKzBK0PNLHUIAC0bRElkEMj4Vks8nkYlrYkqBJMan0MnOerEXa9PfYAflmAHEejsdH48nJCE06Ss+xoAyC5kpwFHSpobsYbRWDW1pFGQNQ3JIEFmmYbqXk4wp0AARuh2j3mGj7DmEL4TlOGIpHOBb-io4gWGQKg7KefCHOUtorsIVR8G0Z5KCh3RoZh2EPkOz4EK+cQfiRWLLL+iALrsghnA2Bwbgo0i1nI6xkPoZhkmQZAgdxIi8VhmBRLEYSjJMuAACI5jOpE-jw0l0oYigAc2VhbGQMjSJo1rMS6QhsRxpZ2B07B0BAcBcF04n5lJi5CAFhhqJuDFbFIKnWpR8imFUqimo6pIXh0kIuO4njeL4EAxWRcV8EIpytqaihkPUDYGLW6WnE0ZZSOSpgbk0+myrejzVfZGQQTkVgtQIZhZFIpg+eUuRJU0NHGtkRpFvp14jRgY2SQ5hYujUpoIXUlSKEIqmkgS5zOi6DG9YNxVeoZ5S2RJ84LoojbsdcuRmOSuS1nUfA1L99UVrss1cSFQA */
@@ -174,14 +169,6 @@ const gameFsm = createMachine(
         gameJoined: true,
       })),
       resetContext: assign(() => defaultContext),
-    },
-    services: {
-      createGame: async () => {
-        const gameId = await createGame();
-        return {
-          gameId,
-        };
-      },
     },
     guards: {
       isGameStateMessage: (_, event) =>
