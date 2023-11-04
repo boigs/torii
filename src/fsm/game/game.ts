@@ -44,7 +44,7 @@ type Context = {
   gameId: string;
   nickname: string;
   players: Player[];
-  connectToGame: boolean;
+  websocketShouldBeConnected: boolean;
   gameJoined: boolean;
 };
 
@@ -52,7 +52,7 @@ const defaultContext: Context = {
   gameId: '',
   nickname: '',
   players: [],
-  connectToGame: false,
+  websocketShouldBeConnected: false,
   gameJoined: false,
 };
 
@@ -168,7 +168,7 @@ const gameFsm = createMachine(
         };
       }),
       setConnectToGameToTrue: assign(() => ({
-        connectToGame: true,
+        websocketShouldBeConnected: true,
       })),
       setGameJoinedToTrue: assign(() => ({
         gameJoined: true,

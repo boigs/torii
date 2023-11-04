@@ -59,7 +59,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       onError: onWebsocketError,
       heartbeat: HEARTBEAT,
     },
-    state.context.connectToGame
+    state.context.websocketShouldBeConnected
   );
 
   useEffect(() => {
