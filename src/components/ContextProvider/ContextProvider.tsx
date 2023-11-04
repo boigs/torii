@@ -31,6 +31,14 @@ const UNKNOWN_WS_ERROR: UseToastOptions = {
   position: 'top',
 };
 
+const CANNOT_CREATE_GAME_ERROR: UseToastOptions = {
+  status: 'error',
+  isClosable: true,
+  duration: 3000,
+  description: 'Could not create a game correctly. Please try again later.',
+  position: 'top',
+};
+
 const HEARTBEAT = {
   message: 'ping',
   returnMessage: 'pong',
@@ -42,10 +50,27 @@ const isWebsocketClosed = (state: ReadyState) => {
   return state === ReadyState.CLOSING || state === ReadyState.CLOSED;
 };
 
+const createGame: () => Promise<string> = () =>
+  fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
+    .then((response) => response.json())
+    .then((response) => (response as { id: string }).id);
+
 const ContextProvider = ({ children }: { children: ReactNode }) => {
-  const gameMachineService = useInterpret(gameFsm);
-  var [state, send] = useActor(gameMachineService);
   const toast = useToast();
+  const gameMachineService = useInterpret(gameFsm, {
+    services: {
+      createGame: async () => {
+        try {
+          const gameId = await createGame();
+          return { gameId };
+        } catch (e) {
+          toast(CANNOT_CREATE_GAME_ERROR);
+          throw e;
+        }
+      },
+    },
+  });
+  var [state, send] = useActor(gameMachineService);
 
   const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
   const { sendMessage, readyState, lastMessage } = useWebSocket(
