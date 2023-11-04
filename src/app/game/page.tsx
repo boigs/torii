@@ -5,18 +5,18 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import { Center, Flex } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
-import { send } from 'xstate';
 
 import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
 import logger from 'src/logger';
+import { newStartGameMessage } from 'src/websocket/out';
 
 import styles from './page.module.scss';
 
 const Game: React.FC = () => {
   const router = useRouter();
-  const { gameFsm } = useContext(Context);
+  const { gameFsm, sendWebsocketMessage } = useContext(Context);
   const [state] = useActor(gameFsm);
 
   useEffect(() => {
@@ -25,7 +25,13 @@ const Game: React.FC = () => {
     }
   }, [state, router]);
 
-  const onGameStart = useCallback((values: AdminLobbyValues) => {}, []);
+  const onGameStart = useCallback(
+    (values: AdminLobbyValues) => {
+      logger.debug({}, 'sending start message');
+      sendWebsocketMessage(newStartGameMessage(values));
+    },
+    [sendWebsocketMessage]
+  );
 
   return (
     <Center>
