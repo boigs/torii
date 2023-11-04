@@ -15,10 +15,12 @@ const Home: React.FC = () => {
   const [state, send] = useActor(gameFsm);
 
   useEffect(() => {
-    if (state.matches('lobby')) {
+    if (state.context.gameJoined) {
+      send('RESET');
+    } else if (state.matches('lobby')) {
       router.push('/game');
     }
-  }, [state, router]);
+  }, [state, send, router]);
 
   return (
     <Center>

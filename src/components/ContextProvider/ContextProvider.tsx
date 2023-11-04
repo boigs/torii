@@ -1,15 +1,9 @@
 'use client';
 
-import React, {
-  ReactNode,
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
-import { useActor, useInterpret, useSelector } from '@xstate/react';
+import { useActor, useInterpret } from '@xstate/react';
 import useWebSocket from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
@@ -47,14 +41,7 @@ const HEARTBEAT = {
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const gameMachineService = useInterpret(gameFsm);
   var [state, send] = useActor(gameMachineService);
-  var isDisconnected = useSelector(gameMachineService, (state) =>
-    state.matches('disconnected')
-  );
-  var isJoiningGame = useSelector(gameMachineService, (state) =>
-    state.matches('joiningGame')
-  );
   const toast = useToast();
-  const [connectToGame, setConnectToGame] = useState<boolean>(false);
 
   const onWebsocketError: (event: Event) => void = useCallback(
     (event) => {
@@ -72,20 +59,12 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       onError: onWebsocketError,
       heartbeat: HEARTBEAT,
     },
-    connectToGame
+    state.context.connectToGame
   );
 
   useEffect(() => {
     logger.debug({ state }, 'state');
   }, [state]);
-
-  useEffect(() => {
-    if (isDisconnected && connectToGame) {
-      setConnectToGame(false);
-    } else if (isJoiningGame && !connectToGame) {
-      setConnectToGame(true);
-    }
-  }, [isDisconnected, isJoiningGame, connectToGame]);
 
   useEffect(() => {
     if (lastMessage) {

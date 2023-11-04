@@ -21,6 +21,10 @@ type JoinGameEvent = {
   };
 };
 
+type GameJoinedEvent = {
+  type: 'GAME_JOINED';
+};
+
 type WebsocketMessageEvent = {
   type: 'WEBSOCKET_MESSAGE';
   value: {
@@ -32,10 +36,24 @@ type WebsocketConnectErrorEvent = {
   type: 'WEBSOCKET_CONNECT_ERROR';
 };
 
+type ResetEvent = {
+  type: 'RESET';
+};
+
 type Context = {
   gameId: string;
   nickname: string;
   players: Player[];
+  connectToGame: boolean;
+  gameJoined: boolean;
+};
+
+const defaultContext: Context = {
+  gameId: '',
+  nickname: '',
+  players: [],
+  connectToGame: false,
+  gameJoined: false,
 };
 
 const createGame: () => Promise<string> = () =>
@@ -53,6 +71,8 @@ const gameFsm = createMachine(
       events: {} as
         | CreateGameEvent
         | JoinGameEvent
+        | GameJoinedEvent
+        | ResetEvent
         | WebsocketConnectErrorEvent
         | WebsocketMessageEvent,
       context: {} as Context,
@@ -62,14 +82,16 @@ const gameFsm = createMachine(
         };
       },
     },
-    context: {
-      gameId: '',
-      nickname: '',
-      players: [],
-    },
+    context: defaultContext,
     initial: 'disconnected',
+    on: {
+      RESET: {
+        target: 'disconnected',
+      },
+    },
     states: {
       disconnected: {
+        entry: 'resetContext',
         on: {
           CREATE_GAME: {
             target: 'creatingGame',
@@ -81,7 +103,6 @@ const gameFsm = createMachine(
           },
         },
       },
-
       creatingGame: {
         invoke: {
           src: 'createGame',
@@ -93,6 +114,7 @@ const gameFsm = createMachine(
         },
       },
       joiningGame: {
+        entry: 'setConnectToGameToTrue',
         on: {
           WEBSOCKET_CONNECT_ERROR: 'disconnected',
           WEBSOCKET_MESSAGE: [
@@ -120,6 +142,9 @@ const gameFsm = createMachine(
               target: 'disconnected',
             },
           ],
+          GAME_JOINED: {
+            actions: 'setGameJoinedToTrue',
+          },
         },
       },
     },
@@ -142,6 +167,13 @@ const gameFsm = createMachine(
           players,
         };
       }),
+      setConnectToGameToTrue: assign(() => ({
+        connectToGame: true,
+      })),
+      setGameJoinedToTrue: assign(() => ({
+        gameJoined: true,
+      })),
+      resetContext: assign(() => defaultContext),
     },
     services: {
       createGame: async () => {
