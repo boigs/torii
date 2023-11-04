@@ -18,18 +18,15 @@ const Game: React.FC = () => {
   const router = useRouter();
   const { gameFsm, sendWebsocketMessage } = useContext(Context);
   const [state, send] = useActor(gameFsm);
-
-  useEffect(() => {
-    if (state.matches('lobby') && !state.context.gameJoined) {
-      send('GAME_JOINED');
-    }
-  }, [state, send]);
-
+  
   useEffect(() => {
     if (state.matches('disconnected')) {
       router.replace('/');
     }
-  }, [state, router]);
+    if (state.matches('lobby') && !state.context.gameJoined) {
+      send('GAME_JOINED');
+    }
+  }, [state, send, router]);
 
   const onGameStart = useCallback(
     (values: AdminLobbyValues) => {
