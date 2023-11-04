@@ -20,16 +20,12 @@ const Game: React.FC = () => {
   const [state, send] = useActor(gameFsm);
 
   useEffect(() => {
-    if (!state.context.gameJoined) {
-      send('GAME_JOINED');
-    }
-  }, [state, send]);
-
-  useEffect(() => {
     if (state.matches('disconnected')) {
       router.replace('/');
+    } else if (!state.context.gameJoined) {
+      send('GAME_JOINED');
     }
-  }, [state, router]);
+  }, [state, send, router]);
 
   const onGameStart = useCallback(
     (values: AdminLobbyValues) => {
