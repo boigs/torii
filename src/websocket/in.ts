@@ -3,6 +3,7 @@ import Player from 'src/domain/player';
 export enum WsTypeIn {
   Error = 'error',
   GameState = 'gameState',
+  ChatText = 'chatText',
 }
 
 export type MessageTypeIn = {
@@ -18,4 +19,9 @@ export type GameState = {
   state: string;
 };
 
-export type WsMessageIn = MessageTypeIn & (GameState | HeadcrabError);
+export type ChatText = {
+  text: string;
+};
+
+export type WsMessageIn = MessageTypeIn &
+  (GameState | HeadcrabError | ChatText);

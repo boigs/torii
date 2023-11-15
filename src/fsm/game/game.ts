@@ -4,7 +4,7 @@ import { assign, createMachine } from 'xstate';
 
 import config from 'src/config';
 import { Player } from 'src/domain';
-import { GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
+import { ChatText, GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -46,6 +46,7 @@ type Context = {
   players: Player[];
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
+  messages: string[];
 };
 
 const defaultContext: Context = {
@@ -54,11 +55,12 @@ const defaultContext: Context = {
   players: [],
   websocketShouldBeConnected: false,
   gameJoined: false,
+  messages: [],
 };
 
 const gameFsm = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGIBKBRAyrgCoDaADALqKgAOA9rAJYAujdAdtSAB6IAcAVgCMAOgAsYsgGYAbFLFShAThkAmGQBoQAT0RC+UkXzF9VUxUtkB2AL42tqDCIiNYAYw7swb5pEwBhPABBIlwAfQBxIIBZXHIqJBB6JlYOLl4EKxlRK1VhITMxdSy+LV0EASkBESEBATI+Miy8mSVbexBHMGdXD3YvHz8AKQB5AEkAOUiYuMouZJY2TkSM4VUjOqsxKyFpVSVSnUQisREZOolGsSFc5XaHdG63ACcwFFZ2KAjHzAgObsY7AAbnQANbdLoiF5vD5fR4IQEgtzvJbxeLzBiLNIrRACHYiRQKNrmARqJSqMq49RGeSqXZmRSmIR2B5OaEoz7fDCYMDPZ50Z4iGgAG3eADMBWgRJD2bCuWAEcC6MjUuw0XNEgtVel+FIrCIrAI+HIxDIrMaihSjgg5PqbsalAUxEpSWRVCzOo8RAArOiAwFw7kAdVwACF8CN-ABpYhhfwjCYTXD+IhhXDYbAjbDozWY7U4hCqAwiSqOopCbImOpSSkIKSqfV4pQNVRFukGdQeyG+-2cn4h8ORmOp2L4fBBCKzBK0PNLHUIAC0bRElkEMj4Vks8nkYlrYkqBJMan0MnOerEXa9PfYAflmAHEejsdH48nJCE06Ss+xoAyC5kpwFHSpobsYbRWDW1pFGQNQ3JIEFmmYbqXk4wp0AARuh2j3mGj7DmEL4TlOGIpHOBb-io4gWGQKg7KefCHOUtorsIVR8G0Z5KCh3RoZh2EPkOz4EK+cQfiRWLLL+iALrsghnA2Bwbgo0i1nI6xkPoZhkmQZAgdxIi8VhmBRLEYSjJMuAACI5jOpE-jw0l0oYigAc2VhbGQMjSJo1rMS6QhsRxpZ2B07B0BAcBcF04n5lJi5CAFhhqJuDFbFIKnWpR8imFUqimo6pIXh0kIuO4njeL4EAxWRcV8EIpytqaihkPUDYGLW6WnE0ZZSOSpgbk0+myrejzVfZGQQTkVgtQIZhZFIpg+eUuRJU0NHGtkRpFvp14jRgY2SQ5hYujUpoIXUlSKEIqmkgS5zOi6DG9YNxVeoZ5S2RJ84LoojbsdcuRmOSuS1nUfA1L99UVrss1cSFQA */
+    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGIBKBRAyrgCoDaADALqKgAOA9rAJYAujdAdtSAB6IAcAVgCMAOgAsYsgGYAbFLFShAThkAmGQBoQAT0RC+UkXzF9VUxUtkB2AL42tqDCIiNYAYw7swb5pEwBhPABBIlwAfQBxIIBZXHIqJBB6JlYOLl4EKxlRK1VhITMxdSy+LV0EASkBESEBATI+Miy8mSVbexBHMGdXD3YvHz8AKQB5AEkAOUiYuMouZJY2TkSM4VUjOqsxKyFpVSVSnUQisREZOolGsSFc5XaHdG63ACcwFFZ2KAjHzAgObsY7AAbnQANbdLoiF5vD5fR4IQEgtzvJbxeLzBiLNIrRACHYiRQKNrmARqJSqMq49RGeSqXZmRSmIR2B5OaEoz7fDCYMDPZ50Z4iGgAG3eADMBWgRJD2bCuWAEcC6MjUuw0XNEgtVel+FIrCIrAI+HIxDIrMaihSjgg5PqbsalAUxEpSWRVCzOo8RAArOiAwFw7kAdVwACF8CN-ABpYhhfwjCYTXD+IhhXDYbAjbDozWY7U4hCqAwiSqOopCbImOpSSkIKSqfV4pQNVRFukGdQeyG+-2cn4h8ORmOp2L4fBBCKzBK0PNLHUIAC0bRElkEMj4Vks8nkYlrYkqBJMan0MnOerEXa9PfYAflmAHEejsdH48nJCE06Ss+xoAyC5kpwFHSpobsYbRWDW1pFGQNQ3JIEFmmYbqXk4wp0AARuh2j3mGj7DmEL4TlOGIpHOBb-io4gWGQKg7KefCHOUtorsIVR8G0Z5KCh3RoZh2EPkOz4EK+cQfiRWLLL+iALrsghnA2Bwbgo0i1nI6xkPoZhkmQZAgdxIi8VhmBRLEYSjJMuAACI5jOpE-jw0l0oYigAc2VhbGQMjSJo1rMS6QhsRxpb6YZ-G4YJI7CURJCqJ+WpkVJi6tKcNEHK0dSNAptY7IYpp5GYdT6LIF4euwdAQHAXBdOJ+aJTJAWGGom4MVsUgqdalHyKYqWCAFpoyPpLjuJ43i+BANUJQ5CB8EIpytqaihkPUDYGLWbUpZus1SOSpgbk0+myrejwTfZGQQTkVhLQIZhZFIpg+eUuSNU0NHGtkRpFvp15HRgJ2SVN+zVLNZqyHUlSKEIqmkgS5zOi6DHbftHSQqFf3zguiiNux1y5GY5K5LWGU1Jjs0Vrs11cXYNhAA */
     id: 'game',
     predictableActionArguments: true,
     tsTypes: {} as import('./game.typegen').Typegen0,
@@ -136,6 +138,11 @@ const gameFsm = createMachine(
               cond: 'isErrorMessage',
               target: 'disconnected',
             },
+            {
+              target: 'lobby',
+              cond: 'isChatMessage',
+              actions: 'addChatMessage',
+            },
           ],
           GAME_JOINED: {
             actions: 'setGameJoinedToTrue',
@@ -169,11 +176,19 @@ const gameFsm = createMachine(
         gameJoined: true,
       })),
       resetContext: assign(() => defaultContext),
+      addChatMessage: assign((context, event) => {
+        const { text } = event.value.message as ChatText;
+        return {
+          messages: [...context.messages, text],
+        };
+      }),
     },
     guards: {
       isGameStateMessage: (_, event) =>
         event.value.message.type === WsTypeIn.GameState,
       isErrorMessage: (_, event) => event.value.message.type === WsTypeIn.Error,
+      isChatMessage: (_, event) =>
+        event.value.message.type === WsTypeIn.ChatText,
     },
   }
 );
