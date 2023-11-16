@@ -4,7 +4,12 @@ import { assign, createMachine } from 'xstate';
 
 import config from 'src/config';
 import { Player } from 'src/domain';
-import { ChatText, GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
+import {
+  ChatMessage as ChatMessageWs,
+  GameState,
+  WsMessageIn,
+  WsTypeIn,
+} from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -40,13 +45,18 @@ type ResetEvent = {
   type: 'RESET';
 };
 
+type ChatMessage = {
+  sender: string;
+  content: string;
+};
+
 type Context = {
   gameId: string;
   nickname: string;
   players: Player[];
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
-  messages: string[];
+  messages: ChatMessage[];
 };
 
 const defaultContext: Context = {
@@ -177,9 +187,9 @@ const gameFsm = createMachine(
       })),
       resetContext: assign(() => defaultContext),
       addChatMessage: assign((context, event) => {
-        const { text } = event.value.message as ChatText;
+        const { sender, content } = event.value.message as ChatMessage;
         return {
-          messages: [...context.messages, text],
+          messages: [...context.messages, { sender, content }],
         };
       }),
     },

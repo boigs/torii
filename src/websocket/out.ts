@@ -18,7 +18,7 @@ export const newWordAdded: (word: string) => WsMessageOut = (word) => ({
   word,
 });
 
-export const newChatMessage: (text: string) => WsMessageOut = (text) => ({
-  type: 'chatText',
-  text,
+export const newChatMessage: (content: string) => WsMessageOut = (content) => ({
+  type: 'chatMessage',
+  content,
 });
