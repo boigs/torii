@@ -48,7 +48,7 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
     <Card size='sm'>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Game chat
+          Chat
         </Heading>
         <Divider marginTop={'12px'} />
       </CardHeader>

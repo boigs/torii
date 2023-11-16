@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Divider,
   Flex,
@@ -36,33 +37,39 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
     <Card size='sm' className={styles.waitingLobbyCard}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Waiting for other players
+          Players ({players.length})
         </Heading>
+        <Divider marginTop={'12px'} />
       </CardHeader>
-      <CardBody>
-        <VStack className={styles.verticalContainer}>
-          <PlayerList
-            players={players.map(({ nickname, isHost }) => ({
-              nickname,
-              isHost,
-            }))}
-          />
-          <Flex>
-            <Input
-              defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
-              isReadOnly={true}
-              mr='2'
+      <CardBody className={styles.waitingLobbyBody}>
+        <Card>
+          <CardBody>
+            <PlayerList
+              players={players.map(({ nickname, isHost }) => ({
+                nickname,
+                isHost,
+              }))}
             />
-            <Button
-              colorScheme='blue'
-              onClick={onCopy}
-              className={styles.copyButton}
-            >
-              {hasCopied ? 'Copied!' : 'Copy'}
-            </Button>
-          </Flex>
-        </VStack>
+          </CardBody>
+        </Card>
       </CardBody>
+      <CardFooter>
+        <Flex>
+          <Input
+            className={styles.joinUrlInput}
+            defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
+            isReadOnly={true}
+            mr='2'
+          />
+          <Button
+            colorScheme='blue'
+            onClick={onCopy}
+            className={styles.copyButton}
+          >
+            {hasCopied ? 'Copied!' : 'Copy'}
+          </Button>
+        </Flex>
+      </CardFooter>
     </Card>
   );
 };

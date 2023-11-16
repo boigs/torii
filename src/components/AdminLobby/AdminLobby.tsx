@@ -42,7 +42,7 @@ const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
     <Card size='sm'>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Game configuration
+          Configuration
         </Heading>
         <Divider marginTop={'12px'} />
       </CardHeader>
