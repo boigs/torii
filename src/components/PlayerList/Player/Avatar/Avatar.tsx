@@ -8,7 +8,7 @@ import styles from './Avatar.module.scss';
 
 export type AvatarProps = {
   nickname: string;
-  isHost: boolean;
+  isHost?: boolean;
   size?: number;
 };
 
