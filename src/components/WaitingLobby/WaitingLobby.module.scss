@@ -1,6 +1,15 @@
 .waitingLobbyCard {
-  .verticalContainer {
-    gap: 12px;
+  .waitingLobbyBody {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .verticalContainer {
+      gap: 12px;
+    }
+  }
+
+  .joinUrlInput {
+    user-select: auto;
   }
 
   .copyButton {
