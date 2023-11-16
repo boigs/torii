@@ -53,10 +53,7 @@ const Game: React.FC = () => {
           gameId={state.context.gameId}
           players={state.context.players}
         />
-        <Chat
-          onSubmit={sendChatMessage}
-          messages={state.context.messages.map((text) => ({ text }))}
-        />
+        <Chat onSubmit={sendChatMessage} messages={state.context.messages} />
       </Flex>
     </Center>
   );

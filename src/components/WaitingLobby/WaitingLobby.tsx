@@ -40,14 +40,14 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
         </Heading>
       </CardHeader>
       <CardBody>
-        <VStack>
+        <VStack className={styles.verticalContainer}>
           <PlayerList
             players={players.map(({ nickname, isHost }) => ({
               nickname,
               isHost,
             }))}
           />
-          <Flex width='100%'>
+          <Flex>
             <Input
               defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
               isReadOnly={true}

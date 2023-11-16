@@ -9,7 +9,6 @@ import {
   Divider,
   Flex,
   FormControl,
-  FormErrorMessage,
   Heading,
   Input,
   Textarea,
@@ -21,7 +20,8 @@ import { validateNonEmpty } from 'src/helpers/formValidators';
 import styles from './Chat.module.scss';
 
 export type Message = {
-  text: string;
+  sender: string;
+  content: string;
 };
 
 type ChatProps = {
@@ -57,7 +57,9 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
           readOnly={true}
           resize='none'
           height={150}
-          value={messages.map(({ text }) => text).join('\n')}
+          value={messages
+            .map(({ sender, content }) => `${sender}: ${content}`)
+            .join('\n')}
         />
       </CardBody>
       <CardFooter>
@@ -70,7 +72,7 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
           {(props) => (
             <Form>
               <Flex className={styles.chatControls}>
-                <FormControl isInvalid={!!props.errors.text}>
+                <FormControl>
                   <Field
                     as={Input}
                     id='text'
