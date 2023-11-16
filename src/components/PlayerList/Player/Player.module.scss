@@ -2,21 +2,6 @@
   align-items: center;
   gap: 8px;
 
-  .avatarWrapper {
-    position: relative;
-
-    .thumb {
-      width: 32px;
-    }
-
-    .crown {
-      width: 18px;
-      position: absolute;
-      top: -9px;
-      left: 7px;
-    }
-  }
-
   .playerName {
     overflow: hidden;
     text-overflow: ellipsis;
