@@ -1,0 +1,12 @@
+.messageContainer {
+
+  .message {
+    font-size: 0.95rem;
+    max-width: 270px;
+    word-wrap: break-all;
+
+    .messageSender {
+      font-weight: 500;
+    }
+  }
+}

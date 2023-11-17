@@ -11,11 +11,14 @@ import {
   FormControl,
   Heading,
   Input,
-  Textarea,
+  VStack,
 } from '@chakra-ui/react';
-import { Field, Form, Formik, FormikProps } from 'formik';
+import { Field, Form, Formik } from 'formik';
+import _ from 'lodash';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
+
+import Message from './Message';
 
 import styles from './Chat.module.scss';
 
@@ -53,14 +56,16 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
         <Divider marginTop={'12px'} />
       </CardHeader>
       <CardBody className={styles.chatBody}>
-        <Textarea
-          readOnly={true}
-          resize='none'
-          height={150}
-          value={messages
-            .map(({ sender, content }) => `${sender}: ${content}`)
-            .join('\n')}
-        />
+        <div className={styles.chatMessages}>
+          <VStack className={styles.messages}>
+            {[...messages].reverse().map(({ sender, content }) => (
+              <>
+                <Message key={_.uniqueId()} sender={sender} content={content} />
+                <Divider className={styles.messageDivider} />
+              </>
+            ))}
+          </VStack>
+        </div>
       </CardBody>
       <CardFooter>
         <Formik
