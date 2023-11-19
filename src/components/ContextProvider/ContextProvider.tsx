@@ -12,7 +12,7 @@ import gameFsm from 'src/fsm/game';
 import logger from 'src/logger';
 import { HeadcrabError, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
-import { wsErrorToDisplay } from 'src/helpers/errorDisplay';
+import { headcrabErrorToDisplay } from 'src/helpers/errorDisplay';
 
 type ContextType = {
   gameFsm: InterpreterFrom<typeof gameFsm>;
@@ -108,7 +108,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           status: 'error',
           isClosable: true,
           duration: 5000,
-          description: wsErrorToDisplay(message as HeadcrabError),
+          description: headcrabErrorToDisplay(message as HeadcrabError),
           position: 'top',
         });
       }

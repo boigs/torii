@@ -1,6 +1,6 @@
 import { HeadCrabErrorType, HeadcrabError } from 'src/websocket/in';
 
-export const wsErrorToDisplay = (error: HeadcrabError): string => {
+export const headcrabErrorToDisplay = (error: HeadcrabError): string => {
   switch (error.type) {
     case HeadCrabErrorType.GameDoesNotExist:
       return error.detail;
