@@ -3,22 +3,22 @@ export type StartGameOptions = {
 };
 
 export type WsMessageOut = {
-  type: string;
+  kind: string;
 };
 
 export const newStartGameMessage: (
   options: StartGameOptions
 ) => WsMessageOut = (options) => ({
-  type: 'startGame',
+  kind: 'startGame',
   ...options,
 });
 
 export const newWordAdded: (word: string) => WsMessageOut = (word) => ({
-  type: 'wordAdded',
+  kind: 'wordAdded',
   word,
 });
 
 export const newChatMessage: (content: string) => WsMessageOut = (content) => ({
-  type: 'chatMessage',
+  kind: 'chatMessage',
   content,
 });

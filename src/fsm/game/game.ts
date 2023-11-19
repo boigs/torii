@@ -2,14 +2,8 @@
 
 import { assign, createMachine } from 'xstate';
 
-import config from 'src/config';
 import { Player } from 'src/domain';
-import {
-  ChatMessage as ChatMessageWs,
-  GameState,
-  WsMessageIn,
-  WsTypeIn,
-} from 'src/websocket/in';
+import { GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -195,10 +189,10 @@ const gameFsm = createMachine(
     },
     guards: {
       isGameStateMessage: (_, event) =>
-        event.value.message.type === WsTypeIn.GameState,
-      isErrorMessage: (_, event) => event.value.message.type === WsTypeIn.Error,
+        event.value.message.kind === WsTypeIn.GameState,
+      isErrorMessage: (_, event) => event.value.message.kind === WsTypeIn.Error,
       isChatMessage: (_, event) =>
-        event.value.message.type === WsTypeIn.ChatText,
+        event.value.message.kind === WsTypeIn.ChatText,
     },
   }
 );
