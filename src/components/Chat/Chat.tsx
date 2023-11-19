@@ -58,7 +58,7 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
       <CardBody className={styles.chatBody}>
         <div className={styles.chatMessages}>
           <VStack className={styles.messages}>
-            {[...messages].reverse().map(({ sender, content }) => (
+            {messages.map(({ sender, content }) => (
               <>
                 <Message key={_.uniqueId()} sender={sender} content={content} />
                 <Divider className={styles.messageDivider} />
