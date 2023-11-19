@@ -6,12 +6,20 @@ export enum WsTypeIn {
   ChatText = 'chatMessage',
 }
 
+export enum HeadCrabErrorType {
+  GameDoesNotExist = 'GAME_DOES_NOT_EXIST',
+  PlayerAlreadyExists = 'PLAYER_ALREADY_EXISTS',
+  Internal = 'INTERNAL_SERVER',
+}
+
 export type MessageTypeIn = {
-  type: WsTypeIn;
+  kind: WsTypeIn;
 };
 
 export type HeadcrabError = {
-  message: string;
+  type: HeadCrabErrorType;
+  title: string;
+  detail: string;
 };
 
 export type GameState = {

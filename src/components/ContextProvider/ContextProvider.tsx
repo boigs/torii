@@ -12,6 +12,7 @@ import gameFsm from 'src/fsm/game';
 import logger from 'src/logger';
 import { HeadcrabError, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
+import { wsErrorToDisplay } from 'src/helpers/errorDisplay';
 
 type ContextType = {
   gameFsm: InterpreterFrom<typeof gameFsm>;
@@ -102,12 +103,12 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       var message: WsMessageIn = JSON.parse(lastMessage.data);
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
-      if (message.type === WsTypeIn.Error) {
+      if (message.kind === WsTypeIn.Error) {
         toast({
           status: 'error',
           isClosable: true,
           duration: 5000,
-          description: (message as HeadcrabError).message,
+          description: wsErrorToDisplay(message as HeadcrabError),
           position: 'top',
         });
       }
