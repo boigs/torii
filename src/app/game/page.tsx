@@ -7,7 +7,7 @@ import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
-import Chat, { Message } from 'src/components/Chat';
+import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
 import logger from 'src/logger';
