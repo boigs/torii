@@ -1,7 +1,13 @@
 .avatarWrapper {
   position: relative;
 
-  .crown {
+  .crownBase {
     position: absolute;
+  }
+
+  .defaultCrown {
+    width: 18px;
+    top: -9px;
+    left: 7px;
   }
 }
