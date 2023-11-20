@@ -3,6 +3,9 @@
     font-size: 0.95rem;
     max-width: 270px;
     word-wrap: break-all;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
 
     .messageSender {
       font-weight: 500;
