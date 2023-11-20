@@ -2,6 +2,9 @@
   .message {
     font-size: 0.95rem;
     word-wrap: break-all;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
 
     .messageSender {
       font-weight: 500;
