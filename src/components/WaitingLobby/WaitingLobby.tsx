@@ -10,9 +10,9 @@ import {
   Flex,
   Heading,
   Input,
-  VStack,
   useClipboard,
 } from '@chakra-ui/react';
+import classNames from 'classnames';
 
 import { Player } from 'src/domain';
 
@@ -23,9 +23,14 @@ import styles from './WaitingLobby.module.scss';
 type WaitingLobbyProps = {
   gameId: string;
   players: Player[];
+  className?: string;
 };
 
-const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
+const WaitingLobby: React.FC<WaitingLobbyProps> = ({
+  gameId,
+  players,
+  className,
+}) => {
   const [joinUrl, setJoinUrl] = useState<string>('');
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
@@ -34,7 +39,10 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({ gameId, players }) => {
   }, [gameId]);
 
   return (
-    <Card size='sm' className={styles.waitingLobbyCard}>
+    <Card
+      size='sm'
+      className={classNames([styles.waitingLobbyCard, className])}
+    >
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
           Players ({players.length})
