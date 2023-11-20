@@ -9,10 +9,10 @@ import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
+import { headcrabErrorToString } from 'src/helpers/errorDisplay';
 import logger from 'src/logger';
 import { HeadcrabError, WsMessageIn, WsTypeIn } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
-import { headcrabErrorToDisplay } from 'src/helpers/errorDisplay';
 
 type ContextType = {
   gameFsm: InterpreterFrom<typeof gameFsm>;
@@ -108,7 +108,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           status: 'error',
           isClosable: true,
           duration: 5000,
-          description: headcrabErrorToDisplay(message as HeadcrabError),
+          description: headcrabErrorToString(message as HeadcrabError),
           position: 'top',
         });
       }

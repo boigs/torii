@@ -1,14 +1,13 @@
 import { HeadCrabErrorType, HeadcrabError } from 'src/websocket/in';
 
-export const headcrabErrorToDisplay = (error: HeadcrabError): string => {
+export const headcrabErrorToString = (error: HeadcrabError): string => {
   switch (error.type) {
     case HeadCrabErrorType.GameDoesNotExist:
-      return error.detail;
+      return 'The game you are trying to join does not seem to exist.';
     case HeadCrabErrorType.PlayerAlreadyExists:
-      return error.detail;
+      return 'There is another player with that nickname already.';
     case HeadCrabErrorType.Internal:
-      return error.detail;
     default:
-      return error.detail;
+      return 'Unknown error. Please contact support.';
   }
 };
