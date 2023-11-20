@@ -27,10 +27,14 @@
   }
 }
 
-.chatControls {
-  gap: 8px;
+.chatForm {
+  width: 100%;
 
-  .sendButton {
-    width: 80px;
+  .chatControls {
+    gap: 8px;
+
+    .sendButton {
+      width: 80px;
+    }
   }
 }
