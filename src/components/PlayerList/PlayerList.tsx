@@ -1,14 +1,6 @@
 import React from 'react';
 
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Heading,
-  List,
-  ListItem,
-} from '@chakra-ui/react';
+import { List, ListItem } from '@chakra-ui/react';
 
 import Player from 'src/components/PlayerList/Player';
 
