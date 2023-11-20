@@ -30,13 +30,14 @@ export type Message = {
 type ChatProps = {
   messages: Message[];
   onSubmit: (text: string) => Promise<void>;
+  className?: string;
 };
 
 type FormValues = {
   text: string;
 };
 
-const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
+const Chat: React.FC<ChatProps> = ({ messages, onSubmit, className }) => {
   const [isSendingChatMessage, setSendingChatMessage] = useState(false);
 
   const onFormSubmit = async (values: FormValues) => {
@@ -48,7 +49,7 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
   };
 
   return (
-    <Card size='sm'>
+    <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
           Chat

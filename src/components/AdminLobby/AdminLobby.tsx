@@ -16,7 +16,7 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import { Field, Form, Formik, FormikFormProps, FormikProps } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
 
 import styles from './AdminLobby.module.scss';
 
@@ -26,19 +26,20 @@ type AdminLobbyValues = {
 
 type AdminLobbyProps = {
   onSubmit: (values: AdminLobbyValues) => void;
+  className?: string;
 };
 
 type FormValues = {
   amountOfRounds: number;
 };
 
-const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit }) => {
+const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit, className }) => {
   const onFormSubmit = async (values: FormValues) => {
     onSubmit({ amountOfRounds: values.amountOfRounds });
   };
 
   return (
-    <Card size='sm'>
+    <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
           Configuration
