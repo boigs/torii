@@ -75,7 +75,7 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit }) => {
           onSubmit={onFormSubmit}
         >
           {(props) => (
-            <Form>
+            <Form className={styles.chatForm}>
               <Flex className={styles.chatControls}>
                 <FormControl>
                   <Field
