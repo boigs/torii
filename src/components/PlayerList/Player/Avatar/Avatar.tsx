@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 
 import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
+import classNames from 'classnames';
 
 import styles from './Avatar.module.scss';
 
@@ -10,9 +11,17 @@ export type AvatarProps = {
   nickname: string;
   isHost?: boolean;
   size?: number;
+  crownClassName?: string;
 };
 
-const Avatar: React.FC<AvatarProps> = ({ nickname, isHost, size }) => {
+const DEFAULT_CROWN_SIZE = 32;
+
+const Avatar: React.FC<AvatarProps> = ({
+  nickname,
+  isHost,
+  size,
+  crownClassName,
+}) => {
   const avatar: string = useMemo(
     () =>
       createAvatar(thumbs, {
@@ -29,12 +38,19 @@ const Avatar: React.FC<AvatarProps> = ({ nickname, isHost, size }) => {
   return (
     <div className={styles.avatarWrapper}>
       <img // https://stackoverflow.com/q/44900569
-        width={size ?? 32}
+        width={size ?? DEFAULT_CROWN_SIZE}
         src={`data:image/svg+xml;utf8,${encodeURIComponent(avatar)}`}
         alt={nickname}
       />
       {isHost ? (
-        <img className={styles.crown} src='/svg/crown.svg' alt='crown' />
+        <img
+          className={classNames([
+            styles.crownBase,
+            crownClassName ?? styles.defaultCrown,
+          ])}
+          src='/svg/crown.svg'
+          alt='crown'
+        />
       ) : null}
     </div>
   );
