@@ -16,6 +16,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import _ from 'lodash';
 
+import { Player } from 'src/domain';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 import Message from './Message';
@@ -29,6 +30,7 @@ export type Message = {
 
 type ChatProps = {
   messages: Message[];
+  players: Player[];
   onSubmit: (text: string) => Promise<void>;
   className?: string;
 };
@@ -37,7 +39,12 @@ type FormValues = {
   text: string;
 };
 
-const Chat: React.FC<ChatProps> = ({ messages, onSubmit, className }) => {
+const Chat: React.FC<ChatProps> = ({
+  messages,
+  players,
+  onSubmit,
+  className,
+}) => {
   const [isSendingChatMessage, setSendingChatMessage] = useState(false);
 
   const onFormSubmit = async (values: FormValues) => {
@@ -61,7 +68,18 @@ const Chat: React.FC<ChatProps> = ({ messages, onSubmit, className }) => {
           <VStack className={styles.messages}>
             {messages.map(({ sender, content }) => (
               <>
-                <Message key={_.uniqueId()} sender={sender} content={content} />
+                <Message
+                  key={_.uniqueId()}
+                  sender={
+                    {
+                      nickname: sender,
+                      isHost:
+                        players.find((player) => player.nickname === sender)
+                          ?.isHost ?? false,
+                    } as Player
+                  }
+                  content={content}
+                />
                 <Divider className={styles.messageDivider} />
               </>
             ))}
