@@ -5,17 +5,17 @@ import { Flex, Text } from '@chakra-ui/react';
 import Avatar from './Avatar';
 
 import styles from './Player.module.scss';
+import { Player } from 'src/domain';
 
 type PlayerProps = {
-  nickname: string;
-  isHost: boolean;
+  player: Player;
 };
 
-const Player: React.FC<PlayerProps> = ({ nickname, isHost }) => {
+const Player: React.FC<PlayerProps> = ({ player }) => {
   return (
     <Flex className={styles.player}>
-      <Avatar isHost={isHost} nickname={nickname} />
-      <Text className={styles.playerName}>{nickname}</Text>
+      <Avatar player={player} />
+      <Text className={styles.playerName}>{player.nickname}</Text>
     </Flex>
   );
 };

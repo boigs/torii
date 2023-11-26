@@ -5,34 +5,30 @@ import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
 import classNames from 'classnames';
 
+import { Player } from 'src/domain';
+
 import styles from './Avatar.module.scss';
 
 export type AvatarProps = {
-  nickname: string;
-  isHost?: boolean;
+  player: Player;
   size?: number;
   crownClassName?: string;
 };
 
 const DEFAULT_CROWN_SIZE = 32;
 
-const Avatar: React.FC<AvatarProps> = ({
-  nickname,
-  isHost,
-  size,
-  crownClassName,
-}) => {
+const Avatar: React.FC<AvatarProps> = ({ player, size, crownClassName }) => {
   const avatar: string = useMemo(
     () =>
       createAvatar(thumbs, {
-        seed: nickname,
+        seed: player.nickname,
         backgroundColor: ['transparent'],
         shapeOffsetX: [0],
         shapeOffsetY: [0],
         shapeRotation: [0],
         faceOffsetY: [-10, 15],
       }).toString(),
-    [nickname]
+    [player.nickname]
   );
 
   return (
@@ -40,9 +36,9 @@ const Avatar: React.FC<AvatarProps> = ({
       <img // https://stackoverflow.com/q/44900569
         width={size ?? DEFAULT_CROWN_SIZE}
         src={`data:image/svg+xml;utf8,${encodeURIComponent(avatar)}`}
-        alt={nickname}
+        alt={player.nickname}
       />
-      {isHost ? (
+      {player.isHost ? (
         <img
           className={classNames([
             styles.crownBase,

@@ -58,6 +58,7 @@ const Game: React.FC = () => {
           className={styles.chat}
           onSubmit={sendChatMessage}
           messages={state.context.messages}
+          players={state.context.players}
         />
       </Flex>
     </Center>
