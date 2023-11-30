@@ -11,7 +11,13 @@ import config from 'src/config';
 import gameFsm from 'src/fsm/game';
 import { headcrabErrorToString } from 'src/helpers/errorDisplay';
 import logger from 'src/logger';
-import { HeadcrabError, WsMessageIn, WsTypeIn } from 'src/websocket/in';
+import {
+  ChatMessage,
+  GameState,
+  HeadcrabError,
+  WsMessageIn,
+  WsTypeIn,
+} from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
 type ContextType = {
@@ -100,23 +106,41 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (lastMessage) {
+      // Ignore the heartbeat pong responses
+      if (lastMessage.data === 'pong') {
+        return;
+      }
+
       var message: WsMessageIn = JSON.parse(lastMessage.data);
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
-      if (message.kind === WsTypeIn.Error) {
-        toast({
-          status: 'error',
-          isClosable: true,
-          duration: 5000,
-          description: headcrabErrorToString(message as HeadcrabError),
-          position: 'top',
-        });
+      switch (message.kind) {
+        case WsTypeIn.Error:
+          toast({
+            status: 'error',
+            isClosable: true,
+            duration: 5000,
+            description: headcrabErrorToString(message as HeadcrabError),
+            position: 'top',
+          });
+          send({
+            type: 'ERROR_MESSAGE',
+            value: { message: message as HeadcrabError },
+          });
+          break;
+        case WsTypeIn.GameState:
+          send({
+            type: 'GAME_STATE_MESSAGE',
+            value: { message: message as GameState },
+          });
+          break;
+        case WsTypeIn.ChatText:
+          send({
+            type: 'CHAT_MESSAGE',
+            value: { message: message as ChatMessage },
+          });
+          break;
       }
-
-      send({
-        type: 'WEBSOCKET_MESSAGE',
-        value: { message: message },
-      });
 
       logger.debug({ lastMessage }, 'last message');
     }

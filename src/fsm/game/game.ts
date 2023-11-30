@@ -3,7 +3,7 @@
 import { assign, createMachine } from 'xstate';
 
 import { Player, Round } from 'src/domain';
-import { GameState, WsMessageIn, WsTypeIn } from 'src/websocket/in';
+import { ChatMessage, GameState, HeadcrabError } from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -24,10 +24,24 @@ type GameJoinedEvent = {
   type: 'GAME_JOINED';
 };
 
-type WebsocketMessageEvent = {
-  type: 'WEBSOCKET_MESSAGE';
+type ErrorMessageEvent = {
+  type: 'ERROR_MESSAGE';
   value: {
-    message: WsMessageIn;
+    message: HeadcrabError;
+  };
+};
+
+type ChatMessageEvent = {
+  type: 'CHAT_MESSAGE';
+  value: {
+    message: ChatMessage;
+  };
+};
+
+type GameStateMessageEvent = {
+  type: 'GAME_STATE_MESSAGE';
+  value: {
+    message: GameState;
   };
 };
 
@@ -37,11 +51,6 @@ type WebsocketConnectErrorEvent = {
 
 type ResetEvent = {
   type: 'RESET';
-};
-
-type ChatMessage = {
-  sender: string;
-  content: string;
 };
 
 type Context = {
@@ -77,7 +86,9 @@ const gameFsm = createMachine(
         | GameJoinedEvent
         | ResetEvent
         | WebsocketConnectErrorEvent
-        | WebsocketMessageEvent,
+        | ErrorMessageEvent
+        | GameStateMessageEvent
+        | ChatMessageEvent,
       context: {} as Context,
       services: {} as {
         createGame: {
@@ -88,8 +99,14 @@ const gameFsm = createMachine(
     context: defaultContext,
     initial: 'disconnected',
     on: {
+      ERROR_MESSAGE: {
+        target: 'disconnected',
+      },
       RESET: {
         target: 'disconnected',
+      },
+      CHAT_MESSAGE: {
+        actions: 'addChatMessage',
       },
     },
     states: {
@@ -120,58 +137,40 @@ const gameFsm = createMachine(
         entry: 'setConnectToGameToTrue',
         on: {
           WEBSOCKET_CONNECT_ERROR: 'disconnected',
-          WEBSOCKET_MESSAGE: [
+          GAME_STATE_MESSAGE: [
             {
-              target: 'lobby',
-              cond: 'isGameStateMessageOnLobby',
+              cond: 'isLobbyState',
               actions: 'assignGameState',
-            },
-            {
-              target: 'disconnected',
+              target: 'lobby',
             },
           ],
         },
       },
       lobby: {
         on: {
-          WEBSOCKET_MESSAGE: [
-            {
-              cond: 'isChatMessage',
-              actions: 'addChatMessage',
-            },
-            {
-              cond: 'isGameStateMessageOnLobby',
-              actions: 'assignGameState',
-            },
-            {
-              cond: 'isGameStateMessageOnPlayersWritingWords',
-              actions: 'assignGameState',
-              target: 'playersWritingWords',
-            },
-            {
-              cond: 'isErrorMessage',
-              target: 'disconnected',
-            },
-          ],
           GAME_JOINED: {
             actions: 'setGameJoinedToTrue',
           },
+          GAME_STATE_MESSAGE: [
+            {
+              cond: 'isLobbyState',
+              actions: 'assignGameState',
+            },
+            {
+              cond: 'isPlayersWritingWordsState',
+              actions: 'assignGameState',
+              target: 'playersWritingWords',
+            },
+          ],
         },
       },
       playersWritingWords: {
         on: {
-          WEBSOCKET_MESSAGE: [
+          GAME_STATE_MESSAGE: [
             {
-              cond: 'isChatMessage',
-              actions: 'addChatMessage',
-            },
-            {
-              cond: 'isGameStateMessageOnPlayersWritingWords',
+              cond: 'isPlayersWritingWordsState',
               actions: 'assignGameState',
-            },
-            {
-              cond: 'isErrorMessage',
-              target: 'disconnected',
+              target: 'playersWritingWords',
             },
           ],
         },
@@ -212,15 +211,9 @@ const gameFsm = createMachine(
       }),
     },
     guards: {
-      isGameStateMessageOnLobby: (_, event) =>
-        event.value.message.kind === WsTypeIn.GameState &&
-        (event.value.message as GameState).state === 'Lobby',
-      isGameStateMessageOnPlayersWritingWords: (_, event) =>
-        event.value.message.kind === WsTypeIn.GameState &&
-        (event.value.message as GameState).state === 'PlayersWritingWords',
-      isErrorMessage: (_, event) => event.value.message.kind === WsTypeIn.Error,
-      isChatMessage: (_, event) =>
-        event.value.message.kind === WsTypeIn.ChatText,
+      isLobbyState: (_, event) => event.value.message.state === 'Lobby',
+      isPlayersWritingWordsState: (_, event) =>
+        event.value.message.state === 'PlayersWritingWords',
     },
   }
 );
