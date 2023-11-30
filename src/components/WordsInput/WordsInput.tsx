@@ -44,7 +44,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Enter your word for: '{word}'
+          Enter your word for: {word}
         </Heading>
         <Divider marginTop={'12px'} />
       </CardHeader>
