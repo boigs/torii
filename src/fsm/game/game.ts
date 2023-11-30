@@ -49,7 +49,6 @@ type Context = {
   nickname: string;
   players: Player[];
   rounds: Round[];
-  backendState: string;
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
   messages: ChatMessage[];
@@ -60,7 +59,6 @@ const defaultContext: Context = {
   nickname: '',
   players: [],
   rounds: [],
-  backendState: '',
   websocketShouldBeConnected: false,
   gameJoined: false,
   messages: [],
@@ -193,11 +191,10 @@ const gameFsm = createMachine(
         nickname: event.value.nickname,
       })),
       assignGameState: assign((_, event) => {
-        const { players, rounds, state } = event.value.message as GameState;
+        const { players, rounds } = event.value.message as GameState;
         return {
           players,
           rounds,
-          backendState: state,
         };
       }),
       setConnectToGameToTrue: assign(() => ({
