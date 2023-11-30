@@ -118,8 +118,6 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         value: { message: message },
       });
     }
-
-    logger.debug({ lastMessage }, 'last message');
   }, [lastMessage, send, toast]);
 
   return (
