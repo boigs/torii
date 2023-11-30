@@ -117,9 +117,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         type: 'WEBSOCKET_MESSAGE',
         value: { message: message },
       });
-    }
 
-    logger.debug({ lastMessage }, 'last message');
+      logger.debug({ lastMessage }, 'last message');
+    }
   }, [lastMessage, send, toast]);
 
   return (

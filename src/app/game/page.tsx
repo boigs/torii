@@ -10,6 +10,7 @@ import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
+import WordsInput from 'src/components/WordsInput';
 import logger from 'src/logger';
 import { newChatMessage, newStartGameMessage } from 'src/websocket/out';
 
@@ -41,19 +42,36 @@ const Game: React.FC = () => {
     sendWebsocketMessage(newChatMessage(text));
   };
 
+  const sendWordsMessage = async (word: string) => {
+    sendWebsocketMessage(newChatMessage(word));
+  };
+
   return (
     <Center>
       <Flex className={styles.gameContainer}>
-        {state.context.players.find(
-          ({ nickname }) => state.context.nickname === nickname
-        )?.isHost ? (
-          <AdminLobby className={styles.adminLobby} onSubmit={onGameStart} />
-        ) : null}
-        <WaitingLobby
-          className={styles.waitingLobby}
-          gameId={state.context.gameId}
-          players={state.context.players}
-        />
+        {state.matches('lobby') && (
+          <>
+            {state.context.players.find(
+              ({ nickname }) => state.context.nickname === nickname
+            )?.isHost && (
+              <AdminLobby
+                className={styles.adminLobby}
+                onSubmit={onGameStart}
+              />
+            )}
+            <WaitingLobby
+              className={styles.waitingLobby}
+              gameId={state.context.gameId}
+              players={state.context.players}
+            />
+          </>
+        )}
+        {state.matches('playersWritingWords') && (
+          <WordsInput
+            word={state.context.rounds.at(-1)?.word as string}
+            onSubmit={sendWordsMessage}
+          />
+        )}
         <Chat
           className={styles.chat}
           onSubmit={sendChatMessage}

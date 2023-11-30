@@ -1,4 +1,5 @@
 import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 
 export enum WsTypeIn {
   Error = 'error',
@@ -24,6 +25,7 @@ export type HeadcrabError = {
 
 export type GameState = {
   players: Player[];
+  rounds: Round[];
   state: string;
 };
 
