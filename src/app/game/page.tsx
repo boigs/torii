@@ -13,9 +13,9 @@ import WaitingLobby from 'src/components/WaitingLobby';
 import WordsInput from 'src/components/WordsInput';
 import logger from 'src/logger';
 import {
-  newChatMessage,
-  newPlayerWordsMessage,
-  newStartGameMessage,
+  chatMessage,
+  playerWordsMessage,
+  startGameMessage,
 } from 'src/websocket/out';
 
 import styles from './page.module.scss';
@@ -37,18 +37,18 @@ const Game: React.FC = () => {
   const onGameStart = useCallback(
     (values: AdminLobbyValues) => {
       logger.debug({}, 'sending start message');
-      sendWebsocketMessage(newStartGameMessage(values));
+      sendWebsocketMessage(startGameMessage(values));
     },
     [sendWebsocketMessage]
   );
 
   const sendChatMessage = async (text: string) => {
-    sendWebsocketMessage(newChatMessage(text));
+    sendWebsocketMessage(chatMessage(text));
   };
 
   const sendWordsMessage = async (words: string[]) => {
     console.log(words);
-    sendWebsocketMessage(newPlayerWordsMessage(words));
+    sendWebsocketMessage(playerWordsMessage(words));
   };
 
   return (
