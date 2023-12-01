@@ -3,7 +3,12 @@
 import { assign, createMachine } from 'xstate';
 
 import { Player, Round } from 'src/domain';
-import { ChatMessage, GameState, HeadcrabError } from 'src/websocket/in';
+import {
+  ChatMessage,
+  GameState,
+  HeadcrabError,
+  HeadcrabState,
+} from 'src/websocket/in';
 
 type CreateGameEvent = {
   type: 'CREATE_GAME';
@@ -53,6 +58,14 @@ type ResetEvent = {
   type: 'RESET';
 };
 
+type ChangedToLobby = {
+  type: 'CHANGED_TO_LOBBY';
+};
+
+type ChangedToPlayersWritingWords = {
+  type: 'CHANGED_TO_PLAYERS_WRITING_WORDS';
+};
+
 type Context = {
   gameId: string;
   nickname: string;
@@ -61,6 +74,7 @@ type Context = {
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
   messages: ChatMessage[];
+  headcrabState?: HeadcrabState;
 };
 
 const defaultContext: Context = {
@@ -71,11 +85,12 @@ const defaultContext: Context = {
   websocketShouldBeConnected: false,
   gameJoined: false,
   messages: [],
+  headcrabState: undefined,
 };
 
 const gameFsm = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGIBKBRAyrgCoDaADALqKgAOA9rAJYAujdAdtSAB6IAcAVgCMAOgAsYsgGYAbFLFShAThkAmGQBoQAT0RC+UkXzF9VUxUtkB2AL42tqDCIiNYAYw7swb5pEwBhPABBIlwAfQBxIIBZXHIqJBB6JlYOLl4EKxlRK1VhITMxdSy+LV0EASkBESEBATI+Miy8mSVbexBHMGdXD3YvHz8AKQB5AEkAOUiYuMouZJY2TkSM4VUjOqsxKyFpVSVSnUQisREZOolGsSFc5XaHdG63ACcwFFZ2KAjHzAgObsY7AAbnQANbdLoiF5vD5fR4IQEgtzvJbxeLzBiLNIrRACHYiRQKNrmARqJSqMq49RGeSqXZmRSmIR2B5OaEoz7fDCYMDPZ50Z4iGgAG3eADMBWgRJD2bCuWAEcC6MjUuw0XNEgtVel+FIrCIrAI+HIxDIrMaihSjgg5PqbsalAUxEpSWRVCzOo8RAArOiAwFw7kAdVwACF8CN-ABpYhhfwjCYTXD+IhhXDYbAjbDozWY7U4hCqAwiSqOopCbImOpSSkIKSqfV4pQNVRFukGdQeyG+-2cn4h8ORmOp2L4fBBCKzBK0PNLHUIAC0bRElkEMj4Vks8nkYlrYkqBJMan0MnOerEXa9PfYAflmAHEejsdH48nJCE06Ss+xoAyC5kpwFHSpobsYbRWDW1pFGQNQ3JIEFmmYbqXk4wp0AARuh2j3mGj7DmEL4TlOGIpHOBb-io4gWGQKg7KefCHOUtorsIVR8G0Z5KCh3RoZh2EPkOz4EK+cQfiRWLLL+iALrsghnA2Bwbgo0i1nI6xkPoZhkmQZAgdxIi8VhmBRLEYSjJMuAACI5jOpE-jw0l0oYigAc2VhbGQMjSJo1rMS6QhsRxpb6YZ-G4YJI7CURJCqJ+WpkVJi6tKcNEHK0dSNAptY7IYpp5GYdT6LIF4euwdAQHAXBdOJ+aJTJAWGGom4MVsUgqdalHyKYqWCAFpoyPpLjuJ43i+BANUJQ5CB8EIpytqaihkPUDYGLWbUpZus1SOSpgbk0+myrejwTfZGQQTkVhLQIZhZFIpg+eUuSNU0NHGtkRpFvp15HRgJ2SVN+zVLNZqyHUlSKEIqmkgS5zOi6DHbftHSQqFf3zguiiNux1y5GY5K5LWGU1Jjs0Vrs11cXYNhAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGICiAlXA8rgPoCy2AyhQIIDi2A2gAwC6ioADgPawCWALry4A7diACeiALQAOAOwA6AKwAaEAA9EARi0A2RVoDMTGTK1MlTAExyZhgL721qDJlyVsAFWZskIbnyCImKaCDJKWgoALFFMhrqGUYZaAJy6VrpqkghadgoyUTJWhskp8XKOzuhYAMIAEtSeZJQ09D5iAQJCon7ZUlpyqhrallEKTHK6qYZKljZ2lSAuWLTU5MQUno3YzVR0jKwdPF3BfqFaUYMKyRZWWjZxMVnSMgq6ukwpSnJ6l19RKUWywUEF4sAAxiJhGBwfxIJgau5tsRVuR2n5OkEeqBQpNInIrBF7okMpMZM8EEoZgotLMTBN0kpdCkKk4ltUQWDIcJobD4QApAgASQAcii1gdfJxjliQogIlZ8rM5JdzIYrClyRJEFErGNdLMYjImFEBncWUCOeCAE5gFCCYRQWjVTAQERgBS8YQANy4AGsPcCbXaHU7qggvb7wfbuj50dLAt05ZSftcLoYWSUmRqrBSlBl8iTzMVkkUtJaMApgzHHc7XGBrdauNaFBwADb2gBmzbQCiDtprYYwEZ9XGjWLjhwxMqTZ0QdkUgxkCSi+mXutz2oQCQMtmZ9wBTOsFY9ACsuF6vUOsAB1bAAIQoBBqAGkvMQagQRSLsDUmnhCFweN-BnU4cUQKw8ipFILjuKZClmQwKXVRRvhSEwrEgu47AyE8FHPS9axdepqBFegABFiE8AhiAAGQIe97wATWAzFZ3A7djXGApigNRDkgpOxDBpCZPmXKYlCKGQ8LbLgACM5PETBUR2QVRWwcjWNA7FhgQKRV1eOQmCmOILDiORDDkCldX1Q1ChNM1UlZKpK1khSlJIsiNKomiAAVaOoJi8AoYgb1wIVPFFWhQqIciKC0xMwN0-omEiSDSl0AFBhmYyKX0FJ8j4mY9BSJIYMcNlhC4CA4DEZYjkSnTQikCJdAUIyTOMSxLMsil+iuJhBsGqlCTkNI0jw0EIShGE4QgBqTia+cLgUTDVxuOZbCQrdjDGCYYLKrD5AmPDq1DOswAW2U5wQCz8SM2ZikmQwikyLcCWEj4jM1d5aSkvCCOEK8Lqu9jdI1JQaVXCy+KpZItDyplrgNAEvlMDMTrZYE3MU0Gkua5JUJkUqzWKFIbE3bJZleIwBguPRzHzQEsY5dsUHEBtYBva0ukdG9mwgeBp0a5MpEJ5RidNAkyYpikYMhr6xN+yTIIq+wgA */
     id: 'game',
     predictableActionArguments: true,
     tsTypes: {} as import('./game.typegen').Typegen0,
@@ -88,7 +103,9 @@ const gameFsm = createMachine(
         | WebsocketConnectErrorEvent
         | ErrorMessageEvent
         | GameStateMessageEvent
-        | ChatMessageEvent,
+        | ChatMessageEvent
+        | ChangedToLobby
+        | ChangedToPlayersWritingWords,
       context: {} as Context,
       services: {} as {
         createGame: {
@@ -107,6 +124,9 @@ const gameFsm = createMachine(
       },
       CHAT_MESSAGE: {
         actions: 'addChatMessage',
+      },
+      GAME_STATE_MESSAGE: {
+        actions: 'assignGameState',
       },
     },
     states: {
@@ -137,13 +157,9 @@ const gameFsm = createMachine(
         entry: 'setConnectToGameToTrue',
         on: {
           WEBSOCKET_CONNECT_ERROR: 'disconnected',
-          GAME_STATE_MESSAGE: [
-            {
-              cond: 'isLobbyState',
-              actions: 'assignGameState',
-              target: 'lobby',
-            },
-          ],
+          CHANGED_TO_LOBBY: {
+            target: 'lobby',
+          },
         },
       },
       lobby: {
@@ -151,29 +167,13 @@ const gameFsm = createMachine(
           GAME_JOINED: {
             actions: 'setGameJoinedToTrue',
           },
-          GAME_STATE_MESSAGE: [
-            {
-              cond: 'isLobbyState',
-              actions: 'assignGameState',
-            },
-            {
-              cond: 'isPlayersWritingWordsState',
-              actions: 'assignGameState',
-              target: 'playersWritingWords',
-            },
-          ],
+          CHANGED_TO_PLAYERS_WRITING_WORDS: {
+            target: 'playersWritingWords',
+          },
         },
       },
       playersWritingWords: {
-        on: {
-          GAME_STATE_MESSAGE: [
-            {
-              cond: 'isPlayersWritingWordsState',
-              actions: 'assignGameState',
-              target: 'playersWritingWords',
-            },
-          ],
-        },
+        on: {},
       },
     },
   },
@@ -190,10 +190,11 @@ const gameFsm = createMachine(
         nickname: event.value.nickname,
       })),
       assignGameState: assign((_, event) => {
-        const { players, rounds } = event.value.message as GameState;
+        const { players, rounds, state } = event.value.message as GameState;
         return {
           players,
           rounds,
+          headcrabState: state,
         };
       }),
       setConnectToGameToTrue: assign(() => ({
@@ -210,11 +211,7 @@ const gameFsm = createMachine(
         };
       }),
     },
-    guards: {
-      isLobbyState: (_, event) => event.value.message.state === 'Lobby',
-      isPlayersWritingWordsState: (_, event) =>
-        event.value.message.state === 'PlayersWritingWords',
-    },
+    guards: {},
   }
 );
 
