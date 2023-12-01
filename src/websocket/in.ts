@@ -23,10 +23,15 @@ export type HeadcrabError = {
   detail: string;
 };
 
+export enum HeadcrabState {
+  LOBBY = 'Lobby',
+  PLAYERS_WRITING_WORDS = 'PlayersWritingWords',
+}
+
 export type GameState = {
   players: Player[];
   rounds: Round[];
-  state: string;
+  state: HeadcrabState;
 };
 
 export type ChatMessage = {

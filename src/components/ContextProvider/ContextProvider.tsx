@@ -15,6 +15,7 @@ import {
   ChatMessage,
   GameState,
   HeadcrabError,
+  HeadcrabState,
   WsMessageIn,
   WsTypeIn,
 } from 'src/websocket/in';
@@ -129,10 +130,21 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           });
           break;
         case WsTypeIn.GameState:
+          const gameState = message as GameState;
           send({
             type: 'GAME_STATE_MESSAGE',
-            value: { message: message as GameState },
+            value: { message: gameState },
           });
+          if (state.context.headcrabState !== gameState.state) {
+            switch (gameState.state) {
+              case HeadcrabState.LOBBY:
+                send({ type: 'CHANGED_TO_LOBBY' });
+                break;
+              case HeadcrabState.PLAYERS_WRITING_WORDS:
+                send({ type: 'CHANGED_TO_PLAYERS_WRITING_WORDS' });
+                break;
+            }
+          }
           break;
         case WsTypeIn.ChatText:
           send({
