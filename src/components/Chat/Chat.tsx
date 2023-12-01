@@ -69,14 +69,12 @@ const Chat: React.FC<ChatProps> = ({
             {messages.map(({ sender, content }) => (
               <Fragment key={_.uniqueId()}>
                 <Message
-                  sender={
-                    {
-                      nickname: sender,
-                      isHost:
-                        players.find((player) => player.nickname === sender)
-                          ?.isHost ?? false,
-                    } as Player
-                  }
+                  sender={{
+                    nickname: sender,
+                    isHost:
+                      players.find((player) => player.nickname === sender)
+                        ?.isHost ?? false,
+                  }}
                   content={content}
                 />
                 <Divider className={styles.messageDivider} />
