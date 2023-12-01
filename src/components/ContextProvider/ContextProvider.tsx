@@ -156,7 +156,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
       logger.debug({ lastMessage }, 'last message');
     }
-  }, [lastMessage, send, toast]);
+  }, [lastMessage, send, toast, state.context.headcrabState]);
 
   return (
     <Context.Provider
