@@ -21,7 +21,7 @@ import styles from './WordsInput.module.scss';
 
 type WordInputProps = {
   word: string;
-  onSubmit: (word: string) => Promise<void>;
+  onSubmit: (words: string[]) => Promise<void>;
   className?: string;
 };
 
@@ -30,12 +30,21 @@ const NUM_INPUTS = 8;
 const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
   const [isSendingWordsMessage, setSendingWordsMessage] = useState(false);
 
-  const initialValues = _.range(1, NUM_INPUTS + 1)
-    .map((index) => `word${index}`)
-    .reduce((accumulator, current) => ({ ...accumulator, [current]: '' }), {});
+  const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((position) => ({
+    position,
+    key: `word${position}`,
+  }));
+  const initialValues = wordsIndexes.reduce(
+    (accumulator, current) => ({ ...accumulator, [current.key]: '' }),
+    {}
+  );
 
-  const onFormSubmit = async (values: any) => {
-    console.log(values);
+  const onFormSubmit = async (formValues: object) => {
+    setSendingWordsMessage(true);
+    const formWords = new Map<string, string>(Object.entries(formValues));
+    var words = wordsIndexes.map((index) => formWords.get(index.key)!);
+    onSubmit(words);
+    setSendingWordsMessage(false);
   };
 
   return (
@@ -54,16 +63,16 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
         {(props) => (
           <Form>
             <CardBody className={styles.body}>
-              {_.range(1, NUM_INPUTS + 1).map((index) => (
-                <FormControl key={index}>
+              {wordsIndexes.map((index) => (
+                <FormControl key={index.key}>
                   <InputGroup>
                     <InputLeftAddon className={styles.wordInputLeftAddon}>
-                      {index}.
+                      {index.position}.
                     </InputLeftAddon>
                     <Field
                       as={Input}
-                      id={`word${index}`}
-                      name={`word${index}`}
+                      id={index.key}
+                      name={index.key}
                       placeholder='...'
                       autoComplete='off'
                       className={styles.wordInput}
@@ -76,7 +85,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
               <Button
                 className={styles.sendButton}
                 type='submit'
-                isLoading={props.isSubmitting}
+                isLoading={isSendingWordsMessage}
                 colorScheme='blue'
                 variant='solid'
                 size='md'

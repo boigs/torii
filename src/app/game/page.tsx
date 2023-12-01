@@ -12,7 +12,11 @@ import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
 import WordsInput from 'src/components/WordsInput';
 import logger from 'src/logger';
-import { newChatMessage, newStartGameMessage } from 'src/websocket/out';
+import {
+  newChatMessage,
+  newPlayerWordsMessage,
+  newStartGameMessage,
+} from 'src/websocket/out';
 
 import styles from './page.module.scss';
 
@@ -42,8 +46,9 @@ const Game: React.FC = () => {
     sendWebsocketMessage(newChatMessage(text));
   };
 
-  const sendWordsMessage = async (word: string) => {
-    sendWebsocketMessage(newChatMessage(word));
+  const sendWordsMessage = async (words: string[]) => {
+    console.log(words);
+    sendWebsocketMessage(newPlayerWordsMessage(words));
   };
 
   return (

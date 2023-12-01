@@ -22,3 +22,10 @@ export const newChatMessage: (content: string) => WsMessageOut = (content) => ({
   kind: 'chatMessage',
   content,
 });
+
+export const newPlayerWordsMessage: (words: string[]) => WsMessageOut = (
+  words
+) => ({
+  kind: 'playerWords',
+  words,
+});
