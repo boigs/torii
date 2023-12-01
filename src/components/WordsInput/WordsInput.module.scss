@@ -1,0 +1,28 @@
+.instructions {
+  margin-left: 4px;
+  margin-right: 4px;
+
+  .chosenWord {
+    margin-top: 6px;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  .wordInputLeftAddon {
+    width: 45px;
+    justify-content: center;
+  }
+
+  .wordInput {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

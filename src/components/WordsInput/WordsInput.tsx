@@ -7,15 +7,15 @@ import {
   CardFooter,
   CardHeader,
   Divider,
-  Flex,
   FormControl,
   Heading,
   Input,
-  VStack,
+  InputGroup,
+  InputLeftAddon,
+  Text,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
-
-import { validateNonEmpty } from 'src/helpers/formValidators';
+import _ from 'lodash';
 
 import styles from './WordsInput.module.scss';
 
@@ -25,72 +25,69 @@ type WordInputProps = {
   className?: string;
 };
 
-type FormValues = {
-  word: string;
-};
+const NUM_INPUTS = 8;
 
 const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
   const [isSendingWordsMessage, setSendingWordsMessage] = useState(false);
 
-  const onFormSubmit = async (values: FormValues) => {
-    const { word } = values;
-    setSendingWordsMessage(true);
-    await onSubmit(word);
-    setSendingWordsMessage(false);
-    values.word = '';
+  const initialValues = _.range(1, NUM_INPUTS + 1)
+    .map((index) => `word${index}`)
+    .reduce((accumulator, current) => ({ ...accumulator, [current]: '' }), {});
+
+  const onFormSubmit = async (values: any) => {
+    console.log(values);
   };
 
   return (
     <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Enter your word for: {word}
+          Be Unoriginal!
         </Heading>
-        <Divider marginTop={'12px'} />
-      </CardHeader>
-      <CardBody className={styles.chatBody}>
-        <div className={styles.chatMessages}>
-          <VStack className={styles.messages}></VStack>
+        <Divider marginTop='12px' marginBottom='12px' />
+        <div className={styles.instructions}>
+          <Text>Write the words that come to your mind for:</Text>
+          <Text className={styles.chosenWord}>{word}</Text>
         </div>
-      </CardBody>
-      <CardFooter>
-        <Formik
-          initialValues={{
-            word: '',
-          }}
-          onSubmit={onFormSubmit}
-        >
-          {(props) => (
-            <Form className={styles.chatForm}>
-              <Flex className={styles.chatControls}>
-                <FormControl>
-                  <Field
-                    as={Input}
-                    id='word'
-                    name='word'
-                    placeholder=''
-                    autoComplete='off'
-                    validate={(value: string) =>
-                      validateNonEmpty(value, 'Word')
-                    }
-                  />
+      </CardHeader>
+      <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
+        {(props) => (
+          <Form>
+            <CardBody className={styles.body}>
+              {_.range(1, NUM_INPUTS + 1).map((index) => (
+                <FormControl key={index}>
+                  <InputGroup>
+                    <InputLeftAddon className={styles.wordInputLeftAddon}>
+                      {index}.
+                    </InputLeftAddon>
+                    <Field
+                      as={Input}
+                      id={`word${index}`}
+                      name={`word${index}`}
+                      placeholder='...'
+                      autoComplete='off'
+                      className={styles.wordInput}
+                    />
+                  </InputGroup>
                 </FormControl>
-                <Button
-                  className={styles.sendButton}
-                  type='submit'
-                  isLoading={isSendingWordsMessage}
-                  colorScheme='blue'
-                  variant='solid'
-                  size='md'
-                  width='full'
-                >
-                  Send
-                </Button>
-              </Flex>
-            </Form>
-          )}
-        </Formik>
-      </CardFooter>
+              ))}
+            </CardBody>
+            <CardFooter>
+              <Button
+                className={styles.sendButton}
+                type='submit'
+                isLoading={props.isSubmitting}
+                colorScheme='blue'
+                variant='solid'
+                size='md'
+                width='full'
+              >
+                Submit
+              </Button>
+            </CardFooter>
+          </Form>
+        )}
+      </Formik>
     </Card>
   );
 };
