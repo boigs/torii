@@ -34,20 +34,17 @@ const Game: React.FC = () => {
     }
   }, [state, send, router]);
 
-  const onGameStart = useCallback(
-    (values: AdminLobbyValues) => {
-      logger.debug({}, 'sending start message');
-      sendWebsocketMessage(startGameMessage(values));
-    },
-    [sendWebsocketMessage]
-  );
+  const sendGameStartMessage = async (values: AdminLobbyValues) => {
+    logger.debug({ values }, 'sending start message');
+    sendWebsocketMessage(startGameMessage(values));
+  };
 
   const sendChatMessage = async (text: string) => {
     sendWebsocketMessage(chatMessage(text));
   };
 
   const sendWordsMessage = async (words: string[]) => {
-    console.log(words);
+    logger.debug({ words }, 'sending player words');
     sendWebsocketMessage(playerWordsMessage(words));
   };
 
@@ -61,7 +58,7 @@ const Game: React.FC = () => {
             )?.isHost && (
               <AdminLobby
                 className={styles.adminLobby}
-                onSubmit={onGameStart}
+                onSubmit={sendGameStartMessage}
               />
             )}
             <WaitingLobby
