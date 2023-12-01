@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import {
   Button,
@@ -67,9 +67,8 @@ const Chat: React.FC<ChatProps> = ({
         <div className={styles.chatMessages}>
           <VStack className={styles.messages}>
             {messages.map(({ sender, content }) => (
-              <>
+              <Fragment key={_.uniqueId()}>
                 <Message
-                  key={_.uniqueId()}
                   sender={
                     {
                       nickname: sender,
@@ -81,7 +80,7 @@ const Chat: React.FC<ChatProps> = ({
                   content={content}
                 />
                 <Divider className={styles.messageDivider} />
-              </>
+              </Fragment>
             ))}
           </VStack>
         </div>
