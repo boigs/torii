@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 import {
   Button,
@@ -28,8 +28,6 @@ type WordInputProps = {
 const NUM_INPUTS = 8;
 
 const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
-  const [isSendingWordsMessage, setSendingWordsMessage] = useState(false);
-
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((position) => ({
     position,
     key: `word${position}`,
@@ -40,11 +38,10 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
   );
 
   const onFormSubmit = async (formValues: object) => {
-    setSendingWordsMessage(true);
-    const formWords = new Map<string, string>(Object.entries(formValues));
-    var words = wordsIndexes.map((index) => formWords.get(index.key)!);
-    onSubmit(words);
-    setSendingWordsMessage(false);
+    const words = Object.entries(formValues)
+      .sort(([key1], [key2]) => key1.localeCompare(key2))
+      .map(([_, word]) => word);
+    await onSubmit(words);
   };
 
   return (
@@ -85,7 +82,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
               <Button
                 className={styles.sendButton}
                 type='submit'
-                isLoading={isSendingWordsMessage}
+                isLoading={props.isSubmitting}
                 colorScheme='blue'
                 variant='solid'
                 size='md'
