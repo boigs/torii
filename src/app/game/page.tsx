@@ -13,7 +13,11 @@ import WaitingLobby from 'src/components/WaitingLobby';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
-import { newChatMessage, newStartGameMessage } from 'src/websocket/out';
+import {
+  chatMessage,
+  playerWordsMessage,
+  startGameMessage,
+} from 'src/websocket/out';
 
 import styles from './page.module.scss';
 
@@ -31,21 +35,20 @@ const Game: React.FC = () => {
     }
   }, [state, send, router]);
 
-  const onGameStart = useCallback(
-    (values: AdminLobbyValues) => {
-      logger.debug({}, 'sending start message');
-      sendWebsocketMessage(newStartGameMessage(values));
-    },
-    [sendWebsocketMessage]
-  );
+  const sendGameStartMessage = async (values: AdminLobbyValues) => {
+    logger.debug({ values }, 'sending start message');
+    sendWebsocketMessage(startGameMessage(values));
+  };
 
   const sendChatMessage = async (text: string) => {
     await artificialSleep(100);
-    sendWebsocketMessage(newChatMessage(text));
+    sendWebsocketMessage(chatMessage(text));
   };
 
-  const sendWordsMessage = async (word: string) => {
-    sendWebsocketMessage(newChatMessage(word));
+  const sendWordsMessage = async (words: string[]) => {
+    logger.debug({ words }, 'sending player words');
+    sendWebsocketMessage(playerWordsMessage(words));
+    await artificialSleep(350);
   };
 
   return (
@@ -58,7 +61,7 @@ const Game: React.FC = () => {
             )?.isHost && (
               <AdminLobby
                 className={styles.adminLobby}
-                onSubmit={onGameStart}
+                onSubmit={sendGameStartMessage}
               />
             )}
             <WaitingLobby

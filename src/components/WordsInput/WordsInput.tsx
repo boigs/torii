@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 
 import {
   Button,
@@ -21,21 +21,27 @@ import styles from './WordsInput.module.scss';
 
 type WordInputProps = {
   word: string;
-  onSubmit: (word: string) => Promise<void>;
+  onSubmit: (words: string[]) => Promise<void>;
   className?: string;
 };
 
 const NUM_INPUTS = 8;
 
 const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
-  const [isSendingWordsMessage, setSendingWordsMessage] = useState(false);
+  const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
+    labelNumber: number,
+    formName: `word${number}`,
+  }));
+  const initialValues = wordsIndexes.reduce(
+    (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
+    {}
+  );
 
-  const initialValues = _.range(1, NUM_INPUTS + 1)
-    .map((index) => `word${index}`)
-    .reduce((accumulator, current) => ({ ...accumulator, [current]: '' }), {});
-
-  const onFormSubmit = async (values: any) => {
-    console.log(values);
+  const onFormSubmit = async (formValues: object) => {
+    const words = Object.entries(formValues)
+      .sort(([key1], [key2]) => key1.localeCompare(key2))
+      .map(([_, word]) => word);
+    await onSubmit(words);
   };
 
   return (
@@ -54,16 +60,15 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
         {(props) => (
           <Form>
             <CardBody className={styles.body}>
-              {_.range(1, NUM_INPUTS + 1).map((index) => (
-                <FormControl key={index}>
+              {wordsIndexes.map(({ formName, labelNumber }) => (
+                <FormControl key={labelNumber}>
                   <InputGroup>
                     <InputLeftAddon className={styles.wordInputLeftAddon}>
-                      {index}.
+                      {labelNumber}.
                     </InputLeftAddon>
                     <Field
                       as={Input}
-                      id={`word${index}`}
-                      name={`word${index}`}
+                      name={formName}
                       placeholder='...'
                       autoComplete='off'
                       className={styles.wordInput}
