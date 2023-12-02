@@ -4,7 +4,9 @@
 
   .chatMessages {
     padding: 12px;
-    height: 175px;
+    padding-top: 14px;
+    padding-bottom: 0px;
+    height: 206px;
     border-width: 1px;
     border-style: solid;
     border-color: var(--chakra-colors-gray-200);
@@ -20,7 +22,7 @@
       align-items: start;
       gap: 0.5rem;
 
-      .messageDivider:last-child {
+      .messageDivider:last-of-type {
         display: none;
       }
     }
