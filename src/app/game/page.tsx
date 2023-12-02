@@ -48,6 +48,7 @@ const Game: React.FC = () => {
   const sendWordsMessage = async (words: string[]) => {
     logger.debug({ words }, 'sending player words');
     sendWebsocketMessage(playerWordsMessage(words));
+    await artificialSleep(350);
   };
 
   return (
