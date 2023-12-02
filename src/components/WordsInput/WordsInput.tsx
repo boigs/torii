@@ -28,12 +28,12 @@ type WordInputProps = {
 const NUM_INPUTS = 8;
 
 const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
-  const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((position) => ({
-    position,
-    key: `word${position}`,
+  const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
+    labelNumber: number,
+    formName: `word${number}`,
   }));
   const initialValues = wordsIndexes.reduce(
-    (accumulator, current) => ({ ...accumulator, [current.key]: '' }),
+    (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
     {}
   );
 
@@ -60,16 +60,15 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
         {(props) => (
           <Form>
             <CardBody className={styles.body}>
-              {wordsIndexes.map((index) => (
-                <FormControl key={index.key}>
+              {wordsIndexes.map(({ formName, labelNumber }) => (
+                <FormControl key={labelNumber}>
                   <InputGroup>
                     <InputLeftAddon className={styles.wordInputLeftAddon}>
-                      {index.position}.
+                      {labelNumber}.
                     </InputLeftAddon>
                     <Field
                       as={Input}
-                      id={index.key}
-                      name={index.key}
+                      name={formName}
                       placeholder='...'
                       autoComplete='off'
                       className={styles.wordInput}
