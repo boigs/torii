@@ -207,7 +207,7 @@ const gameFsm = createMachine(
       addChatMessage: assign((context, event) => {
         const { sender, content } = event.value.message as ChatMessage;
         return {
-          messages: [{ sender, content }, ...context.messages],
+          messages: [...context.messages, { sender, content }],
         };
       }),
     },

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 
 import {
   Button,
@@ -39,19 +39,21 @@ type FormValues = {
   text: string;
 };
 
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => elementRef.current?.scrollIntoView());
+  return <div ref={elementRef}></div>;
+};
+
 const Chat: React.FC<ChatProps> = ({
   messages,
   players,
   onSubmit,
   className,
 }) => {
-  const [isSendingChatMessage, setSendingChatMessage] = useState(false);
-
   const onFormSubmit = async (values: FormValues) => {
     const { text } = values;
-    setSendingChatMessage(true);
     await onSubmit(text);
-    setSendingChatMessage(false);
     values.text = '';
   };
 
@@ -80,6 +82,7 @@ const Chat: React.FC<ChatProps> = ({
                 <Divider className={styles.messageDivider} />
               </Fragment>
             ))}
+            <AlwaysScrollToBottom />
           </VStack>
         </div>
       </CardBody>
@@ -108,7 +111,7 @@ const Chat: React.FC<ChatProps> = ({
                 <Button
                   className={styles.sendButton}
                   type='submit'
-                  isLoading={isSendingChatMessage}
+                  isLoading={props.isSubmitting}
                   colorScheme='blue'
                   variant='solid'
                   size='md'
