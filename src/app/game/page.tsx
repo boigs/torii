@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 
 import { Center, Flex } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -11,6 +11,7 @@ import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
 import WordsInput from 'src/components/WordsInput';
+import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
 import {
   chatMessage,
@@ -40,6 +41,7 @@ const Game: React.FC = () => {
   };
 
   const sendChatMessage = async (text: string) => {
+    await artificialSleep(100);
     sendWebsocketMessage(chatMessage(text));
   };
 
