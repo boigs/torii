@@ -71,9 +71,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         try {
           const gameId = await createGame();
           return { gameId };
-        } catch (e) {
+        } catch (exception) {
           toast(CANNOT_CREATE_GAME_ERROR);
-          throw e;
+          throw exception;
         }
       },
     },
@@ -106,7 +106,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [state]);
 
   useEffect(() => {
-    if (lastMessage) {
+    if (state.context.websocketShouldBeConnected && lastMessage) {
       // Ignore the heartbeat pong responses
       if (lastMessage.data === 'pong') {
         return;
@@ -156,7 +156,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
       logger.debug({ lastMessage }, 'last message');
     }
-  }, [lastMessage, send, toast, state.context.headcrabState]);
+  }, [lastMessage, send, toast, state.context.headcrabState, state.context.websocketShouldBeConnected]);
 
   return (
     <Context.Provider
