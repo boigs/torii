@@ -10,5 +10,5 @@ module.exports = {
   setupFilesAfterEnv: [
     '@testing-library/jest-dom'
   ],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  // moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 }
