@@ -22,8 +22,8 @@ import { validateNonEmpty } from 'src/helpers/formValidators';
 
 type JoinFormProps = {
   gameId?: string;
-  loading: boolean;
-  onSubmit: (value: JoinFormValues) => void;
+  loading?: boolean;
+  onSubmit?: (value: JoinFormValues) => void;
 };
 
 type JoinFormValues = {
@@ -39,7 +39,7 @@ type FormValues = {
 const JoinForm: React.FC<JoinFormProps> = ({ gameId, loading, onSubmit }) => {
   const onFormSubmit = async (values: FormValues) => {
     const { nickname, gameId } = values;
-    onSubmit({ nickname, gameId });
+    onSubmit?.({ nickname, gameId });
   };
 
   return (
