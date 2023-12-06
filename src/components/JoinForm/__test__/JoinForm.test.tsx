@@ -11,8 +11,8 @@ describe('JoinForm...', () => {
     const gameIdInput = screen.getByPlaceholderText('Game id');
     const nicknameInput = screen.getByPlaceholderText('Nickname');
 
-    expect(gameIdInput).toBeInTheDocument();
-    expect(nicknameInput).toBeInTheDocument();
+    expect(gameIdInput).toBeVisible();
+    expect(nicknameInput).toBeVisible();
   });
 
   it('should not show the game id input field when a game id is passed as prop', () => {
