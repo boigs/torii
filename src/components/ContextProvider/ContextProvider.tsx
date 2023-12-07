@@ -156,7 +156,13 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
       logger.debug({ lastMessage }, 'last message');
     }
-  }, [lastMessage, send, toast, state.context.headcrabState, state.context.websocketShouldBeConnected]);
+  }, [
+    lastMessage,
+    send,
+    toast,
+    state.context.headcrabState,
+    state.context.websocketShouldBeConnected,
+  ]);
 
   return (
     <Context.Provider

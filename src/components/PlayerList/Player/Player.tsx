@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
 
+import type { Player } from 'src/domain';
+
 import Avatar from './Avatar';
 
 import styles from './Player.module.scss';
-import { Player } from 'src/domain';
 
 type PlayerProps = {
   player: Player;

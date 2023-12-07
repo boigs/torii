@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
+import { describe, expect, it, vi } from 'vitest';
 
 import JoinForm from '../JoinForm';
 
@@ -33,7 +32,7 @@ describe('JoinForm...', () => {
   });
 
   it('should call the callback function with the input of the user', async () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     render(<JoinForm onSubmit={onSubmit} />);
 
     const gameIdInput = screen.getByPlaceholderText('Game id');
@@ -53,7 +52,7 @@ describe('JoinForm...', () => {
   });
 
   it('should call the callback function with the input of the user and the given game id as prop', async () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     render(<JoinForm gameId='any-id' onSubmit={onSubmit} />);
 
     const nicknameInput = screen.getByPlaceholderText('Nickname');
