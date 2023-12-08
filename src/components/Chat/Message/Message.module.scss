@@ -1,4 +1,5 @@
 .messageContainer {
+  max-width: 307px;
   .crown {
     width: 13.5px;
     top: -7px;
@@ -7,7 +8,7 @@
 
   .message {
     font-size: 0.95rem;
-    word-wrap: break-all;
+    word-wrap: anywhere;
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 0;
