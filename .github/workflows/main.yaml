@@ -27,7 +27,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      
+
       - name: Set Node version variable
         id: node-version
         # The setup-node action returns the node version with an v prefix like 'v1.0.0', #v is used to strip it
