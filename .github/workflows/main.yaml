@@ -55,7 +55,7 @@ jobs:
       - name: Create Docker Image
         uses: docker/build-push-action@v5
         with:
-          build-args: NODE_VERSION=${{ steps.install-node.outputs.node-version#v }}
+          build-args: NODE_VERSION=${{ steps.install-node.outputs.node-version }#v}
           push: ${{ github.ref_name == 'main' }}
           context: .
           target: final
