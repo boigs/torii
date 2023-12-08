@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { Player as PlayerType } from 'src/domain';
@@ -13,10 +13,20 @@ describe('Player component...', () => {
   };
 
   it("should render the player's nickname", () => {
-    render(<Player player={anyPlayer} />);
+    const { container } = render(<Player player={anyPlayer} />);
 
-    const nicknameText = screen.getByText(anyPlayer.nickname);
+    const nicknameParagraph = container.querySelector('p');
 
-    expect(nicknameText).toBeVisible();
+    expect(nicknameParagraph).toBeVisible();
+  });
+
+  it('should apply disconnected class when the player is disconnected', () => {
+    const { container } = render(
+      <Player player={{ ...anyPlayer, isConnected: false }} />
+    );
+
+    const playerDiv = container.querySelector('div');
+
+    expect(playerDiv?.className).toMatch(/disconnected/);
   });
 });
