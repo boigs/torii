@@ -52,12 +52,7 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({
       <CardBody className={styles.waitingLobbyBody}>
         <Card>
           <CardBody>
-            <PlayerList
-              players={players.map(({ nickname, isHost }) => ({
-                nickname,
-                isHost,
-              }))}
-            />
+            <PlayerList players={players} />
           </CardBody>
         </Card>
       </CardBody>
