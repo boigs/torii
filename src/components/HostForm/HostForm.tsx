@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 
 import { Link } from '@chakra-ui/next-js';
 import {

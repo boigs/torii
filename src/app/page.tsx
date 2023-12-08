@@ -3,7 +3,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useActor, useInterpret } from '@xstate/react';
+import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';

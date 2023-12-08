@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Center, Flex } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
