@@ -78,7 +78,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       },
     },
   });
-  var [state, send] = useActor(gameMachineService);
+  const [state, send] = useActor(gameMachineService);
 
   const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
   const { sendMessage, readyState, lastMessage } = useWebSocket(
@@ -112,7 +112,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      var message: WsMessageIn = JSON.parse(lastMessage.data);
+      const message: WsMessageIn = JSON.parse(lastMessage.data);
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
       switch (message.kind) {
@@ -129,7 +129,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
             value: { message: message as HeadcrabError },
           });
           break;
-        case WsTypeIn.GameState:
+        case WsTypeIn.GameState: {
           const gameState = message as GameState;
           send({
             type: 'GAME_STATE_MESSAGE',
@@ -146,6 +146,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
             }
           }
           break;
+        }
         case WsTypeIn.ChatText:
           send({
             type: 'CHAT_MESSAGE',
