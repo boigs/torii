@@ -1,5 +1,6 @@
 .messageContainer {
   max-width: 307px;
+
   .avatar {
     flex-shrink: 0;
 
@@ -18,6 +19,7 @@
     flex-basis: 0;
 
     .messageSender {
+      word-wrap: anywhere;
       font-weight: 500;
     }
   }
