@@ -1,5 +1,6 @@
+ARG NODE_VERSION
 # Based on https://github.com/vercel/next.js/tree/canary/examples/with-docker
-FROM node:20.10.0-alpine3.17 as base
+FROM node:${NODE_VERSION}-alpine3.17 as base
 
 # Install dependencies only when needed
 FROM base AS deps

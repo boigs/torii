@@ -22,10 +22,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Node.js
+        id: install-node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Set Node version variable
+        id: node-version
+        # The setup-node action returns the node version with an v prefix like 'v1.0.0', #v is used to strip it
+        run: |
+          NODE_VERSION=${{ steps.install-node.outputs.node-version }}
+          echo "value=${NODE_VERSION#v}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
         run: npm ci
@@ -51,6 +59,7 @@ jobs:
       - name: Create Docker Image
         uses: docker/build-push-action@v5
         with:
+          build-args: NODE_VERSION=${{ steps.node-version.outputs.value }}
           push: ${{ github.ref_name == 'main' }}
           context: .
           target: final
