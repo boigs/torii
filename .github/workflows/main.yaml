@@ -60,7 +60,7 @@ jobs:
       - name: Create Docker Image
         uses: docker/build-push-action@v5
         with:
-          build-args: NODE_VERSION=${NODE_VERSION}
+          build-args: NODE_VERSION=${{ NODE_VERSION }}
           push: ${{ github.ref_name == 'main' }}
           context: .
           target: final
