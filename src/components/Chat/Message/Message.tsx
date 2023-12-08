@@ -16,7 +16,9 @@ const Message: React.FC<MessageProps> = ({ sender, content }) => {
   return (
     <>
       <HStack className={styles.messageContainer}>
-        <Avatar player={sender} size={24} crownClassName={styles.crown} />
+        <div className={styles.avatar}>
+          <Avatar player={sender} size={24} crownClassName={styles.crown} />
+        </div>
         <Text className={styles.message}>
           <span className={styles.messageSender}>{sender.nickname}:</span>{' '}
           {content}
