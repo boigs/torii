@@ -30,23 +30,18 @@ jobs:
       
       - name: Set Node version variable
         id: node-version
+        # The setup-node action returns the node version with an v prefix like 'v1.0.0', #v is used to strip it
         run: |
           NODE_VERSION=${{ steps.install-node.outputs.node-version }}
           echo "value=${NODE_VERSION#v}" >> $GITHUB_OUTPUT
 
-      - name: debug
-        run: echo "${{ steps.node-version.outputs.value }}"
-
       - name: Install dependencies
-        if: false
         run: npm ci
 
       - name: Check styles
-        if: false
         run: npm run lint
 
       - name: Run tests
-        if: false
         run: npm test
 
       - name: Setup Docker Buildx
