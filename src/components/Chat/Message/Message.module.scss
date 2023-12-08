@@ -1,9 +1,13 @@
 .messageContainer {
   max-width: 307px;
-  .crown {
-    width: 13.5px;
-    top: -7px;
-    left: 5.15px;
+  .avatar {
+    flex-shrink: 0;
+
+    .crown {
+      width: 13.5px;
+      top: -7px;
+      left: 5.15px;
+    }
   }
 
   .message {
