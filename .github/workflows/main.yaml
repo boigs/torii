@@ -31,7 +31,7 @@ jobs:
       - name: Set Node version variable
         id: node-version
         run: |
-          echo "NODE_VERSION=${{ steps.install-node.outputs.node-version }}" >> $GITHUB_ENV
+          NODE_VERSION=${{ steps.install-node.outputs.node-version }}
           echo "value=${NODE_VERSION#v}" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
