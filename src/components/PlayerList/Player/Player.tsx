@@ -5,8 +5,6 @@ import classNames from 'classnames';
 
 import type { Player } from 'src/domain';
 
-import type { Player } from 'src/domain';
-
 import Avatar from './Avatar';
 
 import styles from './Player.module.scss';
