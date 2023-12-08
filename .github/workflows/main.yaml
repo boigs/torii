@@ -27,6 +27,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      
+      - name: Set Node version variable
+        run: |
+          echo "NODE_VERSION=${{ steps.install-node.outputs.node-version }}" >> $GITHUB_ENV
+          echo "NODE_VERSION=${NODE_VERSION#v}" >> $GITHUB_ENV
 
       - name: Install dependencies
         if: false
@@ -55,7 +60,7 @@ jobs:
       - name: Create Docker Image
         uses: docker/build-push-action@v5
         with:
-          build-args: NODE_VERSION=${{ steps.install-node.outputs.node-version }#v}
+          build-args: NODE_VERSION=${NODE_VERSION}
           push: ${{ github.ref_name == 'main' }}
           context: .
           target: final
