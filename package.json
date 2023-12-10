@@ -3,16 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx concurrently npm:watch-xstate npm:next-dev",
-    "next-dev": "next dev",
     "build": "npm run build-xstate && next build",
-    "start": "next start -p 8080",
-    "lint": "next lint; prettier --check .",
-    "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
-    "precommit": "lint-staged",
     "build-xstate": "npx xstate typegen src/fsm/game/game.ts",
-    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch",
-    "test": "vitest"
+    "dev": "npx concurrently npm:watch-xstate npm:next-dev",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
+    "lint": "next lint; prettier --check .",
+    "next-dev": "next dev",
+    "precommit": "lint-staged",
+    "start": "next start -p 8080",
+    "test": "vitest",
+    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@chakra-ui/next-js": "2.2.0",
@@ -58,11 +64,5 @@
     "prettier": "3.1.1",
     "typescript": "5.3.3",
     "vitest": "1.0.4"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}": [
-      "prettier --write",
-      "git add"
-    ]
   }
 }
