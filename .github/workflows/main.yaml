@@ -1,9 +1,9 @@
 name: Next.js
 
 on:
-  pull_request:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -14,8 +14,49 @@ env:
   DOCKER_IMAGE_NAME: localhost:32000/torii
 
 jobs:
+  test:
+    name: Run Tests
+    runs-on: self-hosted
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        id: install-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+    
+  linter-format:
+    name: Linter and Format Check
+    runs-on: self-hosted
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        id: install-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+    
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check styles
+        run: npm run lint
+
   build-deploy:
     name: ${{ github.ref_name == 'main' && 'Build and Deploy' || 'Build' }}
+    needs: [test, linter-format]
     runs-on: self-hosted
     steps:
       - name: Clone Repository
@@ -37,12 +78,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Check styles
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
