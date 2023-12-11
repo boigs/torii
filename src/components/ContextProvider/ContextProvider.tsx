@@ -5,12 +5,11 @@ import React, {
   createContext,
   useCallback,
   useEffect,
-  useState,
 } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import useWebSocket from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
