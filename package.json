@@ -3,16 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx concurrently npm:watch-xstate npm:next-dev",
-    "next-dev": "next dev",
     "build": "npm run build-xstate && next build",
-    "start": "next start -p 8080",
-    "lint": "next lint; prettier --check .",
-    "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml}\"",
-    "precommit": "lint-staged",
     "build-xstate": "npx xstate typegen src/fsm/game/game.ts",
-    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch",
-    "test": "vitest"
+    "dev": "npx concurrently npm:watch-xstate npm:next-dev",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
+    "lint": "next lint; prettier --check .",
+    "next-dev": "next dev",
+    "precommit": "lint-staged",
+    "start": "next start -p 8080",
+    "test": "vitest",
+    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@chakra-ui/next-js": "2.2.0",
@@ -25,10 +31,10 @@
     "autoprefixer": "10.4.16",
     "classnames": "2.3.2",
     "formik": "2.4.5",
-    "framer-motion": "10.16.12",
-    "next": "14.0.3",
+    "framer-motion": "10.16.16",
+    "next": "14.0.4",
     "pino": "8.16.2",
-    "postcss": "8.4.31",
+    "postcss": "8.4.32",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-use-websocket": "4.5.0",
@@ -39,8 +45,8 @@
     "@testing-library/jest-dom": "6.1.5",
     "@testing-library/react": "14.1.2",
     "@trivago/prettier-plugin-sort-imports": "4.3.0",
-    "@types/node": "20.10.2",
-    "@types/react": "18.2.40",
+    "@types/node": "20.10.4",
+    "@types/react": "18.2.43",
     "@types/react-dom": "18.2.17",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",
@@ -48,21 +54,15 @@
     "@xstate/cli": "0.5.11",
     "concurrently": "8.2.2",
     "eslint": "8.55.0",
-    "eslint-config-next": "14.0.3",
-    "eslint-config-prettier": "9.0.0",
+    "eslint-config-next": "14.0.4",
+    "eslint-config-prettier": "9.1.0",
     "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-vitest": "0.3.10",
+    "eslint-plugin-vitest": "0.3.13",
     "husky": "8.0.3",
     "jsdom": "23.0.1",
-    "lint-staged": "15.1.0",
-    "prettier": "3.1.0",
+    "lint-staged": "15.2.0",
+    "prettier": "3.1.1",
     "typescript": "5.3.3",
-    "vitest": "1.0.2"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,json,css,scss,yaml,yml}": [
-      "prettier --write",
-      "git add"
-    ]
+    "vitest": "1.0.4"
   }
 }
