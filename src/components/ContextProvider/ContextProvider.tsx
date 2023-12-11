@@ -4,7 +4,7 @@ import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import useWebSocket from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
@@ -54,10 +54,6 @@ const HEARTBEAT = {
   interval: 1000, // every 1 second, a ping message will be sent
 };
 
-const isWebsocketClosed = (state: ReadyState) => {
-  return state === ReadyState.CLOSING || state === ReadyState.CLOSED;
-};
-
 const createGame: () => Promise<string> = () =>
   fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
     .then((response) => response.json())
@@ -81,24 +77,22 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, send] = useActor(gameMachineService);
 
   const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
-  const { sendMessage, readyState, lastMessage } = useWebSocket(
+  const { sendMessage, lastMessage } = useWebSocket(
     websocketUrl,
     {
-      onError: (event) => onWebsocketError(event),
+      onError: () => onWebsocketError(),
       heartbeat: HEARTBEAT,
+      shouldReconnect: () => state.context.websocketShouldBeConnected,
     },
     state.context.websocketShouldBeConnected
   );
 
-  const onWebsocketError: (event: Event) => void = useCallback(
-    (event) => {
-      logger.debug({ event }, 'event');
-      if (!isWebsocketClosed(readyState)) {
-        send('WEBSOCKET_CONNECT_ERROR');
-        toast(UNKNOWN_WS_ERROR);
-      }
+  const onWebsocketError: () => void = useCallback(
+    () => {
+      send('WEBSOCKET_CONNECT_ERROR');
+      toast(UNKNOWN_WS_ERROR);
     },
-    [toast, send, readyState]
+    [toast, send]
   );
 
   useEffect(() => {
