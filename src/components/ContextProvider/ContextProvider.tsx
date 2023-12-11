@@ -1,10 +1,16 @@
 'use client';
 
-import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
-import useWebSocket from 'react-use-websocket';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
 import config from 'src/config';
@@ -80,20 +86,20 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   const { sendMessage, lastMessage } = useWebSocket(
     websocketUrl,
     {
-      onError: () => onWebsocketError(),
       heartbeat: HEARTBEAT,
+      reconnectInterval: 500,
+      onError: () => onWebsocketError(),
       shouldReconnect: () => state.context.websocketShouldBeConnected,
     },
     state.context.websocketShouldBeConnected
   );
 
-  const onWebsocketError: () => void = useCallback(
-    () => {
+  const onWebsocketError: () => void = useCallback(() => {
+    if (!state.context.gameJoined) {
       send('WEBSOCKET_CONNECT_ERROR');
       toast(UNKNOWN_WS_ERROR);
-    },
-    [toast, send]
-  );
+    }
+  }, [state.context.gameJoined, send, toast]);
 
   useEffect(() => {
     logger.debug({ state }, 'state');
