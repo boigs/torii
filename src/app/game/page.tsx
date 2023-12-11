@@ -31,7 +31,7 @@ const Game: React.FC = () => {
       router.replace('/');
     }
     if (state.matches('lobby') && !state.context.gameJoined) {
-      send('GAME_JOINED');
+      send({ type: 'GAME_JOINED' });
     }
   }, [state, send, router]);
 

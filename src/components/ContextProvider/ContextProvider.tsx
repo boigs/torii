@@ -1,11 +1,6 @@
 'use client';
 
-import React, {
-  ReactNode,
-  createContext,
-  useCallback,
-  useEffect,
-} from 'react';
+import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
@@ -95,7 +90,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
 
   const onWebsocketError: () => void = useCallback(() => {
     if (!state.context.gameJoined) {
-      send('WEBSOCKET_CONNECT_ERROR');
+      send({ type: 'WEBSOCKET_CONNECT_ERROR' });
       toast(UNKNOWN_WS_ERROR);
     }
   }, [state.context.gameJoined, send, toast]);

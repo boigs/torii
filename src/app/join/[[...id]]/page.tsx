@@ -23,7 +23,7 @@ const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
 
   useEffect(() => {
     if (state.context.gameJoined) {
-      send('RESET');
+      send({ type: 'RESET' });
     } else if (state.matches('lobby')) {
       router.push('/game');
     }
