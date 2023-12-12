@@ -11,6 +11,7 @@ export enum HeadCrabErrorType {
   GameDoesNotExist = 'GAME_DOES_NOT_EXIST',
   PlayerAlreadyExists = 'PLAYER_ALREADY_EXISTS',
   Internal = 'INTERNAL_SERVER',
+  UnprocessableMessage = 'UNPROCESSABLE_WEBSOCKET_MESSAGE',
 }
 
 export type MessageTypeIn = {

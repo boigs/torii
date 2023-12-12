@@ -14,6 +14,7 @@ import logger from 'src/logger';
 import {
   ChatMessage,
   GameState,
+  HeadCrabErrorType,
   HeadcrabError,
   HeadcrabState,
   WsMessageIn,
@@ -111,17 +112,22 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
       switch (message.kind) {
         case WsTypeIn.Error:
-          toast({
-            status: 'error',
-            isClosable: true,
-            duration: 5000,
-            description: headcrabErrorToString(message as HeadcrabError),
-            position: 'top',
-          });
-          send({
-            type: 'ERROR_MESSAGE',
-            value: { message: message as HeadcrabError },
-          });
+          {
+            const errorMessage = message as HeadcrabError;
+            toast({
+              status: 'error',
+              isClosable: true,
+              duration: 5000,
+              description: headcrabErrorToString(errorMessage),
+              position: 'top',
+            });
+            if (errorMessage.type !== HeadCrabErrorType.UnprocessableMessage) {
+              send({
+                type: 'ERROR_MESSAGE',
+                value: { message: message as HeadcrabError },
+              });
+            }
+          }
           break;
         case WsTypeIn.GameState: {
           const gameState = message as GameState;
