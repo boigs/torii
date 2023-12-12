@@ -7,7 +7,7 @@
     "build-xstate": "npx xstate typegen src/fsm/game/game.ts",
     "dev": "npx concurrently npm:watch-xstate npm:next-dev",
     "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
-    "lint": "next lint; prettier --check .",
+    "lint": "next lint && prettier --check .",
     "next-dev": "next dev",
     "precommit": "lint-staged",
     "start": "next start -p 8080",
