@@ -6,6 +6,8 @@ export const headcrabErrorToString = (error: HeadcrabError): string => {
       return 'The game you are trying to join does not seem to exist.';
     case HeadCrabErrorType.PlayerAlreadyExists:
       return 'There is another player with that nickname already.';
+    case HeadCrabErrorType.UnprocessableMessage:
+      return 'This action cannot be processed at this moment.';
     case HeadCrabErrorType.Internal:
     default:
       return 'Unknown error. Please contact support.';
