@@ -16,7 +16,7 @@ env:
 jobs:
   test:
     name: Run Tests
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
 
   linter-format:
     name: Linter and Format Check
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
