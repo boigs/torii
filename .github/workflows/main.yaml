@@ -23,7 +23,7 @@ jobs:
     outputs:
       node-version: ${{ steps.solution.outputs.node-version }}
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Solution -> Test
@@ -37,7 +37,7 @@ jobs:
     outputs:
       image-sha-tag: ${{ steps.image.outputs.image-sha-tag }}
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Service Image -> Publish
@@ -54,7 +54,7 @@ jobs:
     needs: [publish-service-image]
     runs-on: self-hosted
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Service -> Deploy
