@@ -14,103 +14,50 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOCKER_IMAGE_NAME: localhost:32000/torii
+  SERVICE_IMAGE_NAME: localhost:32000/torii${{ github.ref_name != 'main' && '-pr' || '' }}
 
 jobs:
-  test:
-    name: Run Tests
+  test-solution:
+    name: Solution -> Test
     runs-on: ubuntu-latest
+    outputs:
+      node-version: ${{ steps.solution.outputs.node-version }}
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        id: install-node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
+      - name: Solution -> Test
+        id: solution
+        uses: ./.github/actions/test-solution
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
-
-  linter-format:
-    name: Linter and Format Check
-    runs-on: ubuntu-latest
+  publish-service-image:
+    name: Service Image -> Publish
+    needs: [test-solution]
+    runs-on: self-hosted
+    outputs:
+      image-sha-tag: ${{ steps.image.outputs.image-sha-tag }}
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        id: install-node
-        uses: actions/setup-node@v4
+      - name: Service Image -> Publish
+        id: image
+        uses: ./.github/actions/publish-image
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          dockerfile-path: ./Dockerfile
+          image-name: ${{ env.SERVICE_IMAGE_NAME }}
+          build-args: NODE_VERSION=${{ needs.test-solution.outputs.node-version }}
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Check styles
-        run: npm run lint
-
-  build-deploy:
-    name: ${{ github.ref_name == 'main' && 'Build and Deploy' || 'Build' }}
-    needs: [test, linter-format]
+  deploy-service:
+    name: Service -> Deploy ${{ github.ref_name != 'main' && '(Plan Only)' || '' }}
+    needs: [publish-service-image]
     runs-on: self-hosted
     steps:
-      - name: Clone Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        id: install-node
-        uses: actions/setup-node@v4
+      - name: Service -> Deploy
+        uses: ./.github/actions/deploy-service
         with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Set Node version variable
-        id: node-version
-        # The setup-node action returns the node version with an v prefix like 'v1.0.0', #v is used to strip it
-        run: |
-          NODE_VERSION=${{ steps.install-node.outputs.node-version }}
-          echo "value=${NODE_VERSION#v}" >> $GITHUB_OUTPUT
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: network=host
-
-      - name: Docker Image Metadata
-        id: image-metadata
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.DOCKER_IMAGE_NAME }}
-          tags: type=sha
-
-      - name: Create Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          build-args: NODE_VERSION=${{ steps.node-version.outputs.value }}
-          push: ${{ github.ref_name == 'main' }}
-          context: .
-          target: final
-          tags: ${{ steps.image-metadata.outputs.tags }}
-          labels: ${{ steps.image-metadata.outputs.labels }}
-          provenance: false
-
-      - name: Set Docker Image to deploy in k8s.yaml
-        if: ${{ github.ref_name == 'main' }}
-        run: sed -i -E "s#torii_image#${{ env.DOCKER_IMAGE_NAME }}:${{ steps.image-metadata.outputs.version }}#g" k8s.yaml
-
-      - name: Deploy
-        if: ${{ github.ref_name == 'main' }}
-        run: |
-          microk8s kubectl apply -f k8s.yaml
-          microk8s kubectl rollout status deployment/torii-deployment --watch=true --timeout=60s
+          image-name: ${{ needs.publish-service-image.outputs.image-sha-tag }}
+          deploy: ${{ github.ref_name == 'main' }}
