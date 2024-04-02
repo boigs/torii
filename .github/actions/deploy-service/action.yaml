@@ -15,7 +15,7 @@ runs:
     - name: Set the Service Docker image to deploy in k8s.yaml
       shell: bash
       run: sed -i -E "s#torii_image#${{ inputs.image-name }}#g" k8s.yaml
-      
+
     - name: Deploy
       if: inputs.deploy == 'true'
       shell: bash

@@ -48,7 +48,6 @@ jobs:
           image-name: ${{ env.SERVICE_IMAGE_NAME }}
           build-args: NODE_VERSION=${{ needs.test-solution.outputs.node-version }}
 
-
   deploy-service:
     name: Service -> Deploy ${{ github.ref_name != 'main' && '(Plan Only)' || '' }}
     needs: [publish-service-image]
@@ -61,4 +60,4 @@ jobs:
         uses: ./.github/actions/deploy-service
         with:
           image-name: ${{ needs.publish-service-image.outputs.image-sha-tag }}
-          deploy: ${{ github.ref_name == 'main' }}        
+          deploy: ${{ github.ref_name == 'main' }}
