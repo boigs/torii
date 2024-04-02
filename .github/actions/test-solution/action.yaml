@@ -1,0 +1,33 @@
+name: Solution -> Test
+description: Tests the solution
+
+outputs:
+  node-version:
+    description: The Node.js version the solution uses
+    value: ${{ steps.node-version.outputs.value }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Node.js
+      id: install-node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Check Styles
+      run: npm run lint
+
+    - name: Run Tests
+      run: npm test
+
+    - name: Set Node version variable
+      id: node-version
+      # The setup-node action returns the node version with a 'v' prefix like 'v1.0.0', #v is used to strip it
+      run: |
+        NODE_VERSION=${{ steps.install-node.outputs.node-version }}
+        echo "value=${NODE_VERSION#v}" >> $GITHUB_OUTPUT
