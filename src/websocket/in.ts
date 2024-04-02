@@ -10,6 +10,7 @@ export enum WsTypeIn {
 export enum HeadCrabErrorType {
   GameDoesNotExist = 'GAME_DOES_NOT_EXIST',
   PlayerAlreadyExists = 'PLAYER_ALREADY_EXISTS',
+  NotEnoughPlayers = 'NOT_ENOUGH_PLAYERS',
   Internal = 'INTERNAL_SERVER',
   UnprocessableMessage = 'UNPROCESSABLE_WEBSOCKET_MESSAGE',
 }

@@ -121,7 +121,10 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               description: headcrabErrorToString(errorMessage),
               position: 'top',
             });
-            if (errorMessage.type !== HeadCrabErrorType.UnprocessableMessage) {
+            if (
+              errorMessage.type !== HeadCrabErrorType.UnprocessableMessage &&
+              errorMessage.type !== HeadCrabErrorType.NotEnoughPlayers
+            ) {
               send({
                 type: 'ERROR_MESSAGE',
                 value: { message: message as HeadcrabError },
