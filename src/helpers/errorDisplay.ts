@@ -7,7 +7,7 @@ export const headcrabErrorToString = (error: HeadcrabError): string => {
     case HeadCrabErrorType.PlayerAlreadyExists:
       return 'There is another player with that nickname already.';
     case HeadCrabErrorType.NotEnoughPlayers:
-      return 'Not enough players to start the game, at least 3.';
+      return 'Not enough players to start the game, at least 3 are needed.';
     case HeadCrabErrorType.UnprocessableMessage:
       return 'This action cannot be processed at this moment.';
     case HeadCrabErrorType.Internal:
