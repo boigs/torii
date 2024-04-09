@@ -146,6 +146,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               case HeadcrabState.PLAYERS_WRITING_WORDS:
                 send({ type: 'CHANGED_TO_PLAYERS_WRITING_WORDS' });
                 break;
+              case HeadcrabState.PLAYERS_SENDING_WORD_SUBMISSION:
+                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORD' });
+                break;
             }
           }
           break;

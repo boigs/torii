@@ -77,6 +77,7 @@ const Game: React.FC = () => {
             onSubmit={sendWordsMessage}
           />
         )}
+        {state.matches('playersSendingWordSubmission') && <>TODO</>}
         <Chat
           className={styles.chat}
           onSubmit={sendChatMessage}

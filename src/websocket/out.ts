@@ -2,6 +2,10 @@ export type StartGameOptions = {
   amountOfRounds: number;
 };
 
+export type PlayerWordSubmission = {
+  word: string;
+};
+
 export type WsMessageOut = {
   kind: string;
 };
@@ -23,4 +27,11 @@ export const playerWordsMessage: (words: string[]) => WsMessageOut = (
 ) => ({
   kind: 'playerWords',
   words,
+});
+
+export const submitPlayerWordForScoringMessage: (
+  word: string
+) => WsMessageOut = (word) => ({
+  kind: 'playerWordSubmission',
+  word,
 });
