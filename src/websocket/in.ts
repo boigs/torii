@@ -28,6 +28,7 @@ export type HeadcrabError = {
 export enum HeadcrabState {
   LOBBY = 'Lobby',
   PLAYERS_WRITING_WORDS = 'PlayersWritingWords',
+  PLAYERS_SENDING_WORD_SUBMISSION = 'PlayersSendingWordSubmission',
 }
 
 export type GameState = {

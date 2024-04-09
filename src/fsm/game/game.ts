@@ -66,6 +66,10 @@ type ChangedToPlayersWritingWords = {
   type: 'CHANGED_TO_PLAYERS_WRITING_WORDS';
 };
 
+type ChangedToPlayersSubmittingWord = {
+  type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORD';
+};
+
 type Context = {
   gameId: string;
   nickname: string;
@@ -105,7 +109,8 @@ const gameFsm = createMachine(
         | GameStateMessageEvent
         | ChatMessageEvent
         | ChangedToLobby
-        | ChangedToPlayersWritingWords,
+        | ChangedToPlayersWritingWords
+        | ChangedToPlayersSubmittingWord,
       context: {} as Context,
       services: {} as {
         createGame: {
@@ -173,6 +178,13 @@ const gameFsm = createMachine(
         },
       },
       playersWritingWords: {
+        on: {
+          CHANGED_TO_PLAYERS_SUBMITTING_WORD: {
+            target: 'playersSendingWordSubmission',
+          },
+        },
+      },
+      playersSendingWordSubmission: {
         on: {},
       },
     },
