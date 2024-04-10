@@ -2,11 +2,12 @@
 
 import React, { useContext, useEffect } from 'react';
 
-import { Center, Flex } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
+import AnimatedParent from 'src/components/AnimatedParent';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import WaitingLobby from 'src/components/WaitingLobby';
@@ -53,7 +54,7 @@ const Game: React.FC = () => {
 
   return (
     <Center>
-      <Flex className={styles.gameContainer}>
+      <AnimatedParent className={styles.gameContainer}>
         {state.matches('lobby') && (
           <>
             {state.context.players.find(
@@ -84,7 +85,7 @@ const Game: React.FC = () => {
           messages={state.context.messages}
           players={state.context.players}
         />
-      </Flex>
+      </AnimatedParent>
     </Center>
   );
 };
