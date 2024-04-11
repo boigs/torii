@@ -47,6 +47,7 @@ jobs:
           dockerfile-path: ./Dockerfile
           image-name: ${{ env.SERVICE_IMAGE_NAME }}
           build-args: NODE_VERSION=${{ needs.test-solution.outputs.node-version }}
+          is-main-branch: ${{ github.ref_name == 'main' }}
 
   deploy-service:
     name: Service -> Deploy ${{ github.ref_name != 'main' && '(Plan Only)' || '' }}
