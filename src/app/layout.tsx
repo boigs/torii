@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import AnimatedParent from 'src/components/AnimatedParent';
 import ContextProvider from 'src/components/ContextProvider';
 
 import { Providers } from './providers';
@@ -52,7 +53,9 @@ export default function RootLayout({
       </head>
       <body className={classNames(inter.className, styles.root)}>
         <Providers>
-          <ContextProvider>{children}</ContextProvider>
+          <ContextProvider>
+            <AnimatedParent>{children}</AnimatedParent>
+          </ContextProvider>
         </Providers>
       </body>
     </html>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
+import { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
@@ -153,12 +153,14 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           }
           break;
         }
-        case WsTypeIn.ChatText:
+        case WsTypeIn.ChatText: {
+          const { sender, content } = message as ChatMessage;
           send({
             type: 'CHAT_MESSAGE',
-            value: { message: message as ChatMessage },
+            value: { message: { sender, content } },
           });
           break;
+        }
       }
 
       logger.debug({ lastMessage }, 'last message');
