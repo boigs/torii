@@ -14,9 +14,8 @@ import {
 } from '@chakra-ui/react';
 import classNames from 'classnames';
 
+import PlayerList from 'src/components/PlayerList';
 import { Player } from 'src/domain';
-
-import PlayerList from '../PlayerList';
 
 import styles from './WaitingLobby.module.scss';
 
@@ -51,13 +50,13 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({
       </CardHeader>
       <CardBody className={styles.waitingLobbyBody}>
         <Card>
-          <CardBody>
+          <CardBody className={styles.players}>
             <PlayerList players={players} />
           </CardBody>
         </Card>
       </CardBody>
       <CardFooter>
-        <Flex>
+        <Flex className={styles.footerContainer}>
           <Input
             className={styles.joinUrlInput}
             defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}

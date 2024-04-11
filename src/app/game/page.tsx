@@ -54,7 +54,7 @@ const Game: React.FC = () => {
 
   return (
     <Center>
-      <AnimatedParent className={styles.gameContainer}>
+      <AnimatedParent className={styles.gameContainerGrid}>
         {state.matches('lobby') && (
           <>
             {state.context.players.find(
@@ -65,15 +65,17 @@ const Game: React.FC = () => {
                 onSubmit={sendGameStartMessage}
               />
             )}
-            <WaitingLobby
-              className={styles.waitingLobby}
-              gameId={state.context.gameId}
-              players={state.context.players}
-            />
+            <div className={styles.waitingLobbyContainer}>
+              <WaitingLobby
+                gameId={state.context.gameId}
+                players={state.context.players}
+              />
+            </div>
           </>
         )}
         {state.matches('playersWritingWords') && (
           <WordsInput
+            className={styles.wordsInput}
             word={state.context.rounds.at(-1)?.word as string}
             onSubmit={sendWordsMessage}
           />

@@ -1,8 +1,11 @@
 .chatBody {
+  display: flex;
+  flex-direction: column;
   padding-top: 0;
   padding-bottom: 0;
 
   .chatMessages {
+    flex-grow: 1;
     padding: 12px;
     padding-top: 14px;
     padding-bottom: 0px;
@@ -12,7 +15,7 @@
     border-color: var(--chakra-colors-gray-200);
     border-radius: var(--chakra-radii-md);
     transition: border-color 0.3s linear;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     &:hover {
       border-color: var(--chakra-colors-gray-300);

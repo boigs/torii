@@ -4,6 +4,7 @@ import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
+import _ from 'lodash';
 import useWebSocket from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
@@ -153,12 +154,14 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           }
           break;
         }
-        case WsTypeIn.ChatText:
+        case WsTypeIn.ChatText: {
+          const { sender, content } = message as ChatMessage;
           send({
             type: 'CHAT_MESSAGE',
-            value: { message: message as ChatMessage },
+            value: { message: { id: _.uniqueId(), sender, content } },
           });
           break;
+        }
       }
 
       logger.debug({ lastMessage }, 'last message');

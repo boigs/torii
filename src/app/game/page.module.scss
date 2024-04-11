@@ -5,3 +5,38 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.gameContainerGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 80px);
+  gap: 20px;
+
+  .adminLobby {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+
+  .waitingLobbyContainer {
+    grid-column-start: 4;
+    grid-column-end: 7;
+    grid-row-start: 1;
+    grid-row-end: 5;
+  }
+
+  .chat {
+    grid-column-start: 7;
+    grid-column-end: 10;
+    grid-row-start: 1;
+    grid-row-end: 5;
+  }
+
+  .wordsInput {
+    grid-column-start: 4;
+    grid-column-end: 7;
+    grid-row-start: 1;
+    grid-row-end: 7;
+  }
+}

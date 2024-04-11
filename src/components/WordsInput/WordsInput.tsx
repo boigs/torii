@@ -52,7 +52,9 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
         </Heading>
         <Divider marginTop='12px' marginBottom='12px' />
         <div className={styles.instructions}>
-          <Text>Write the words that come to your mind for:</Text>
+          <Text align='center' size='sm'>
+            Write the words that come to your mind for:
+          </Text>
           <Text className={styles.chosenWord}>{word}</Text>
         </div>
       </CardHeader>
