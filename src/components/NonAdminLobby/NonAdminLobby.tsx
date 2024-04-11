@@ -1,7 +1,6 @@
 import {
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Center,
   Divider,
@@ -28,7 +27,6 @@ const NonAdminLobby: React.FC<NonAdminLobbyProps> = ({ className }) => {
       <CardBody className={styles.body}>
         <Text align='center' className={styles.text}>
           Please wait until the host starts the game.
-          <br />
         </Text>
         <Center>
           <Spinner
