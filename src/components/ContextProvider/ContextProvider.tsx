@@ -1,10 +1,9 @@
 'use client';
 
-import React, { ReactNode, createContext, useCallback, useEffect } from 'react';
+import { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor, useInterpret } from '@xstate/react';
-import _ from 'lodash';
 import useWebSocket from 'react-use-websocket';
 import { InterpreterFrom } from 'xstate';
 
@@ -158,7 +157,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           const { sender, content } = message as ChatMessage;
           send({
             type: 'CHAT_MESSAGE',
-            value: { message: { id: _.uniqueId(), sender, content } },
+            value: { message: { sender, content } },
           });
           break;
         }
