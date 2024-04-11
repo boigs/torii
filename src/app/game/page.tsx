@@ -62,12 +62,9 @@ const Game: React.FC = () => {
               {state.context.players.find(
                 ({ nickname }) => state.context.nickname === nickname
               )?.isHost ? (
-                <AdminLobby
-                  className={styles.lobby}
-                  onSubmit={sendGameStartMessage}
-                />
+                <AdminLobby onSubmit={sendGameStartMessage} />
               ) : (
-                <NonAdminLobby className={styles.lobby}></NonAdminLobby>
+                <NonAdminLobby />
               )}
             </div>
             <div className={styles.waitingLobbyContainer}>
