@@ -10,6 +10,7 @@ import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import AnimatedParent from 'src/components/AnimatedParent';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
+import NonAdminLobby from 'src/components/NonAdminLobby';
 import WaitingLobby from 'src/components/WaitingLobby';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -57,14 +58,18 @@ const Game: React.FC = () => {
       <AnimatedParent className={styles.gameContainerGrid}>
         {state.matches('lobby') && (
           <>
-            {state.context.players.find(
-              ({ nickname }) => state.context.nickname === nickname
-            )?.isHost && (
-              <AdminLobby
-                className={styles.adminLobby}
-                onSubmit={sendGameStartMessage}
-              />
-            )}
+            <div className={styles.lobbyContainer}>
+              {state.context.players.find(
+                ({ nickname }) => state.context.nickname === nickname
+              )?.isHost ? (
+                <AdminLobby
+                  className={styles.lobby}
+                  onSubmit={sendGameStartMessage}
+                />
+              ) : (
+                <NonAdminLobby className={styles.lobby}></NonAdminLobby>
+              )}
+            </div>
             <div className={styles.waitingLobbyContainer}>
               <WaitingLobby
                 gameId={state.context.gameId}

@@ -12,11 +12,14 @@
   grid-template-rows: repeat(8, 80px);
   gap: 20px;
 
-  .adminLobby {
+  .lobbyContainer {
+
     grid-column-start: 2;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 3;
+    .lobby {
+    }
   }
 
   .waitingLobbyContainer {
