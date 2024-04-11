@@ -67,12 +67,6 @@ const Game: React.FC = () => {
                 <NonAdminLobby />
               )}
             </div>
-            <div className={styles.waitingLobbyContainer}>
-              <WaitingLobby
-                gameId={state.context.gameId}
-                players={state.context.players}
-              />
-            </div>
           </>
         )}
         {state.matches('playersWritingWords') && (
@@ -83,6 +77,12 @@ const Game: React.FC = () => {
           />
         )}
         {state.matches('playersSendingWordSubmission') && <>TODO</>}
+        <div className={styles.waitingLobbyContainer}>
+          <WaitingLobby
+            gameId={state.context.gameId}
+            players={state.context.players}
+          />
+        </div>
         <Chat
           className={styles.chat}
           onSubmit={sendChatMessage}
