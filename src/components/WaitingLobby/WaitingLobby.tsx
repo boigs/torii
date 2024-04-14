@@ -10,6 +10,7 @@ import {
   Flex,
   Heading,
   Input,
+  VStack,
   useClipboard,
 } from '@chakra-ui/react';
 import classNames from 'classnames';
@@ -49,11 +50,9 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({
         <Divider marginTop={'12px'} />
       </CardHeader>
       <CardBody className={styles.waitingLobbyBody}>
-        <Card>
-          <CardBody className={styles.players}>
-            <PlayerList players={players} />
-          </CardBody>
-        </Card>
+        <VStack className={styles.playerList}>
+          <PlayerList players={players} />
+        </VStack>
       </CardBody>
       <CardFooter>
         <Flex className={styles.footerContainer}>

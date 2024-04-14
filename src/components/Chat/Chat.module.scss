@@ -5,7 +5,7 @@
   padding-bottom: 0;
 
   .messages {
-    height: 206px;
+    height: 0px; // any fixed value will do
     gap: 0.5rem;
     flex-grow: 1;
     align-items: start;

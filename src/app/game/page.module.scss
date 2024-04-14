@@ -9,21 +9,21 @@
 .gameContainerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 80px);
-  gap: 20px;
+  grid-template-rows: auto repeat(4, 80px);
+  gap: 24px;
 
-  .lobbyContainer {
+  .lobby {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 3;
   }
 
-  .waitingLobbyContainer {
+  .waitingLobby {
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 1;
-    grid-row-end: 4;
+    grid-row-end: 5;
   }
 
   .chat {
@@ -38,5 +38,42 @@
     grid-column-end: 1;
     grid-row-start: 1;
     grid-row-end: 7;
+  }
+}
+
+@media (max-width: 600px) {
+  .gameContainerGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto repeat(10, 80px);
+    gap: 24px;
+
+    .lobby {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 1;
+      grid-row-end: 2;
+    }
+
+    .waitingLobby {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 6;
+    }
+
+    .chat {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 6;
+      grid-row-end: 10;
+    }
+
+    .wordsInput {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 1;
+      grid-row-end: 7;
+    }
   }
 }
