@@ -58,15 +58,16 @@ const Game: React.FC = () => {
       <AnimatedParent className={styles.gameContainerGrid}>
         {state.matches('lobby') && (
           <>
-            <div className={styles.lobbyContainer}>
-              {state.context.players.find(
-                ({ nickname }) => state.context.nickname === nickname
-              )?.isHost ? (
-                <AdminLobby onSubmit={sendGameStartMessage} />
-              ) : (
-                <NonAdminLobby />
-              )}
-            </div>
+            {state.context.players.find(
+              ({ nickname }) => state.context.nickname === nickname
+            )?.isHost ? (
+              <AdminLobby
+                className={styles.lobby}
+                onSubmit={sendGameStartMessage}
+              />
+            ) : (
+              <NonAdminLobby className={styles.lobby} />
+            )}
           </>
         )}
         {state.matches('playersWritingWords') && (

@@ -9,10 +9,10 @@
 .gameContainerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 80px);
+  grid-template-rows: auto repeat(4, 80px);
   gap: 24px;
 
-  .lobbyContainer {
+  .lobby {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
@@ -45,28 +45,28 @@
   .gameContainerGrid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(10, 80px);
-    gap: 14px;
+    grid-template-rows: auto repeat(10, 80px);
+    gap: 24px;
 
-    .lobbyContainer {
+    .lobby {
       grid-column-start: 1;
       grid-column-end: 2;
       grid-row-start: 1;
-      grid-row-end: 3;
+      grid-row-end: 2;
     }
 
-    .waitingLobbyContainer {
+    .waitingLobby {
       grid-column-start: 1;
       grid-column-end: 2;
-      grid-row-start: 7;
-      grid-row-end: 11;
+      grid-row-start: 2;
+      grid-row-end: 6;
     }
 
     .chat {
       grid-column-start: 1;
       grid-column-end: 2;
-      grid-row-start: 3;
-      grid-row-end: 7;
+      grid-row-start: 6;
+      grid-row-end: 10;
     }
 
     .wordsInput {
@@ -77,4 +77,3 @@
     }
   }
 }
-
