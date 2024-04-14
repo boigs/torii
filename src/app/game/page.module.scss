@@ -9,28 +9,28 @@
 .gameContainerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto repeat(4, 80px);
+  grid-template-rows: auto repeat(2, 80px); // 3 rows
   gap: 24px;
 
   .lobby {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
-    grid-row-end: 3;
+    grid-row-end: 2;
   }
 
   .waitingLobby {
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 1;
-    grid-row-end: 5;
+    grid-row-end: 4;
   }
 
   .chat {
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
-    grid-row-end: 5;
+    grid-row-end: 4;
   }
 
   .wordsInput {
@@ -45,7 +45,7 @@
   .gameContainerGrid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: auto repeat(10, 80px);
+    grid-template-rows: auto repeat(8, 80px);
     gap: 24px;
 
     .lobby {
