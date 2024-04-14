@@ -22,7 +22,7 @@ const NonAdminLobby: React.FC<NonAdminLobbyProps> = ({ className }) => {
         <Heading as='h3' textAlign='center' size='md'>
           Lobby
         </Heading>
-        <Divider marginTop={'12px'} />
+        <Divider marginTop='12px' />
       </CardHeader>
       <CardBody className={styles.body}>
         <Text align='center' className={styles.text}>

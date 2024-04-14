@@ -77,12 +77,11 @@ const Game: React.FC = () => {
           />
         )}
         {state.matches('playersSendingWordSubmission') && <>TODO</>}
-        <div className={styles.waitingLobbyContainer}>
-          <WaitingLobby
-            gameId={state.context.gameId}
-            players={state.context.players}
-          />
-        </div>
+        <WaitingLobby
+          className={styles.waitingLobby}
+          gameId={state.context.gameId}
+          players={state.context.players}
+        />
         <Chat
           className={styles.chat}
           onSubmit={sendChatMessage}
