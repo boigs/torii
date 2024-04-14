@@ -2,12 +2,13 @@
 
 import React, { useContext, useEffect } from 'react';
 
-import { Center } from '@chakra-ui/react';
+import { Center, Spinner, Text } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import AnimatedParent from 'src/components/AnimatedParent';
+import Card from 'src/components/Card';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import NonAdminLobby from 'src/components/NonAdminLobby';
@@ -30,7 +31,7 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     if (state.matches('disconnected')) {
-      router.replace('/');
+      router.replace('/join');
     }
     if (state.matches('lobby') && !state.context.gameJoined) {
       send({ type: 'GAME_JOINED' });
@@ -55,41 +56,58 @@ const Game: React.FC = () => {
 
   return (
     <Center>
-      <AnimatedParent className={styles.gameContainerGrid}>
-        {state.matches('lobby') && (
-          <>
-            {state.context.players.find(
-              ({ nickname }) => state.context.nickname === nickname
-            )?.isHost ? (
-              <AdminLobby
-                className={styles.lobby}
-                onSubmit={sendGameStartMessage}
-              />
-            ) : (
-              <NonAdminLobby className={styles.lobby} />
+      {state.matches('disconnected') ? (
+        <Card title='Loading...'>
+          <Text className={styles.loadingText}>Loading, please wait...</Text>
+          <Center>
+            <Spinner
+              thickness='4px'
+              emptyColor='gray.200'
+              color='blue.500'
+              size='xl'
+              speed='1.75s'
+            />
+          </Center>
+        </Card>
+      ) : (
+        <>
+          <AnimatedParent className={styles.gameContainerGrid}>
+            {state.matches('lobby') && (
+              <>
+                {state.context.players.find(
+                  ({ nickname }) => state.context.nickname === nickname
+                )?.isHost ? (
+                  <AdminLobby
+                    className={styles.lobby}
+                    onSubmit={sendGameStartMessage}
+                  />
+                ) : (
+                  <NonAdminLobby className={styles.lobby} />
+                )}
+              </>
             )}
-          </>
-        )}
-        {state.matches('playersWritingWords') && (
-          <WordsInput
-            className={styles.wordsInput}
-            word={state.context.rounds.at(-1)?.word as string}
-            onSubmit={sendWordsMessage}
-          />
-        )}
-        {state.matches('playersSendingWordSubmission') && <>TODO</>}
-        <WaitingLobby
-          className={styles.waitingLobby}
-          gameId={state.context.gameId}
-          players={state.context.players}
-        />
-        <Chat
-          className={styles.chat}
-          onSubmit={sendChatMessage}
-          messages={state.context.messages}
-          players={state.context.players}
-        />
-      </AnimatedParent>
+            {state.matches('playersWritingWords') && (
+              <WordsInput
+                className={styles.wordsInput}
+                word={state.context.rounds.at(-1)?.word as string}
+                onSubmit={sendWordsMessage}
+              />
+            )}
+            {state.matches('playersSendingWordSubmission') && <>TODO</>}
+            <WaitingLobby
+              className={styles.waitingLobby}
+              gameId={state.context.gameId}
+              players={state.context.players}
+            />
+            <Chat
+              className={styles.chat}
+              onSubmit={sendChatMessage}
+              messages={state.context.messages}
+              players={state.context.players}
+            />
+          </AnimatedParent>
+        </>
+      )}
     </Center>
   );
 };
