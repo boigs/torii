@@ -57,7 +57,7 @@ const Game: React.FC = () => {
   return (
     <Center>
       {state.matches('disconnected') ? (
-        <Card title='Loading...'>
+        <Card header='Loading...'>
           <Text className={styles.loadingText}>Loading, please wait...</Text>
           <Center>
             <Spinner

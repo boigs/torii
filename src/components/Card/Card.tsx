@@ -11,17 +11,17 @@ import {
 import styles from './Card.module.scss';
 
 type CardProps = {
-  title?: string;
+  header?: ReactNode;
   className?: string;
   children?: ReactNode;
 };
 
-const Card: React.FC<CardProps> = ({ title, className, children }) => {
+const Card: React.FC<CardProps> = ({ header, className, children }) => {
   return (
     <ChakraCard size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          {title}
+          {header}
         </Heading>
         <Divider marginTop='12px' />
       </CardHeader>
