@@ -39,22 +39,29 @@ type FormValues = {
   text: string;
 };
 
-const AlwaysScrollToBottom = () => {
-  const elementRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => elementRef.current?.scrollIntoView());
-  return <div ref={elementRef}></div>;
-};
-
 const Chat: React.FC<ChatProps> = ({
   messages,
   players,
   onSubmit,
   className,
 }) => {
+  const container = useRef<HTMLDivElement | null>(null);
+
+  const scroll = () => {
+    const element = container.current;
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scroll();
+  }, [messages]);
+
   const onFormSubmit = async (values: FormValues) => {
     const { text } = values;
-    await onSubmit(text);
     values.text = '';
+    await onSubmit(text);
   };
 
   return (
@@ -63,29 +70,27 @@ const Chat: React.FC<ChatProps> = ({
         <Heading as='h3' textAlign='center' size='md'>
           Chat
         </Heading>
-        <Divider marginTop={'12px'} />
+        <Divider marginTop='12px' />
       </CardHeader>
       <CardBody className={styles.chatBody}>
-        <div className={styles.chatMessages}>
-          <VStack className={styles.messages}>
-            {messages.map(({ sender, content }) => (
-              <Fragment key={_.uniqueId()}>
-                <Message
-                  sender={
-                    players.find((player) => player.nickname === sender) ?? {
-                      nickname: sender,
-                      isHost: false,
-                      isConnected: true,
-                    }
+        <VStack className={styles.messages} ref={container}>
+          {messages.map(({ sender, content }) => (
+            <Fragment key={_.uniqueId()}>
+              <Message
+                sender={
+                  players.find((player) => player.nickname === sender) ?? {
+                    nickname: sender,
+                    isHost: false,
+                    isConnected: true,
                   }
-                  content={content}
-                />
-                <Divider className={styles.messageDivider} />
-              </Fragment>
-            ))}
-            <AlwaysScrollToBottom />
-          </VStack>
-        </div>
+                }
+                content={content}
+              />
+              <Divider className={styles.messageDivider} />
+            </Fragment>
+          ))}
+          <div />
+        </VStack>
       </CardBody>
       <CardFooter>
         <Formik
