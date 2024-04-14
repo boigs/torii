@@ -10,7 +10,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(5, 80px);
-  gap: 20px;
+  gap: 24px;
 
   .lobbyContainer {
     grid-column-start: 1;
