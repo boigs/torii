@@ -4,12 +4,14 @@
   padding-top: 0;
   padding-bottom: 0;
 
-  .chatMessages {
+  .messages {
+    height: 206px;
+    gap: 0.5rem;
     flex-grow: 1;
+    align-items: start;
     padding: 12px;
     padding-top: 14px;
-    padding-bottom: 0px;
-    height: 206px;
+    padding-bottom: 10px;
     border-width: 1px;
     border-style: solid;
     border-color: var(--chakra-colors-gray-200);
@@ -17,17 +19,12 @@
     transition: border-color 0.3s linear;
     overflow-y: auto;
 
-    &:hover {
-      border-color: var(--chakra-colors-gray-300);
+    .messageDivider:last-of-type {
+      display: none;
     }
 
-    .messages {
-      align-items: start;
-      gap: 0.5rem;
-
-      .messageDivider:last-of-type {
-        display: none;
-      }
+    &:hover {
+      border-color: var(--chakra-colors-gray-300);
     }
   }
 }
