@@ -45,7 +45,7 @@
   .gameContainerGrid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(13, 80px);
+    grid-template-rows: repeat(10, 80px);
     gap: 14px;
 
     .lobbyContainer {
