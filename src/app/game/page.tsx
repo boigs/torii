@@ -84,7 +84,7 @@ const Game: React.FC = () => {
             )}
             {state.matches('playersSendingWordSubmission') && <>TODO</>}
             <JoinedPlayersList
-              className={styles.waitingLobby}
+              className={styles.joinedPlayersList}
               gameId={state.context.gameId}
               players={state.context.players}
             />
