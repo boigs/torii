@@ -2,7 +2,7 @@ import React from 'react';
 
 import { List, ListItem } from '@chakra-ui/react';
 
-import PlayerComponent from 'src/components/PlayerList/Player';
+import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
 import { Player } from 'src/domain';
 
 type PlayerListProps = {

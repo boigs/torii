@@ -9,13 +9,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import styles from './NonAdminLobby.module.scss';
+import styles from './Lobby.module.scss';
 
-type NonAdminLobbyProps = {
+type LobbyProps = {
   className?: string;
 };
 
-const NonAdminLobby: React.FC<NonAdminLobbyProps> = ({ className }) => {
+const Lobby: React.FC<LobbyProps> = ({ className }) => {
   return (
     <Card size='sm' className={className}>
       <CardHeader>
@@ -42,4 +42,4 @@ const NonAdminLobby: React.FC<NonAdminLobbyProps> = ({ className }) => {
   );
 };
 
-export default NonAdminLobby;
+export default Lobby;

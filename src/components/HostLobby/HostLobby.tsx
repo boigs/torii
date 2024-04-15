@@ -18,14 +18,14 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
 
-import styles from './AdminLobby.module.scss';
+import styles from './HostLobby.module.scss';
 
-type AdminLobbyValues = {
+type HostLobbyValues = {
   amountOfRounds: number;
 };
 
-type AdminLobbyProps = {
-  onSubmit: (values: AdminLobbyValues) => void;
+type HostLobbyProps = {
+  onSubmit: (values: HostLobbyValues) => void;
   className?: string;
 };
 
@@ -33,7 +33,7 @@ type FormValues = {
   amountOfRounds: number;
 };
 
-const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit, className }) => {
+const HostLobby: React.FC<HostLobbyProps> = ({ onSubmit, className }) => {
   const onFormSubmit = async (values: FormValues) => {
     onSubmit({ amountOfRounds: values.amountOfRounds });
   };
@@ -106,5 +106,5 @@ const AdminLobby: React.FC<AdminLobbyProps> = ({ onSubmit, className }) => {
   );
 };
 
-export type { AdminLobbyValues };
-export default AdminLobby;
+export type { HostLobbyValues };
+export default HostLobby;

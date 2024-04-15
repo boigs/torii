@@ -15,10 +15,10 @@ import {
 } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import PlayerList from 'src/components/PlayerList';
+import PlayerList from 'src/components/JoinedPlayersList/PlayerList';
 import { Player } from 'src/domain';
 
-import styles from './WaitingLobby.module.scss';
+import styles from './JoinedPlayersList.module.scss';
 
 type WaitingLobbyProps = {
   gameId: string;
@@ -26,7 +26,7 @@ type WaitingLobbyProps = {
   className?: string;
 };
 
-const WaitingLobby: React.FC<WaitingLobbyProps> = ({
+const JoinedPlayersList: React.FC<WaitingLobbyProps> = ({
   gameId,
   players,
   className,
@@ -75,4 +75,4 @@ const WaitingLobby: React.FC<WaitingLobbyProps> = ({
   );
 };
 
-export default WaitingLobby;
+export default JoinedPlayersList;

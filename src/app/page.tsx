@@ -7,7 +7,7 @@ import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';
-import HostForm from 'src/components/HostForm';
+import CreateGameForm from 'src/components/CreateGameForm';
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
 
   return (
     <Center>
-      <HostForm
+      <CreateGameForm
         loading={!state.matches('disconnected')}
         onSubmit={({ nickname }) =>
           send({ type: 'CREATE_GAME', value: { nickname } })
