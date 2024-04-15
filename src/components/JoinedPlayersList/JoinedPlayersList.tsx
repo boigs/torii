@@ -26,7 +26,7 @@ type WaitingLobbyProps = {
   className?: string;
 };
 
-const JoinedPlayerList: React.FC<WaitingLobbyProps> = ({
+const JoinedPlayersList: React.FC<WaitingLobbyProps> = ({
   gameId,
   players,
   className,
@@ -75,4 +75,4 @@ const JoinedPlayerList: React.FC<WaitingLobbyProps> = ({
   );
 };
 
-export default JoinedPlayerList;
+export default JoinedPlayersList;

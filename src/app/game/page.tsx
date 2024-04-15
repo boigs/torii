@@ -10,7 +10,7 @@ import AnimatedParent from 'src/components/AnimatedParent';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
 import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
-import JoinedPlayerList from 'src/components/JoinedPlayersList';
+import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
 import WordsInput from 'src/components/WordsInput';
@@ -83,7 +83,7 @@ const Game: React.FC = () => {
               />
             )}
             {state.matches('playersSendingWordSubmission') && <>TODO</>}
-            <JoinedPlayerList
+            <JoinedPlayersList
               className={styles.waitingLobby}
               gameId={state.context.gameId}
               players={state.context.players}
