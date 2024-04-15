@@ -2,7 +2,7 @@ import React from 'react';
 
 import { HStack, Text } from '@chakra-ui/react';
 
-import Avatar from 'src/components/PlayerList/Player/Avatar';
+import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
 import { Player } from 'src/domain';
 
 import styles from './Message.module.scss';

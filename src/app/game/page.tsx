@@ -2,17 +2,17 @@
 
 import React, { useContext, useEffect } from 'react';
 
-import { Center, Spinner, Text } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
-import AdminLobby, { AdminLobbyValues } from 'src/components/AdminLobby';
 import AnimatedParent from 'src/components/AnimatedParent';
-import Card from 'src/components/Card';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
-import NonAdminLobby from 'src/components/NonAdminLobby';
-import WaitingLobby from 'src/components/WaitingLobby';
+import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
+import JoinedPlayerList from 'src/components/JoinedPlayersList';
+import LoadingCard from 'src/components/LoadingCard';
+import Lobby from 'src/components/Lobby';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
@@ -38,7 +38,7 @@ const Game: React.FC = () => {
     }
   }, [state, send, router]);
 
-  const sendGameStartMessage = async (values: AdminLobbyValues) => {
+  const sendGameStartMessage = async (values: HostLobbyValues) => {
     logger.debug({ values }, 'sending start message');
     sendWebsocketMessage(startGameMessage(values));
   };
@@ -57,18 +57,7 @@ const Game: React.FC = () => {
   return (
     <Center>
       {state.matches('disconnected') ? (
-        <Card header='Loading...'>
-          <Text className={styles.loadingText}>Loading, please wait...</Text>
-          <Center>
-            <Spinner
-              thickness='4px'
-              emptyColor='gray.200'
-              color='blue.500'
-              size='xl'
-              speed='1.75s'
-            />
-          </Center>
-        </Card>
+        <LoadingCard />
       ) : (
         <>
           <AnimatedParent className={styles.gameContainerGrid}>
@@ -77,12 +66,12 @@ const Game: React.FC = () => {
                 {state.context.players.find(
                   ({ nickname }) => state.context.nickname === nickname
                 )?.isHost ? (
-                  <AdminLobby
+                  <HostLobby
                     className={styles.lobby}
                     onSubmit={sendGameStartMessage}
                   />
                 ) : (
-                  <NonAdminLobby className={styles.lobby} />
+                  <Lobby className={styles.lobby} />
                 )}
               </>
             )}
@@ -94,7 +83,7 @@ const Game: React.FC = () => {
               />
             )}
             {state.matches('playersSendingWordSubmission') && <>TODO</>}
-            <WaitingLobby
+            <JoinedPlayerList
               className={styles.waitingLobby}
               gameId={state.context.gameId}
               players={state.context.players}

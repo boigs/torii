@@ -33,7 +33,7 @@ type HostFormValues = {
   nickname: string;
 };
 
-const HostForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
+const CreateGameForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
   const onFormSubmit = async (values: FormValues) =>
     onSubmit({ nickname: values.nickname });
 
@@ -100,4 +100,4 @@ const HostForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
   );
 };
 
-export default HostForm;
+export default CreateGameForm;
