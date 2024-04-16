@@ -32,7 +32,8 @@ const Scoring: React.FC<ScoringProps> = ({
       header={
         <Center>
           <HStack>
-            <Avatar player={player} /> <Text>{player.nickname}</Text>
+            <Avatar player={player} />
+            <Text>{player.nickname}</Text>
           </HStack>
         </Center>
       }
