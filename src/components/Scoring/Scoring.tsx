@@ -30,13 +30,11 @@ const Scoring: React.FC<ScoringProps> = ({
   return (
     <Card
       header={
-        <>
-          <Center>
-            <HStack>
-              <Avatar player={player} /> <Text>{player.nickname}</Text>
-            </HStack>
-          </Center>
-        </>
+        <Center>
+          <HStack>
+            <Avatar player={player} /> <Text>{player.nickname}</Text>
+          </HStack>
+        </Center>
       }
     >
       <VStack>
