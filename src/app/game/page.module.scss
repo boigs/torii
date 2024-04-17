@@ -1,7 +1,7 @@
 .gameContainerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto repeat(2, 80px); // 3 rows
+  grid-template-rows: 165px repeat(2, 80px); // 3 rows
   gap: 24px;
 
   .lobby {
@@ -29,7 +29,7 @@
     grid-column-start: 1;
     grid-column-end: 1;
     grid-row-start: 1;
-    grid-row-end: 7;
+    grid-row-end: 5;
   }
 }
 
@@ -52,6 +52,11 @@
       grid-column-end: 2;
       grid-row-start: 2;
       grid-row-end: 6;
+
+      &Playing {
+        grid-row-start: 6;
+        grid-row-end: 10;
+      }
     }
 
     .chat {
@@ -59,6 +64,11 @@
       grid-column-end: 2;
       grid-row-start: 6;
       grid-row-end: 10;
+
+      &Playing {
+        grid-row-start: 2;
+        grid-row-end: 6;
+      }
     }
 
     .wordsInput {
@@ -66,6 +76,11 @@
       grid-column-end: 2;
       grid-row-start: 1;
       grid-row-end: 7;
+
+      &Playing {
+        grid-row-start: 1;
+        grid-row-end: 2;
+      }
     }
   }
 }

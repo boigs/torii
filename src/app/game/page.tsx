@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
+import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 
 import AnimatedParent from 'src/components/AnimatedParent';
@@ -59,43 +60,54 @@ const Game: React.FC = () => {
       {state.matches('disconnected') ? (
         <LoadingCard />
       ) : (
-        <>
-          <AnimatedParent className={styles.gameContainerGrid}>
-            {state.matches('lobby') && (
-              <>
-                {state.context.players.find(
-                  ({ nickname }) => state.context.nickname === nickname
-                )?.isHost ? (
-                  <HostLobby
-                    className={styles.lobby}
-                    onSubmit={sendGameStartMessage}
-                  />
-                ) : (
-                  <Lobby className={styles.lobby} />
-                )}
-              </>
-            )}
-            {state.matches('playersWritingWords') && (
-              <WordsInput
-                className={styles.wordsInput}
-                word={state.context.rounds.at(-1)?.word as string}
-                onSubmit={sendWordsMessage}
-              />
-            )}
-            {state.matches('playersSendingWordSubmission') && <>TODO</>}
-            <JoinedPlayersList
-              className={styles.joinedPlayersList}
-              gameId={state.context.gameId}
-              players={state.context.players}
+        <AnimatedParent className={styles.gameContainerGrid}>
+          {state.matches('lobby') && (
+            <>
+              {state.context.players.find(
+                ({ nickname }) => state.context.nickname === nickname
+              )?.isHost ? (
+                <HostLobby
+                  className={styles.lobby}
+                  onSubmit={sendGameStartMessage}
+                />
+              ) : (
+                <Lobby className={styles.lobby} />
+              )}
+            </>
+          )}
+          {state.matches('playersWritingWords') && (
+            <WordsInput
+              className={classNames(
+                styles.wordsInput,
+                state.matches('playersWritingWords')
+                  ? styles.wordsInputPlaying
+                  : null
+              )}
+              word={state.context.rounds.at(-1)?.word as string}
+              onSubmit={sendWordsMessage}
             />
-            <Chat
-              className={styles.chat}
-              onSubmit={sendChatMessage}
-              messages={state.context.messages}
-              players={state.context.players}
-            />
-          </AnimatedParent>
-        </>
+          )}
+          {state.matches('playersSendingWordSubmission') && <>TODO</>}
+          <JoinedPlayersList
+            className={classNames(
+              [styles.joinedPlayersList],
+              state.matches('playersWritingWords')
+                ? styles.joinedPlayersListPlaying
+                : null
+            )}
+            gameId={state.context.gameId}
+            players={state.context.players}
+          />
+          <Chat
+            className={classNames(
+              [styles.chat],
+              state.matches('playersWritingWords') ? styles.chatPlaying : null
+            )}
+            onSubmit={sendChatMessage}
+            messages={state.context.messages}
+            players={state.context.players}
+          />
+        </AnimatedParent>
       )}
     </Center>
   );
