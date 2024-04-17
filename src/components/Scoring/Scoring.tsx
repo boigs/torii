@@ -4,10 +4,10 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  Skeleton,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import classNames from 'classnames';
 
 import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
@@ -27,6 +27,10 @@ const Scoring: React.FC<ScoringProps> = ({
   submittedWords,
   currentVotingWord,
 }) => {
+  const currentVotingWordIndex = submittedWords.findIndex(
+    (word) => word === currentVotingWord
+  );
+
   return (
     <Card
       header={
@@ -40,22 +44,21 @@ const Scoring: React.FC<ScoringProps> = ({
     >
       <VStack>
         {submittedWords.map((submittedWord, index) => (
-          <InputGroup
-            key={index}
-            className={classNames(
-              currentVotingWord === submittedWord
-                ? styles.currentVotingWord
-                : null
-            )}
-          >
+          <InputGroup key={index}>
             <InputLeftAddon className={styles.wordInputLeftAddon}>
               {index + 1}.
             </InputLeftAddon>
-            <Input
-              readOnly={true}
-              className={styles.wordInput}
-              value={submittedWord}
-            />
+            <Skeleton
+              startColor='gray.300'
+              endColor='gray.200'
+              isLoaded={index <= currentVotingWordIndex}
+            >
+              <Input
+                readOnly={true}
+                className={styles.wordInput}
+                value={submittedWord}
+              />
+            </Skeleton>
           </InputGroup>
         ))}
       </VStack>
