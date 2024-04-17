@@ -1,4 +1,7 @@
-.root {
+.body {
   background-color: var(--chakra-colors-blue-100);
-  padding: 24px;
+
+  .root {
+    padding: 24px;
+  }
 }
