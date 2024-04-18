@@ -51,10 +51,10 @@ export default function RootLayout({
         <meta name='msapplication-TileColor' content='#bee3f8' />
         <meta name='theme-color' content='#bee3f8' />
       </head>
-      <body className={classNames(inter.className, styles.root)}>
+      <body className={classNames(inter.className, styles.body)}>
         <Providers>
           <ContextProvider>
-            <AnimatedParent>{children}</AnimatedParent>
+            <AnimatedParent className={styles.root}>{children}</AnimatedParent>
           </ContextProvider>
         </Providers>
       </body>
