@@ -1,7 +1,7 @@
 .gameContainerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 165px repeat(2, 80px); // 3 rows
+  grid-template-rows: minmax(165px, auto) repeat(2, 80px); // 3 rows
   gap: 24px;
 
   .lobby {
