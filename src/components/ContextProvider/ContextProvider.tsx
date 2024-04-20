@@ -3,9 +3,9 @@
 import { ReactNode, createContext, useCallback, useEffect } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
-import { useActor, useInterpret } from '@xstate/react';
+import { useActor } from '@xstate/react';
 import useWebSocket from 'react-use-websocket';
-import { InterpreterFrom } from 'xstate';
+import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
@@ -23,12 +23,12 @@ import {
 import { WsMessageOut } from 'src/websocket/out';
 
 type ContextType = {
-  gameFsm: InterpreterFrom<typeof gameFsm>;
+  gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
 };
 
 export const Context = createContext<ContextType>({
-  gameFsm: {} as InterpreterFrom<typeof gameFsm>,
+  gameActor: {} as ActorRefFrom<typeof gameFsm>,
   sendWebsocketMessage: () => {},
 });
 
@@ -62,20 +62,21 @@ const createGame: () => Promise<string> = () =>
 
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
-  const gameMachineService = useInterpret(gameFsm, {
-    services: {
-      createGame: async () => {
-        try {
-          const gameId = await createGame();
-          return { gameId };
-        } catch (exception) {
-          toast(CANNOT_CREATE_GAME_ERROR);
-          throw exception;
-        }
+  const gameActor = useActor(
+    gameFsm.provide({
+      actors: {
+        createGame: fromPromise<string>(async () => {
+          try {
+            return await createGame();
+          } catch (exception) {
+            toast(CANNOT_CREATE_GAME_ERROR);
+            throw exception;
+          }
+        }),
       },
-    },
-  });
-  const [state, send] = useActor(gameMachineService);
+    })
+  );
+  const [state, send, actorRef] = gameActor;
 
   const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
   const { sendMessage, lastMessage } = useWebSocket(
@@ -176,7 +177,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   return (
     <Context.Provider
       value={{
-        gameFsm: gameMachineService,
+        gameActor: actorRef,
         sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
       }}
     >

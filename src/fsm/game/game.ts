@@ -1,6 +1,6 @@
 'use client';
 
-import { assign, createMachine } from 'xstate';
+import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
 import { Player, Round } from 'src/domain';
 import {
@@ -92,139 +92,149 @@ const defaultContext: Context = {
   headcrabState: undefined,
 };
 
-const gameFsm = createMachine(
-  {
-    /** @xstate-layout N4IgpgJg5mDOIC5RQIYFswGICiAlXA8rgPoCy2AyhQIIDi2A2gAwC6ioADgPawCWALry4A7diACeiALQAOAOwA6AKwAaEAA9EARi0A2RVoDMTGTK1MlTAExyZhgL721qDJlyVsAFWZskIbnyCImKaCDJKWgoALFFMhrqGUYZaAJy6VrpqkghadgoyUTJWhskp8XKOzuhYAMIAEtSeZJQ09D5iAQJCon7ZUlpyqhrallEKTHK6qYZKljZ2lSAuWLTU5MQUno3YzVR0jKwdPF3BfqFaUYMKyRZWWjZxMVnSMgq6ukwpSnJ6l19RKUWywUEF4sAAxiJhGBwfxIJgau5tsRVuR2n5OkEeqBQpNInIrBF7okMpMZM8EEoZgotLMTBN0kpdCkKk4ltUQWDIcJobD4QApAgASQAcii1gdfJxjliQogIlZ8rM5JdzIYrClyRJEFErGNdLMYjImFEBncWUCOeCAE5gFCCYRQWjVTAQERgBS8YQANy4AGsPcCbXaHU7qggvb7wfbuj50dLAt05ZSftcLoYWSUmRqrBSlBl8iTzMVkkUtJaMApgzHHc7XGBrdauNaFBwADb2gBmzbQCiDtprYYwEZ9XGjWLjhwxMqTZ0QdkUgxkCSi+mXutz2oQCQMtmZ9wBTOsFY9ACsuF6vUOsAB1bAAIQoBBqAGkvMQagQRSLsDUmnhCFweN-BnU4cUQKw8ipFILjuKZClmQwKXVRRvhSEwrEgu47AyE8FHPS9axdepqBFegABFiE8AhiAAGQIe97wATWAzFZ3A7djXGApigNRDkgpOxDBpCZPmXKYlCKGQ8LbLgACM5PETBUR2QVRWwcjWNA7FhgQKRV1eOQmCmOILDiORDDkCldX1Q1ChNM1UlZKpK1khSlJIsiNKomiAAVaOoJi8AoYgb1wIVPFFWhQqIciKC0xMwN0-omEiSDSl0AFBhmYyKX0FJ8j4mY9BSJIYMcNlhC4CA4DEZYjkSnTQikCJdAUIyTOMSxLMsil+iuJhBsGqlCTkNI0jw0EIShGE4QgBqTia+cLgUTDVxuOZbCQrdjDGCYYLKrD5AmPDq1DOswAW2U5wQCz8SM2ZikmQwikyLcCWEj4jM1d5aSkvCCOEK8Lqu9jdI1JQaVXCy+KpZItDyplrgNAEvlMDMTrZYE3MU0Gkua5JUJkUqzWKFIbE3bJZleIwBguPRzHzQEsY5dsUHEBtYBva0ukdG9mwgeBp0a5MpEJ5RidNAkyYpikYMhr6xN+yTIIq+wgA */
-    id: 'game',
-    predictableActionArguments: true,
-    tsTypes: {} as import('./game.typegen').Typegen0,
-    schema: {
-      events: {} as
-        | CreateGameEvent
-        | JoinGameEvent
-        | GameJoinedEvent
-        | ResetEvent
-        | WebsocketConnectErrorEvent
-        | ErrorMessageEvent
-        | GameStateMessageEvent
-        | ChatMessageEvent
-        | ChangedToLobby
-        | ChangedToPlayersWritingWords
-        | ChangedToPlayersSubmittingWord,
-      context: {} as Context,
-      services: {} as {
-        createGame: {
-          data: { gameId: string };
-        };
-      },
-    },
-    context: defaultContext,
-    initial: 'disconnected',
-    on: {
-      ERROR_MESSAGE: {
-        target: 'disconnected',
-      },
-      RESET: {
-        target: 'disconnected',
-      },
-      CHAT_MESSAGE: {
-        actions: 'addChatMessage',
-      },
-      GAME_STATE_MESSAGE: {
-        actions: 'assignGameState',
-      },
-    },
-    states: {
-      disconnected: {
-        entry: 'resetContext',
-        on: {
-          CREATE_GAME: {
-            target: 'creatingGame',
-            actions: 'assignNickname',
-          },
-          JOIN_GAME: {
-            target: 'joiningGame',
-            actions: 'assignNicknameAndGameId',
-          },
-        },
-      },
-      creatingGame: {
-        invoke: {
-          src: 'createGame',
-          onDone: {
-            target: 'joiningGame',
-            actions: 'assignGameId',
-          },
-          onError: 'disconnected',
-        },
-      },
-      joiningGame: {
-        entry: 'setConnectToGameToTrue',
-        on: {
-          WEBSOCKET_CONNECT_ERROR: 'disconnected',
-          CHANGED_TO_LOBBY: {
-            target: 'lobby',
-          },
-        },
-      },
-      lobby: {
-        on: {
-          GAME_JOINED: {
-            actions: 'setGameJoinedToTrue',
-          },
-          CHANGED_TO_PLAYERS_WRITING_WORDS: {
-            target: 'playersWritingWords',
-          },
-        },
-      },
-      playersWritingWords: {
-        on: {
-          CHANGED_TO_PLAYERS_SUBMITTING_WORD: {
-            target: 'playersSendingWordSubmission',
-          },
-        },
-      },
-      playersSendingWordSubmission: {
-        on: {},
-      },
-    },
+const gameFsm = setup({
+  types: {} as {
+    context: Context;
+    events:
+      | CreateGameEvent
+      | JoinGameEvent
+      | GameJoinedEvent
+      | ResetEvent
+      | WebsocketConnectErrorEvent
+      | ErrorMessageEvent
+      | GameStateMessageEvent
+      | ChatMessageEvent
+      | ChangedToLobby
+      | ChangedToPlayersWritingWords
+      | ChangedToPlayersSubmittingWord;
   },
-  {
-    actions: {
-      assignNickname: assign((_, event) => ({
+  actions: {
+    assignNickname: assign(({ event }) => {
+      assertEvent(event, 'CREATE_GAME');
+      return {
         nickname: event.value.nickname,
-      })),
-      assignGameId: assign((_, event) => ({
-        gameId: event.data.gameId,
-      })),
-      assignNicknameAndGameId: assign((_, event) => ({
+      };
+    }),
+    assignGameId: assign((_, params: { gameId: string }) => {
+      return {
+        gameId: params.gameId,
+      };
+    }),
+    assignNicknameAndGameId: assign(({ event }) => {
+      assertEvent(event, 'JOIN_GAME');
+      return {
         gameId: event.value.gameId,
         nickname: event.value.nickname,
-      })),
-      assignGameState: assign((_, event) => {
-        const { players, rounds, state } = event.value.message as GameState;
-        return {
-          players,
-          rounds,
-          headcrabState: state,
-        };
-      }),
-      setConnectToGameToTrue: assign(() => ({
-        websocketShouldBeConnected: true,
-      })),
-      setGameJoinedToTrue: assign(() => ({
-        gameJoined: true,
-      })),
-      resetContext: assign(() => defaultContext),
-      addChatMessage: assign((context, event) => {
-        const { sender, content } = event.value.message as ChatMessage;
-        return {
-          messages: [...context.messages, { sender, content }],
-        };
-      }),
+      };
+    }),
+    assignGameState: assign(({ event }) => {
+      assertEvent(event, 'GAME_STATE_MESSAGE');
+      const { players, rounds, state } = event.value.message as GameState;
+      return {
+        players,
+        rounds,
+        headcrabState: state,
+      };
+    }),
+    setConnectToGameToTrue: assign(() => ({
+      websocketShouldBeConnected: true,
+    })),
+    setGameJoinedToTrue: assign(() => ({
+      gameJoined: true,
+    })),
+    resetContext: assign(() => defaultContext),
+    addChatMessage: assign(({ context, event }) => {
+      assertEvent(event, 'CHAT_MESSAGE');
+      const { sender, content } = event.value.message as ChatMessage;
+      return {
+        messages: [...context.messages, { sender, content }],
+      };
+    }),
+  },
+  guards: {},
+  actors: {
+    createGame: fromPromise<string>(async () => {
+      throw new Error('Not implemented');
+    }),
+  },
+}).createMachine({
+  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJjzZSTjZX1Ve2UrNSSAZn14xHNdXJBPAp8SDjYmOmYAirIq1k4eAXrxRqiWseVlcyNVJPMrc0HB3UHL-STR2NUT-UHeKwcH3iHdV3cpvlvMQjBBcLBMLJCJhJJASn5VnR5kw6qEGpFmqAYt0rEZPoNxu8nATBl0nqTjJddKpBqZqV1dDkAdNgURQeDIfhobCICQAFLUACSADkkQstiERLsMdFEDi8TTCb0SWTtHL9KlLMlnIMzuMrLx-nkvIU2ZgAE5gdDSfBQDjoVBgEgQWRgIwEABuogA1m6LVbYfbHaipREmrLErw2kZTO9TMoCVcDfGnrorEkjFHdONeLwNfTzJMWaajP7rQQ7Q6nWBzebROajMIADbWgBm9dQpct1rAQbAIbC0vDB1idzSqje9gNbxu5LzMbUH1MVj+QzURaBJYAVqICBW+yQAOpkABCzGoxQA0oE6MVqMLhWRipVKDQKAP0cOsWMo6lY4aE3MJMAKeSxUn0QwrFMMwVyAv4jUBE0fCMHc91tA8yjYYUuAAEToAJqDoAAZagTxPABND8h32b9Ej6XE1EGc42mUOwLkeNUEBuE5jgNYknG6XUNyQkEm1EAAjcStDmcU6AFEUyBwqiwxoxQxnOfQ8WSJIejYrpnFTNMjCYqxaXGCwdN+YSZlEiSpJKcpsMU-DCIABSIthyMoZg6EPChBQCEUOF82gcOYZS9kxNSEDY3FLAgpJLgGZcRk4m4MwcZc9SyfRzHjazWUbFstBrWBD3NRpbUPesIFgBysNwly6HczzvKWABVE8GACwLsJCiglO2NFqKimJGXTU5THjcwHmzbpTHJXQMqmz5zhyvLlDcAF8FECA4HkYsfB2FTRsQKwniSDNxpzcxeGpXhhgQw6QTBCEoTAGFIGOyKIwMDNnANICpt1BwNE4yxVEzYZTOSVRdGzeGCpLMsbUrR1vplEc4ZOUkHGuZiXiA1N+iMZx0gsDUjimpHkNQ-B9yrDGv2iq5bszWwjkS656PMYmM0NcmZqOMmadsySElDH6R21SGmPeI5bHh45ebSpaYweB4rmg9pklFtlm3QErzTKirUeq81aqZ1SxruQZMyuMwTIeaxFozaCkk12kNXOJI9aKw3SuYMB8DBKqauYABXcTUHBCRVM-a29CsFcjFu3LlB+Gx01ShJ0vVj3zi9nXfa2oA */
+  context: defaultContext,
+  initial: 'disconnected',
+  on: {
+    ERROR_MESSAGE: {
+      target: '.disconnected',
     },
-    guards: {},
-  }
-);
+    RESET: {
+      target: '.disconnected',
+    },
+    CHAT_MESSAGE: {
+      actions: 'addChatMessage',
+    },
+    GAME_STATE_MESSAGE: {
+      actions: 'assignGameState',
+    },
+  },
+  states: {
+    disconnected: {
+      entry: 'resetContext',
+      on: {
+        CREATE_GAME: {
+          target: 'creatingGame',
+          actions: 'assignNickname',
+        },
+        JOIN_GAME: {
+          target: 'joiningGame',
+          actions: 'assignNicknameAndGameId',
+        },
+      },
+    },
+    creatingGame: {
+      invoke: {
+        src: 'createGame',
+        id: 'createGame',
+        onDone: {
+          target: 'joiningGame',
+          actions: [
+            {
+              type: 'assignGameId',
+              params: ({ event }) => ({ gameId: event.output }),
+            },
+          ],
+        },
+        onError: 'disconnected',
+      },
+    },
+    joiningGame: {
+      entry: 'setConnectToGameToTrue',
+      on: {
+        WEBSOCKET_CONNECT_ERROR: 'disconnected',
+        CHANGED_TO_LOBBY: {
+          target: 'lobby',
+        },
+      },
+    },
+    lobby: {
+      on: {
+        GAME_JOINED: {
+          actions: 'setGameJoinedToTrue',
+        },
+        CHANGED_TO_PLAYERS_WRITING_WORDS: {
+          target: 'playersWritingWords',
+        },
+      },
+    },
+    playersWritingWords: {
+      on: {
+        CHANGED_TO_PLAYERS_SUBMITTING_WORD: {
+          target: 'playersSendingWordSubmission',
+        },
+      },
+    },
+    playersSendingWordSubmission: {
+      on: {},
+    },
+  },
+});
 
 export default gameFsm;
