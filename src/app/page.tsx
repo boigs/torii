@@ -3,7 +3,6 @@
 import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';
@@ -11,8 +10,8 @@ import CreateGameForm from 'src/components/CreateGameForm';
 
 const Home: React.FC = () => {
   const router = useRouter();
-  const { gameFsm } = useContext(Context);
-  const [state, send] = useActor(gameFsm);
+  const { gameActor } = useContext(Context);
+  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
 
   useEffect(() => {
     if (state.context.gameJoined) {

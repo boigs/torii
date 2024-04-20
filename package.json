@@ -3,16 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "npm run build-xstate && next build",
-    "build-xstate": "npx xstate typegen src/fsm/game/game.ts",
-    "dev": "npx concurrently npm:watch-xstate npm:next-dev",
+    "build": "next build",
+    "dev": "next dev",
     "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
     "lint": "next lint && prettier --check .",
-    "next-dev": "next dev",
     "precommit": "lint-staged",
     "start": "next start -p 8080",
-    "test": "vitest",
-    "watch-xstate": "npx xstate typegen src/fsm/game/game.ts --watch"
+    "test": "vitest"
   },
   "lint-staged": {
     "*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}": [
@@ -28,7 +25,7 @@
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@formkit/auto-animate": "0.8.2",
-    "@xstate/react": "3.2.2",
+    "@xstate/react": "4.1.1",
     "autoprefixer": "10.4.19",
     "classnames": "2.5.1",
     "formik": "2.4.5",
@@ -40,7 +37,7 @@
     "react-dom": "18.2.0",
     "react-use-websocket": "4.8.1",
     "sass": "1.72.0",
-    "xstate": "4.38.3"
+    "xstate": "5.11.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.4.2",
@@ -52,8 +49,6 @@
     "@typescript-eslint/eslint-plugin": "7.4.0",
     "@typescript-eslint/parser": "7.4.0",
     "@vitejs/plugin-react": "4.2.1",
-    "@xstate/cli": "0.5.17",
-    "concurrently": "8.2.2",
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
     "eslint-config-prettier": "9.1.0",

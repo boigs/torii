@@ -3,7 +3,6 @@
 import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useActor } from '@xstate/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';
@@ -17,8 +16,8 @@ type JoinQuery = {
 
 const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
   const router = useRouter();
-  const { gameFsm } = useContext(Context);
-  const [state, send] = useActor(gameFsm);
+  const { gameActor } = useContext(Context);
+  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
   const realId = id?.[0];
 
   useEffect(() => {

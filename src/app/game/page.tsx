@@ -3,7 +3,6 @@
 import React, { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useActor } from '@xstate/react';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 
@@ -27,8 +26,8 @@ import styles from './page.module.scss';
 
 const Game: React.FC = () => {
   const router = useRouter();
-  const { gameFsm, sendWebsocketMessage } = useContext(Context);
-  const [state, send] = useActor(gameFsm);
+  const { gameActor, sendWebsocketMessage } = useContext(Context);
+  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
 
   useEffect(() => {
     if (state.matches('disconnected')) {
