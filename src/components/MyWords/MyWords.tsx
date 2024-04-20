@@ -37,9 +37,12 @@ const MyWords: React.FC<MyWordsProps> = ({ round, player }) => {
       <VStack>
         {submittedWords.map((submittedWord, index) => (
           <InputGroup key={index}>
-            <InputLeftAddon className={styles.wordInputLeftAddon}>{index + 1}.</InputLeftAddon>
-            <Button colorScheme='blue' variant='outline'
-              >{submittedWord.word}</Button>
+            <InputLeftAddon className={styles.wordInputLeftAddon}>
+              {index + 1}.
+            </InputLeftAddon>
+            <Button colorScheme='blue' variant='outline'>
+              {submittedWord.word}
+            </Button>
           </InputGroup>
         ))}
       </VStack>

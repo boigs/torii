@@ -13,6 +13,7 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
+import MyWords from 'src/components/MyWords';
 import Scoring from 'src/components/Scoring';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -24,7 +25,6 @@ import {
 } from 'src/websocket/out';
 
 import styles from './page.module.scss';
-import MyWords from 'src/components/MyWords';
 
 const Game: React.FC = () => {
   const router = useRouter();
@@ -98,7 +98,11 @@ const Game: React.FC = () => {
               <MyWords
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
-                player={state.context.players.find(player => player.nickname === state.context.nickname)!}
+                player={
+                  state.context.players.find(
+                    (player) => player.nickname === state.context.nickname
+                  )!
+                }
               />
             </div>
           )}
