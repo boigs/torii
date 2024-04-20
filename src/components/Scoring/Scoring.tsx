@@ -11,22 +11,22 @@ import {
 
 import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
-import { Player, Word } from 'src/domain';
+import { Player, Round } from 'src/domain';
 
 import styles from './Scoring.module.scss';
 
 type ScoringProps = {
-  player: Player;
-  submittedWords: Word[];
-  currentVotingWord: string;
+  round: Round;
+  players: Player[];
   className?: string;
 };
 
-const Scoring: React.FC<ScoringProps> = ({
-  player,
-  submittedWords,
-  currentVotingWord,
-}) => {
+const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
+  const player = players.find(
+    (player) => player.nickname === round.score.currentPlayer
+  )!;
+  const submittedWords = round.playerWords[player.nickname];
+  const currentVotingWord = round.score.currentWord;
   const currentVotingWordIndex = submittedWords.findIndex(
     (word) => word.word === currentVotingWord
   );

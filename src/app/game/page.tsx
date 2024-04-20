@@ -83,25 +83,17 @@ const Game: React.FC = () => {
                   ? styles.wordsInputPlaying
                   : null
               )}
-              word={state.context.rounds.at(-1)?.word as string}
+              word={state.context.rounds.at(-1)!.word}
               onSubmit={sendWordsMessage}
             />
           )}
-          {state.matches('playersSendingWordSubmission') &&
-            (() => {
-              const round = state.context.rounds.at(-1)!;
-              const player = state.context.players.find(
-                (player) => player.nickname === round.score.currentPlayer
-              )!;
-              return (
-                <Scoring
-                  className={classNames()}
-                  player={player}
-                  submittedWords={round.playerWords[player.nickname]}
-                  currentVotingWord={round.score.currentWord}
-                />
-              );
-            })()}
+          {state.matches('playersSendingWordSubmission') && (
+            <Scoring
+              className={classNames()}
+              round={state.context.rounds.at(-1)!}
+              players={state.context.players}
+            />
+          )}
           <JoinedPlayersList
             className={classNames(
               [styles.joinedPlayersList],
