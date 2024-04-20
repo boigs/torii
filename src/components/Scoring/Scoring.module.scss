@@ -3,12 +3,16 @@
   justify-content: center;
 }
 
-.wordInput {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.skeleton {
+  width: 100%;
 
-  &:hover,
-  &:focus-visible {
-    border-color: var(--chakra-colors-gray-200);
+  .wordInput {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--chakra-colors-gray-200);
+    }
   }
 }

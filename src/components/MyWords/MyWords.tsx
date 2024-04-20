@@ -1,10 +1,9 @@
 import {
+  Button,
   Center,
   HStack,
-  Input,
   InputGroup,
   InputLeftAddon,
-  Skeleton,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -13,25 +12,18 @@ import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
 import { Player, Round } from 'src/domain';
 
-import styles from './Scoring.module.scss';
+import styles from './MyWords.module.scss';
 
-type ScoringProps = {
+type MyWordsProps = {
   round: Round;
-  players: Player[];
+  player: Player;
   className?: string;
 };
 
-const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
-  const player = players.find(
-    (player) => player.nickname === round.score.currentPlayer
-  )!;
+const MyWords: React.FC<MyWordsProps> = ({ round, player }) => {
   const submittedWords = round.playerWords[player.nickname];
-  const currentVotingWord = round.score.currentWord;
-  const currentVotingWordIndex = submittedWords.findIndex(
-    (word) => word.word === currentVotingWord
-  );
 
-  return (
+  return round.score.currentPlayer === player.nickname ? null : (
     <Card
       header={
         <Center>
@@ -48,18 +40,9 @@ const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
             <InputLeftAddon className={styles.wordInputLeftAddon}>
               {index + 1}.
             </InputLeftAddon>
-            <Skeleton
-              className={styles.skeleton}
-              startColor='gray.300'
-              endColor='gray.200'
-              isLoaded={index <= currentVotingWordIndex}
-            >
-              <Input
-                readOnly={true}
-                className={styles.wordInput}
-                value={submittedWord.word}
-              />
-            </Skeleton>
+            <Button colorScheme='blue' variant='outline'>
+              {submittedWord.word}
+            </Button>
           </InputGroup>
         ))}
       </VStack>
@@ -67,4 +50,4 @@ const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
   );
 };
 
-export default Scoring;
+export default MyWords;

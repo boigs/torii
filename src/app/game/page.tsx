@@ -13,6 +13,8 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
+import MyWords from 'src/components/MyWords';
+import Scoring from 'src/components/Scoring';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
@@ -82,11 +84,28 @@ const Game: React.FC = () => {
                   ? styles.wordsInputPlaying
                   : null
               )}
-              word={state.context.rounds.at(-1)?.word as string}
+              word={state.context.rounds.at(-1)!.word}
               onSubmit={sendWordsMessage}
             />
           )}
-          {state.matches('playersSendingWordSubmission') && <>TODO</>}
+          {state.matches('playersSendingWordSubmission') && (
+            <div>
+              <Scoring
+                className={classNames()}
+                round={state.context.rounds.at(-1)!}
+                players={state.context.players}
+              />
+              <MyWords
+                className={classNames()}
+                round={state.context.rounds.at(-1)!}
+                player={
+                  state.context.players.find(
+                    (player) => player.nickname === state.context.nickname
+                  )!
+                }
+              />
+            </div>
+          )}
           <JoinedPlayersList
             className={classNames(
               [styles.joinedPlayersList],
