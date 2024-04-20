@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import {
   Button,
   Card,
@@ -8,23 +6,17 @@ import {
   CardHeader,
   Divider,
   FormControl,
-  HStack,
   Heading,
   Input,
   InputGroup,
   InputLeftAddon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
+
+import ConfirmModal from './ConfirmModal';
 
 import styles from './WordsInput.module.scss';
 
@@ -42,7 +34,6 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     onOpen: openEmptyFieldsModal,
     onClose: closeEmptyFieldsModal,
   } = useDisclosure();
-  const [submissionWords, setSubmissionWords] = useState<string[]>([]);
 
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
     labelNumber: number,
@@ -53,12 +44,10 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     {}
   );
 
-  const onFormSubmit = async (formValues: object) => {
+  const onFormSubmit = async (formValues: { [key: string]: string }) => {
     const words = Object.entries(formValues)
       .sort(([key1], [key2]) => key1.localeCompare(key2))
       .map(([_, word]) => word);
-
-    setSubmissionWords(words);
 
     // if there is an empty word
     if (words.includes('')) {
@@ -68,28 +57,36 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     }
   };
 
-  const onModalSubmit = async () => {
-    await onSubmit(submissionWords);
+  const onModalSubmit = async (
+    formikProps: FormikProps<{ [key: string]: string }>
+  ) => {
+    const words = Object.entries(formikProps.values)
+      .sort(([key1], [key2]) => key1.localeCompare(key2))
+      .map(([_, word]) => word);
+
+    formikProps.setSubmitting(true);
+    await onSubmit(words);
     closeEmptyFieldsModal();
+    formikProps.setSubmitting(false);
   };
 
   return (
-    <>
-      <Card size='sm' className={className}>
-        <CardHeader>
-          <Heading as='h3' textAlign='center' size='md'>
-            Be Unoriginal!
-          </Heading>
-          <Divider marginTop='12px' marginBottom='12px' />
-          <div className={styles.instructions}>
-            <Text align='center' size='sm'>
-              Write the words that come to your mind for:
-            </Text>
-            <Text className={styles.chosenWord}>{word}</Text>
-          </div>
-        </CardHeader>
-        <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
-          {(props) => (
+    <Card size='sm' className={className}>
+      <CardHeader>
+        <Heading as='h3' textAlign='center' size='md'>
+          Be Unoriginal!
+        </Heading>
+        <Divider marginTop='12px' marginBottom='12px' />
+        <div className={styles.instructions}>
+          <Text align='center' size='sm'>
+            Write the words that come to your mind for:
+          </Text>
+          <Text className={styles.chosenWord}>{word}</Text>
+        </div>
+      </CardHeader>
+      <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
+        {(props) => (
+          <>
             <Form>
               <CardBody className={styles.body}>
                 {wordsIndexes.map(({ formName, labelNumber }) => (
@@ -113,7 +110,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
                 <Button
                   className={styles.sendButton}
                   type='submit'
-                  isLoading={props.isSubmitting}
+                  isLoading={props.isSubmitting && !isEmptyFieldsModalOpen}
                   colorScheme='blue'
                   variant='solid'
                   size='md'
@@ -123,36 +120,17 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
                 </Button>
               </CardFooter>
             </Form>
-          )}
-        </Formik>
-      </Card>
 
-      <Modal isOpen={isEmptyFieldsModalOpen} onClose={closeEmptyFieldsModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Empty fields</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody paddingTop={0} paddingBottom={0}>
-            <Divider marginBottom='12px' />
-
-            <Text align='justify'>
-              You have left some fields blank. Are you sure you would like to
-              submit these as part of your entry?
-            </Text>
-            <Divider marginTop='12px' />
-          </ModalBody>
-
-          <ModalFooter>
-            <HStack>
-              <Button onClick={closeEmptyFieldsModal}>Cancel</Button>
-              <Button onClick={onModalSubmit} colorScheme='blue' size='md'>
-                Submit
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+            <ConfirmModal
+              isOpen={isEmptyFieldsModalOpen}
+              isSubmitting={props.isSubmitting}
+              onClose={closeEmptyFieldsModal}
+              onSubmit={() => onModalSubmit(props)}
+            />
+          </>
+        )}
+      </Formik>
+    </Card>
   );
 };
 
