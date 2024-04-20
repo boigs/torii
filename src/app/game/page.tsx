@@ -13,6 +13,7 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
+import Scoring from 'src/components/Scoring';
 import WordsInput from 'src/components/WordsInput';
 import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
@@ -86,7 +87,21 @@ const Game: React.FC = () => {
               onSubmit={sendWordsMessage}
             />
           )}
-          {state.matches('playersSendingWordSubmission') && <>TODO</>}
+          {state.matches('playersSendingWordSubmission') &&
+            (() => {
+              const round = state.context.rounds.at(-1)!;
+              const player = state.context.players.find(
+                (player) => player.nickname === round.score.currentPlayer
+              )!;
+              return (
+                <Scoring
+                  className={classNames()}
+                  player={player}
+                  submittedWords={round.playerWords[player.nickname]}
+                  currentVotingWord={round.score.currentWord}
+                />
+              );
+            })()}
           <JoinedPlayersList
             className={classNames(
               [styles.joinedPlayersList],

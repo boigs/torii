@@ -11,13 +11,13 @@ import {
 
 import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
-import { Player } from 'src/domain';
+import { Player, Word } from 'src/domain';
 
 import styles from './Scoring.module.scss';
 
 type ScoringProps = {
   player: Player;
-  submittedWords: string[];
+  submittedWords: Word[];
   currentVotingWord: string;
   className?: string;
 };
@@ -28,7 +28,7 @@ const Scoring: React.FC<ScoringProps> = ({
   currentVotingWord,
 }) => {
   const currentVotingWordIndex = submittedWords.findIndex(
-    (word) => word === currentVotingWord
+    (word) => word.word === currentVotingWord
   );
 
   return (
@@ -56,7 +56,7 @@ const Scoring: React.FC<ScoringProps> = ({
               <Input
                 readOnly={true}
                 className={styles.wordInput}
-                value={submittedWord}
+                value={submittedWord.word}
               />
             </Skeleton>
           </InputGroup>
