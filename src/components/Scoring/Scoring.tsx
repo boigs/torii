@@ -44,8 +44,8 @@ const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
     >
       <VStack>
         {submittedWords.map((submittedWord, index) => (
-          <InputGroup key={index} className={styles.inputGroup}>
-            <InputLeftAddon>{index + 1}.</InputLeftAddon>
+          <InputGroup key={index}>
+            <InputLeftAddon className={styles.wordInputLeftAddon}>{index + 1}.</InputLeftAddon>
             <Skeleton
               className={styles.skeleton}
               startColor='gray.300'
