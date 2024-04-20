@@ -84,7 +84,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
       <VStack>
         <Text align='center'>
           Great! Please wait while the rest of the players finish their
-          submission.
+          submissions.
         </Text>
         <Spinner
           thickness='4px'
