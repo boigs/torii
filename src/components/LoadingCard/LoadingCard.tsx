@@ -6,7 +6,9 @@ import styles from './LoadingCard.module.scss';
 
 const LoadingCard: React.FC = () => (
   <Card header='Loading...'>
-    <Text className={styles.loadingText}>Loading, please wait...</Text>
+    <Text align='center' className={styles.loadingText}>
+      Loading, please wait...
+    </Text>
     <Center>
       <Spinner
         thickness='4px'
