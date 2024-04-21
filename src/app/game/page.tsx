@@ -84,7 +84,13 @@ const Game = () => {
                   ? styles.wordsInputPlaying
                   : null
               )}
-              word={state.context.rounds.at(-1)!.word}
+              player={
+                state.context.players.find(
+                  ({ nickname }) => nickname === state.context.nickname
+                )!
+              }
+              // as players submit their words, the round is updated
+              round={state.context.rounds.at(-1)!}
               onSubmit={sendWordsMessage}
             />
           )}
@@ -100,7 +106,7 @@ const Game = () => {
                 round={state.context.rounds.at(-1)!}
                 player={
                   state.context.players.find(
-                    (player) => player.nickname === state.context.nickname
+                    ({ nickname }) => nickname === state.context.nickname
                   )!
                 }
               />
