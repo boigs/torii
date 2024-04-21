@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
 import JoinForm from '../JoinForm';
@@ -38,11 +38,16 @@ describe('JoinForm...', () => {
     const nicknameInput = screen.getByPlaceholderText('Nickname');
     const joinButton = screen.getByRole('button');
 
-    await act(async () => {
-      fireEvent.change(gameIdInput, { target: { value: 'any-id' } });
-      fireEvent.change(nicknameInput, { target: { value: 'any-nickname' } });
-      fireEvent.click(joinButton);
-    });
+    await act(
+      async () =>
+        await waitFor(() => {
+          fireEvent.change(gameIdInput, { target: { value: 'any-id' } });
+          fireEvent.change(nicknameInput, {
+            target: { value: 'any-nickname' },
+          });
+          fireEvent.click(joinButton);
+        })
+    );
 
     expect(onSubmit).toHaveBeenCalledWith({
       gameId: 'any-id',
@@ -57,10 +62,15 @@ describe('JoinForm...', () => {
     const nicknameInput = screen.getByPlaceholderText('Nickname');
     const joinButton = screen.getByRole('button');
 
-    await act(async () => {
-      fireEvent.change(nicknameInput, { target: { value: 'any-nickname' } });
-      fireEvent.click(joinButton);
-    });
+    await act(
+      async () =>
+        await waitFor(() => {
+          fireEvent.change(nicknameInput, {
+            target: { value: 'any-nickname' },
+          });
+          fireEvent.click(joinButton);
+        })
+    );
 
     expect(onSubmit).toHaveBeenCalledWith({
       gameId: 'any-id',

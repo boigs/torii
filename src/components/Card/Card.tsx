@@ -10,13 +10,13 @@ import {
 
 import styles from './Card.module.scss';
 
-type CardProps = {
+interface CardProps {
   header?: ReactNode;
   className?: string;
   children?: ReactNode;
-};
+}
 
-const Card: React.FC<CardProps> = ({ header, className, children }) => {
+function Card({ header, className, children }: CardProps) {
   return (
     <ChakraCard size='sm' className={className}>
       <CardHeader>
@@ -28,6 +28,6 @@ const Card: React.FC<CardProps> = ({ header, className, children }) => {
       <CardBody className={styles.body}>{children}</CardBody>
     </ChakraCard>
   );
-};
+}
 
 export default Card;

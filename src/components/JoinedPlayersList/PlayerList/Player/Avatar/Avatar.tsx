@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
@@ -9,15 +9,15 @@ import { Player } from 'src/domain';
 
 import styles from './Avatar.module.scss';
 
-export type AvatarProps = {
+export interface AvatarProps {
   player: Player;
   size?: number;
   crownClassName?: string;
-};
+}
 
 const DEFAULT_CROWN_SIZE = 32;
 
-const Avatar: React.FC<AvatarProps> = ({ player, size, crownClassName }) => {
+function Avatar({ player, size, crownClassName }: AvatarProps) {
   const avatar: string = useMemo(
     () =>
       createAvatar(thumbs, {
@@ -50,6 +50,6 @@ const Avatar: React.FC<AvatarProps> = ({ player, size, crownClassName }) => {
       ) : null}
     </div>
   );
-};
+}
 
 export default Avatar;

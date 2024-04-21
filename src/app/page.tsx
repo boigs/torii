@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Context } from 'src/components/ContextProvider';
 import CreateGameForm from 'src/components/CreateGameForm';
 
-const Home: React.FC = () => {
+function Home() {
   const router = useRouter();
   const { gameActor } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -31,6 +31,6 @@ const Home: React.FC = () => {
       />
     </Center>
   );
-};
+}
 
 export default Home;

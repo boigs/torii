@@ -1,15 +1,35 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "project": true
+  },
+  // Recommended TS rules https://typescript-eslint.io/users/configs/#recommended-configurations
+  // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
+  // Vitest rules https://www.npmjs.com/package/eslint-plugin-vitest
+  // Disable rules that are unnecessarry or might conflict with Prettier https://github.com/prettier/eslint-config-prettier
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "vitest"],
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:vitest/recommended",
-    "next/core-web-vitals",
+    "plugin:@next/next/core-web-vitals",
+    // It is important for prettier to be the last, so that it can disable any previous rule
     "prettier"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "vitest": {
+      // This ensures that rules like expect-expect account for type-related assertions in tests.
+      "typecheck": true
+    }
+  },
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "error",

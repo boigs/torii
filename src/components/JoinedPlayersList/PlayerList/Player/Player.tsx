@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import classNames from 'classnames';
 
@@ -9,11 +7,11 @@ import Avatar from './Avatar';
 
 import styles from './Player.module.scss';
 
-type PlayerProps = {
+interface PlayerProps {
   player: Player;
-};
+}
 
-const Player: React.FC<PlayerProps> = ({ player }) => {
+function Player({ player }: PlayerProps) {
   const disconnected = !player.isConnected;
 
   return (
@@ -35,7 +33,7 @@ const Player: React.FC<PlayerProps> = ({ player }) => {
       </Flex>
     </Tooltip>
   );
-};
+}
 
 export default Player;
 export type { PlayerProps };

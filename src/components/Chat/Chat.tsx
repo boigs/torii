@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 
 import {
   Button,
@@ -13,7 +13,7 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import { Player } from 'src/domain';
@@ -23,28 +23,23 @@ import Message from './Message';
 
 import styles from './Chat.module.scss';
 
-export type Message = {
+export interface Message {
   sender: string;
   content: string;
-};
+}
 
-type ChatProps = {
+interface ChatProps {
   messages: Message[];
   players: Player[];
   onSubmit: (text: string) => Promise<void>;
   className?: string;
-};
+}
 
-type FormValues = {
+interface FormValues {
   text: string;
-};
+}
 
-const Chat: React.FC<ChatProps> = ({
-  messages,
-  players,
-  onSubmit,
-  className,
-}) => {
+function Chat({ messages, players, onSubmit, className }: ChatProps) {
   const container = useRef<HTMLDivElement | null>(null);
 
   const scroll = () => {
@@ -99,7 +94,7 @@ const Chat: React.FC<ChatProps> = ({
           }}
           onSubmit={onFormSubmit}
         >
-          {(props) => (
+          {(props: FormikProps<FormValues>) => (
             <Form className={styles.chatForm}>
               <Flex className={styles.chatControls}>
                 <FormControl>
@@ -132,6 +127,6 @@ const Chat: React.FC<ChatProps> = ({
       </CardFooter>
     </Card>
   );
-};
+}
 
 export default Chat;

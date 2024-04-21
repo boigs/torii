@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Link } from '@chakra-ui/next-js';
 import {
   Button,
@@ -16,25 +14,21 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
-type FormValues = {
+interface FormValues {
   nickname: string;
-};
+}
 
-type HostFormProps = {
+interface HostFormProps {
   loading: boolean;
-  onSubmit: (value: HostFormValues) => void;
-};
+  onSubmit: (value: FormValues) => void;
+}
 
-type HostFormValues = {
-  nickname: string;
-};
-
-const CreateGameForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
-  const onFormSubmit = async (values: FormValues) =>
+function CreateGameForm({ loading, onSubmit }: HostFormProps) {
+  const onFormSubmit = (values: FormValues) =>
     onSubmit({ nickname: values.nickname });
 
   return (
@@ -50,7 +44,7 @@ const CreateGameForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
         }}
         onSubmit={onFormSubmit}
       >
-        {(props) => (
+        {(props: FormikProps<FormValues>) => (
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>
@@ -98,6 +92,6 @@ const CreateGameForm: React.FC<HostFormProps> = ({ loading, onSubmit }) => {
       </Formik>
     </Card>
   );
-};
+}
 
 export default CreateGameForm;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -20,17 +20,13 @@ import { Player } from 'src/domain';
 
 import styles from './JoinedPlayersList.module.scss';
 
-type WaitingLobbyProps = {
+interface WaitingLobbyProps {
   gameId: string;
   players: Player[];
   className?: string;
-};
+}
 
-const JoinedPlayersList: React.FC<WaitingLobbyProps> = ({
-  gameId,
-  players,
-  className,
-}) => {
+function JoinedPlayersList({ gameId, players, className }: WaitingLobbyProps) {
   const [joinUrl, setJoinUrl] = useState<string>('');
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
@@ -73,6 +69,6 @@ const JoinedPlayersList: React.FC<WaitingLobbyProps> = ({
       </CardFooter>
     </Card>
   );
-};
+}
 
 export default JoinedPlayersList;

@@ -10,67 +10,67 @@ import {
   HeadcrabState,
 } from 'src/websocket/in';
 
-type CreateGameEvent = {
+interface CreateGameEvent {
   type: 'CREATE_GAME';
   value: {
     nickname: string;
   };
-};
+}
 
-type JoinGameEvent = {
+interface JoinGameEvent {
   type: 'JOIN_GAME';
   value: {
     gameId: string;
     nickname: string;
   };
-};
+}
 
-type GameJoinedEvent = {
+interface GameJoinedEvent {
   type: 'GAME_JOINED';
-};
+}
 
-type ErrorMessageEvent = {
+interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
   value: {
     message: HeadcrabError;
   };
-};
+}
 
-type ChatMessageEvent = {
+interface ChatMessageEvent {
   type: 'CHAT_MESSAGE';
   value: {
     message: ChatMessage;
   };
-};
+}
 
-type GameStateMessageEvent = {
+interface GameStateMessageEvent {
   type: 'GAME_STATE_MESSAGE';
   value: {
     message: GameState;
   };
-};
+}
 
-type WebsocketConnectErrorEvent = {
+interface WebsocketConnectErrorEvent {
   type: 'WEBSOCKET_CONNECT_ERROR';
-};
+}
 
-type ResetEvent = {
+interface ResetEvent {
   type: 'RESET';
-};
+}
 
-type ChangedToLobby = {
+interface ChangedToLobby {
   type: 'CHANGED_TO_LOBBY';
-};
+}
 
-type ChangedToPlayersWritingWords = {
+interface ChangedToPlayersWritingWords {
   type: 'CHANGED_TO_PLAYERS_WRITING_WORDS';
-};
+}
 
-type ChangedToPlayersSubmittingWord = {
+interface ChangedToPlayersSubmittingWord {
   type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORD';
-};
+}
 
-type Context = {
+interface Context {
   gameId: string;
   nickname: string;
   players: Player[];
@@ -79,7 +79,7 @@ type Context = {
   gameJoined: boolean;
   messages: ChatMessage[];
   headcrabState?: HeadcrabState;
-};
+}
 
 const defaultContext: Context = {
   gameId: '',
@@ -129,7 +129,7 @@ const gameFsm = setup({
     }),
     assignGameState: assign(({ event }) => {
       assertEvent(event, 'GAME_STATE_MESSAGE');
-      const { players, rounds, state } = event.value.message as GameState;
+      const { players, rounds, state } = event.value.message;
       return {
         players,
         rounds,
@@ -145,7 +145,7 @@ const gameFsm = setup({
     resetContext: assign(() => defaultContext),
     addChatMessage: assign(({ context, event }) => {
       assertEvent(event, 'CHAT_MESSAGE');
-      const { sender, content } = event.value.message as ChatMessage;
+      const { sender, content } = event.value.message;
       return {
         messages: [...context.messages, { sender, content }],
       };
@@ -153,7 +153,7 @@ const gameFsm = setup({
   },
   guards: {},
   actors: {
-    createGame: fromPromise<string>(async () => {
+    createGame: fromPromise<string>(() => {
       throw new Error('Not implemented');
     }),
   },

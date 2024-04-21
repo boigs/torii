@@ -11,11 +11,11 @@ import {
 
 import styles from './Lobby.module.scss';
 
-type LobbyProps = {
+interface LobbyProps {
   className?: string;
-};
+}
 
-const Lobby: React.FC<LobbyProps> = ({ className }) => {
+function Lobby({ className }: LobbyProps) {
   return (
     <Card size='sm' className={className}>
       <CardHeader>
@@ -40,6 +40,6 @@ const Lobby: React.FC<LobbyProps> = ({ className }) => {
       </CardBody>
     </Card>
   );
-};
+}
 
 export default Lobby;

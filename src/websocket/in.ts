@@ -15,15 +15,15 @@ export enum HeadCrabErrorType {
   UnprocessableMessage = 'UNPROCESSABLE_WEBSOCKET_MESSAGE',
 }
 
-export type MessageTypeIn = {
+export interface MessageTypeIn {
   kind: WsTypeIn;
-};
+}
 
-export type HeadcrabError = {
+export interface HeadcrabError {
   type: HeadCrabErrorType;
   title: string;
   detail: string;
-};
+}
 
 export enum HeadcrabState {
   LOBBY = 'Lobby',
@@ -31,16 +31,16 @@ export enum HeadcrabState {
   PLAYERS_SENDING_WORD_SUBMISSION = 'PlayersSendingWordSubmission',
 }
 
-export type GameState = {
+export interface GameState {
   players: Player[];
   rounds: Round[];
   state: HeadcrabState;
-};
+}
 
-export type ChatMessage = {
+export interface ChatMessage {
   sender: string;
   content: string;
-};
+}
 
 export type WsMessageIn = MessageTypeIn &
   (GameState | HeadcrabError | ChatMessage);

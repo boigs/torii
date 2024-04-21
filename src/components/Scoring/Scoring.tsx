@@ -15,13 +15,13 @@ import { Player, Round } from 'src/domain';
 
 import styles from './Scoring.module.scss';
 
-type ScoringProps = {
+interface ScoringProps {
   round: Round;
   players: Player[];
   className?: string;
-};
+}
 
-const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
+function Scoring({ round, players }: ScoringProps) {
   const player = players.find(
     (player) => player.nickname === round.score.currentPlayer
   )!;
@@ -65,6 +65,6 @@ const Scoring: React.FC<ScoringProps> = ({ round, players }) => {
       </VStack>
     </Card>
   );
-};
+}
 
 export default Scoring;

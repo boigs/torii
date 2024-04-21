@@ -14,13 +14,13 @@ import { Player, Round } from 'src/domain';
 
 import styles from './MyWords.module.scss';
 
-type MyWordsProps = {
+interface MyWordsProps {
   round: Round;
   player: Player;
   className?: string;
-};
+}
 
-const MyWords: React.FC<MyWordsProps> = ({ round, player }) => {
+function MyWords({ round, player }: MyWordsProps) {
   const submittedWords = round.playerWords[player.nickname];
 
   return round.score.currentPlayer === player.nickname ? null : (
@@ -48,6 +48,6 @@ const MyWords: React.FC<MyWordsProps> = ({ round, player }) => {
       </VStack>
     </Card>
   );
-};
+}
 
 export default MyWords;

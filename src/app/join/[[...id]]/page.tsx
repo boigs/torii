@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
@@ -8,13 +8,13 @@ import { useRouter } from 'next/navigation';
 import { Context } from 'src/components/ContextProvider';
 import JoinForm from 'src/components/JoinForm/JoinForm';
 
-type JoinQuery = {
+interface JoinQuery {
   params: {
     id?: string[]; // single optional path params are not supported yet by NextJS
   };
-};
+}
 
-const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
+function Join({ params: { id } }: JoinQuery) {
   const router = useRouter();
   const { gameActor } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -39,6 +39,6 @@ const Join: React.FC<JoinQuery> = ({ params: { id } }) => {
       />
     </Center>
   );
-};
+}
 
 export default Join;

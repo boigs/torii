@@ -22,14 +22,16 @@ import {
 } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
-type ContextType = {
+interface ContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
-};
+}
 
 export const Context = createContext<ContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
-  sendWebsocketMessage: () => {},
+  sendWebsocketMessage: () => {
+    throw new Error('Not implemented');
+  },
 });
 
 const UNKNOWN_WS_ERROR: UseToastOptions = {
@@ -108,7 +110,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const message: WsMessageIn = JSON.parse(lastMessage.data);
+      const message = JSON.parse(lastMessage.data as string) as WsMessageIn;
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
       switch (message.kind) {

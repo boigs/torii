@@ -1,10 +1,10 @@
 import RoundScore from './roundScore';
 import Word from './word';
 
-type Round = {
+interface Round {
   word: string;
-  playerWords: { [nickname: string]: Word[] };
+  playerWords: Record<string, Word[]>;
   score: RoundScore;
-};
+}
 
 export default Round;

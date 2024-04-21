@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { HStack, Text } from '@chakra-ui/react';
 
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
@@ -7,12 +5,12 @@ import { Player } from 'src/domain';
 
 import styles from './Message.module.scss';
 
-export type MessageProps = {
+export interface MessageProps {
   sender: Player;
   content: string;
-};
+}
 
-const Message: React.FC<MessageProps> = ({ sender, content }) => {
+function Message({ sender, content }: MessageProps) {
   return (
     <>
       <HStack className={styles.messageContainer}>
@@ -26,6 +24,6 @@ const Message: React.FC<MessageProps> = ({ sender, content }) => {
       </HStack>
     </>
   );
-};
+}
 
 export default Message;

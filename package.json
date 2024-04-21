@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "format": "prettier --write \"**/*.{js,ts,tsx,json,css,scss,yaml,yml,webmanifest,mts,md}\"",
-    "lint": "next lint && prettier --check .",
+    "lint": "npx eslint . && prettier --check .",
     "precommit": "lint-staged",
     "start": "next start -p 8080",
     "test": "vitest"
@@ -39,6 +39,7 @@
     "xstate": "5.11.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "14.2.2",
     "@testing-library/jest-dom": "6.4.2",
     "@testing-library/react": "14.2.2",
     "@trivago/prettier-plugin-sort-imports": "4.3.0",
@@ -52,6 +53,7 @@
     "eslint-config-next": "14.1.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-react": "7.34.1",
+    "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-vitest": "0.4.1",
     "husky": "9.0.11",
     "jsdom": "24.0.0",
