@@ -83,6 +83,15 @@ const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
   }
 };
 
+const shouldShowErrorToast = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.WebsocketClosed:
+      return false;
+    default:
+      return true;
+  }
+};
+
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
   const gameActor = useActor(
@@ -138,13 +147,16 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         case WsTypeIn.Error:
           {
             const errorMessage = message as HeadcrabError;
-            toast({
-              status: 'error',
-              isClosable: true,
-              duration: 5000,
-              description: headcrabErrorToString(errorMessage),
-              position: 'top',
-            });
+
+            if (shouldShowErrorToast(errorMessage.type)) {
+              toast({
+                status: 'error',
+                isClosable: true,
+                duration: 5000,
+                description: headcrabErrorToString(errorMessage),
+                position: 'top',
+              });
+            }
 
             if (shouldEndGameAfterError(errorMessage.type)) {
               // this event makes the FSM go to the "disconnected" state
