@@ -62,6 +62,36 @@ const createGame: () => Promise<string> = () =>
     .then((response) => response.json())
     .then((response) => (response as { id: string }).id);
 
+const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.GameDoesNotExist:
+      return true;
+    case HeadCrabErrorType.PlayerAlreadyExists:
+      return true;
+    case HeadCrabErrorType.NotEnoughPlayers:
+      return false;
+    case HeadCrabErrorType.Internal:
+      return true;
+    case HeadCrabErrorType.UnprocessableMessage:
+      return false;
+    case HeadCrabErrorType.WebsocketClosed:
+      return false; // because we want to attempt reconnecting
+    case HeadCrabErrorType.CommandNotAllowed:
+      return false;
+    case HeadCrabErrorType.RepeatedWords:
+      return false;
+  }
+};
+
+const shouldShowErrorToast = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.WebsocketClosed:
+      return false;
+    default:
+      return true;
+  }
+};
+
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
   const gameActor = useActor(
@@ -117,20 +147,22 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         case WsTypeIn.Error:
           {
             const errorMessage = message as HeadcrabError;
-            toast({
-              status: 'error',
-              isClosable: true,
-              duration: 5000,
-              description: headcrabErrorToString(errorMessage),
-              position: 'top',
-            });
-            if (
-              errorMessage.type !== HeadCrabErrorType.UnprocessableMessage &&
-              errorMessage.type !== HeadCrabErrorType.NotEnoughPlayers
-            ) {
+
+            if (shouldShowErrorToast(errorMessage.type)) {
+              toast({
+                status: 'error',
+                isClosable: true,
+                duration: 5000,
+                description: headcrabErrorToString(errorMessage),
+                position: 'top',
+              });
+            }
+
+            if (shouldEndGameAfterError(errorMessage.type)) {
+              // this event makes the FSM go to the "disconnected" state
               send({
                 type: 'ERROR_MESSAGE',
-                value: { message: message as HeadcrabError },
+                value: { message: errorMessage },
               });
             }
           }

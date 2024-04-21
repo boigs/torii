@@ -45,6 +45,7 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
+    "@typescript-eslint/switch-exhaustiveness-check": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "prefer-arrow/prefer-arrow-functions": [
