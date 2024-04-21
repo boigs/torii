@@ -10,7 +10,7 @@
   // Recommended TS rules https://typescript-eslint.io/users/configs/#recommended-configurations
   // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
   // Vitest rules https://www.npmjs.com/package/eslint-plugin-vitest
-  // Disable rules that are unnecessarry or might conflict with Prettier https://github.com/prettier/eslint-config-prettier
+  // Disable rules that are unnecessary or might conflict with Prettier https://github.com/prettier/eslint-config-prettier
   "plugins": [
     "@typescript-eslint",
     "react",
@@ -55,7 +55,8 @@
         "classPropertiesAllowed": false
       }
     ],
-    "prefer-arrow-callback": "error"
+    "prefer-arrow-callback": "error",
+    "func-style": ["error", "expression", { "allowArrowFunctions": true }]
   },
   "ignorePatterns": ["*.typegen.ts"]
 }
