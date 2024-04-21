@@ -41,7 +41,7 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordInput = ({ player, round, onSubmit, className }: WordInputProps) => {
+const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
@@ -175,4 +175,4 @@ const WordInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   );
 };
 
-export default WordInput;
+export default WordsInput;
