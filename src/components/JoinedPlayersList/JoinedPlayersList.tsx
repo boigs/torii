@@ -26,7 +26,11 @@ interface WaitingLobbyProps {
   className?: string;
 }
 
-function JoinedPlayersList({ gameId, players, className }: WaitingLobbyProps) {
+const JoinedPlayersList = ({
+  gameId,
+  players,
+  className,
+}: WaitingLobbyProps) => {
   const [joinUrl, setJoinUrl] = useState<string>('');
   const { onCopy, hasCopied } = useClipboard(joinUrl);
 
@@ -69,6 +73,6 @@ function JoinedPlayersList({ gameId, players, className }: WaitingLobbyProps) {
       </CardFooter>
     </Card>
   );
-}
+};
 
 export default JoinedPlayersList;

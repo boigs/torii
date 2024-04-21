@@ -14,7 +14,7 @@ interface JoinQuery {
   };
 }
 
-function Join({ params: { id } }: JoinQuery) {
+const Join = ({ params: { id } }: JoinQuery) => {
   const router = useRouter();
   const { gameActor } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -39,6 +39,6 @@ function Join({ params: { id } }: JoinQuery) {
       />
     </Center>
   );
-}
+};
 
 export default Join;

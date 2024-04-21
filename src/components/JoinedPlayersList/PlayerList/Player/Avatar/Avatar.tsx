@@ -17,7 +17,7 @@ export interface AvatarProps {
 
 const DEFAULT_CROWN_SIZE = 32;
 
-function Avatar({ player, size, crownClassName }: AvatarProps) {
+const Avatar = ({ player, size, crownClassName }: AvatarProps) => {
   const avatar: string = useMemo(
     () =>
       createAvatar(thumbs, {
@@ -50,6 +50,6 @@ function Avatar({ player, size, crownClassName }: AvatarProps) {
       ) : null}
     </div>
   );
-}
+};
 
 export default Avatar;

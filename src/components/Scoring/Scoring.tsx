@@ -21,7 +21,7 @@ interface ScoringProps {
   className?: string;
 }
 
-function Scoring({ round, players }: ScoringProps) {
+const Scoring = ({ round, players }: ScoringProps) => {
   const player = players.find(
     (player) => player.nickname === round.score.currentPlayer
   )!;
@@ -65,6 +65,6 @@ function Scoring({ round, players }: ScoringProps) {
       </VStack>
     </Card>
   );
-}
+};
 
 export default Scoring;

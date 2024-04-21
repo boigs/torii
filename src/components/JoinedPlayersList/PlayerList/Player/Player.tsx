@@ -11,7 +11,7 @@ interface PlayerProps {
   player: Player;
 }
 
-function Player({ player }: PlayerProps) {
+const Player = ({ player }: PlayerProps) => {
   const disconnected = !player.isConnected;
 
   return (
@@ -33,7 +33,7 @@ function Player({ player }: PlayerProps) {
       </Flex>
     </Tooltip>
   );
-}
+};
 
 export default Player;
 export type { PlayerProps };

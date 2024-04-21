@@ -39,7 +39,7 @@ interface FormValues {
   text: string;
 }
 
-function Chat({ messages, players, onSubmit, className }: ChatProps) {
+const Chat = ({ messages, players, onSubmit, className }: ChatProps) => {
   const container = useRef<HTMLDivElement | null>(null);
 
   const scroll = () => {
@@ -127,6 +127,6 @@ function Chat({ messages, players, onSubmit, className }: ChatProps) {
       </CardFooter>
     </Card>
   );
-}
+};
 
 export default Chat;

@@ -10,7 +10,7 @@ interface AnimatedParentProps {
   className?: string;
 }
 
-function AnimatedParent({ children, className }: AnimatedParentProps) {
+const AnimatedParent = ({ children, className }: AnimatedParentProps) => {
   const [parent] = useAutoAnimate();
 
   return (
@@ -18,6 +18,6 @@ function AnimatedParent({ children, className }: AnimatedParentProps) {
       {children}
     </div>
   );
-}
+};
 
 export default AnimatedParent;

@@ -26,7 +26,7 @@ import {
 
 import styles from './page.module.scss';
 
-function Game() {
+const Game = () => {
   const router = useRouter();
   const { gameActor, sendWebsocketMessage } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -129,6 +129,6 @@ function Game() {
       )}
     </Center>
   );
-}
+};
 
 export default Game;

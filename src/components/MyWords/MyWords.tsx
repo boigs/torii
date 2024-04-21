@@ -20,7 +20,7 @@ interface MyWordsProps {
   className?: string;
 }
 
-function MyWords({ round, player }: MyWordsProps) {
+const MyWords = ({ round, player }: MyWordsProps) => {
   const submittedWords = round.playerWords[player.nickname];
 
   return round.score.currentPlayer === player.nickname ? null : (
@@ -48,6 +48,6 @@ function MyWords({ round, player }: MyWordsProps) {
       </VStack>
     </Card>
   );
-}
+};
 
 export default MyWords;

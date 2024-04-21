@@ -31,7 +31,7 @@ interface FormValues {
   amountOfRounds: number;
 }
 
-function HostLobby({ onSubmit, className }: HostLobbyProps) {
+const HostLobby = ({ onSubmit, className }: HostLobbyProps) => {
   const onFormSubmit = (values: FormValues) => {
     onSubmit({ amountOfRounds: values.amountOfRounds });
   };
@@ -104,7 +104,7 @@ function HostLobby({ onSubmit, className }: HostLobbyProps) {
       </Formik>
     </Card>
   );
-}
+};
 
 export type { HostLobbyValues };
 export default HostLobby;

@@ -27,7 +27,7 @@ interface HostFormProps {
   onSubmit: (value: FormValues) => void;
 }
 
-function CreateGameForm({ loading, onSubmit }: HostFormProps) {
+const CreateGameForm = ({ loading, onSubmit }: HostFormProps) => {
   const onFormSubmit = (values: FormValues) =>
     onSubmit({ nickname: values.nickname });
 
@@ -92,6 +92,6 @@ function CreateGameForm({ loading, onSubmit }: HostFormProps) {
       </Formik>
     </Card>
   );
-}
+};
 
 export default CreateGameForm;

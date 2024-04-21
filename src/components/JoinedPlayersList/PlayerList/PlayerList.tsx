@@ -8,13 +8,13 @@ interface PlayerListProps {
 }
 
 const PlayerList = ({ players }: PlayerListProps) => (
-    <List spacing='12px'>
-      {players.map((player) => (
-        <ListItem key={player.nickname}>
-          <PlayerComponent player={player} />
-        </ListItem>
-      ))}
-    </List>
-  );
+  <List spacing='12px'>
+    {players.map((player) => (
+      <ListItem key={player.nickname}>
+        <PlayerComponent player={player} />
+      </ListItem>
+    ))}
+  </List>
+);
 
 export default PlayerList;

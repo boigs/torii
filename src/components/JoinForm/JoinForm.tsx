@@ -34,7 +34,7 @@ interface FormValues {
   nickname: string;
 }
 
-function JoinForm({ gameId, loading, onSubmit }: JoinFormProps) {
+const JoinForm = ({ gameId, loading, onSubmit }: JoinFormProps) => {
   const onFormSubmit = (values: FormValues) => {
     const { nickname, gameId } = values;
     onSubmit?.({ nickname, gameId });
@@ -120,6 +120,6 @@ function JoinForm({ gameId, loading, onSubmit }: JoinFormProps) {
       </Formik>
     </Card>
   );
-}
+};
 
 export default JoinForm;

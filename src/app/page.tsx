@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Context } from 'src/components/ContextProvider';
 import CreateGameForm from 'src/components/CreateGameForm';
 
-function Home() {
+const Home = () => {
   const router = useRouter();
   const { gameActor } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -31,6 +31,6 @@ function Home() {
       />
     </Center>
   );
-}
+};
 
 export default Home;
