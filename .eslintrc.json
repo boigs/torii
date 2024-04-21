@@ -2,7 +2,10 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": true
+    "project": true,
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   // Recommended TS rules https://typescript-eslint.io/users/configs/#recommended-configurations
   // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
@@ -35,7 +38,9 @@
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
-    ]
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   },
   "ignorePatterns": ["*.typegen.ts"]
 }
