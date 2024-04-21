@@ -27,6 +27,7 @@
     "plugin:react/jsx-runtime",
     "plugin:vitest/recommended",
     // Manually add the next linter https://nextjs.org/docs/pages/building-your-application/configuring/eslint#recommended-plugin-ruleset
+    "plugin:@next/next/recommended",
     "plugin:@next/next/core-web-vitals",
     // It is important for prettier to be the last, so that it can disable any previous rule
     "prettier"
@@ -45,6 +46,7 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
+    "@typescript-eslint/consistent-type-assertions": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "prefer-arrow/prefer-arrow-functions": [
@@ -57,6 +59,5 @@
     ],
     "prefer-arrow-callback": "error",
     "func-style": ["error", "expression", { "allowArrowFunctions": true }]
-  },
-  "ignorePatterns": ["*.typegen.ts"]
+  }
 }
