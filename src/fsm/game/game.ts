@@ -12,17 +12,13 @@ import {
 
 interface CreateGameEvent {
   type: 'CREATE_GAME';
-  value: {
-    nickname: string;
-  };
+  nickname: string;
 }
 
 interface JoinGameEvent {
   type: 'JOIN_GAME';
-  value: {
-    gameId: string;
-    nickname: string;
-  };
+  gameId: string;
+  nickname: string;
 }
 
 interface GameJoinedEvent {
@@ -31,23 +27,17 @@ interface GameJoinedEvent {
 
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
-  value: {
-    message: HeadcrabError;
-  };
+  message: HeadcrabError;
 }
 
 interface ChatMessageEvent {
   type: 'CHAT_MESSAGE';
-  value: {
-    message: ChatMessage;
-  };
+  message: ChatMessage;
 }
 
 interface GameStateMessageEvent {
   type: 'GAME_STATE_MESSAGE';
-  value: {
-    message: GameState;
-  };
+  message: GameState;
 }
 
 interface WebsocketConnectErrorEvent {
@@ -112,7 +102,7 @@ const gameFsm = setup({
     assignNickname: assign(({ event }) => {
       assertEvent(event, 'CREATE_GAME');
       return {
-        nickname: event.value.nickname,
+        nickname: event.nickname,
       };
     }),
     assignGameId: assign((_, params: { gameId: string }) => {
@@ -123,13 +113,13 @@ const gameFsm = setup({
     assignNicknameAndGameId: assign(({ event }) => {
       assertEvent(event, 'JOIN_GAME');
       return {
-        gameId: event.value.gameId,
-        nickname: event.value.nickname,
+        gameId: event.gameId,
+        nickname: event.nickname,
       };
     }),
     assignGameState: assign(({ event }) => {
       assertEvent(event, 'GAME_STATE_MESSAGE');
-      const { players, rounds, state } = event.value.message;
+      const { players, rounds, state } = event.message;
       return {
         players,
         rounds,
@@ -145,7 +135,7 @@ const gameFsm = setup({
     resetContext: assign(() => defaultContext),
     addChatMessage: assign(({ context, event }) => {
       assertEvent(event, 'CHAT_MESSAGE');
-      const { sender, content } = event.value.message;
+      const { sender, content } = event.message;
       return {
         messages: [...context.messages, { sender, content }],
       };

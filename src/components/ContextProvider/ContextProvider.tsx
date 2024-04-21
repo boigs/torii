@@ -162,7 +162,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               // this event makes the FSM go to the "disconnected" state
               send({
                 type: 'ERROR_MESSAGE',
-                value: { message: errorMessage },
+                message: message as HeadcrabError,
               });
             }
           }
@@ -171,7 +171,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           const gameState = message as GameState;
           send({
             type: 'GAME_STATE_MESSAGE',
-            value: { message: gameState },
+            message: gameState,
           });
           if (state.context.headcrabState !== gameState.state) {
             switch (gameState.state) {
@@ -192,7 +192,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           const { sender, content } = message as ChatMessage;
           send({
             type: 'CHAT_MESSAGE',
-            value: { message: { sender, content } },
+            message: { content, sender },
           });
           break;
         }

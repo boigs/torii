@@ -25,9 +25,7 @@ const Home = () => {
     <Center>
       <CreateGameForm
         loading={!state.matches('disconnected')}
-        onSubmit={({ nickname }) =>
-          send({ type: 'CREATE_GAME', value: { nickname } })
-        }
+        onSubmit={({ nickname }) => send({ type: 'CREATE_GAME', nickname })}
       />
     </Center>
   );
