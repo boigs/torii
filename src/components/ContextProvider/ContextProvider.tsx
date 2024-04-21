@@ -75,7 +75,7 @@ const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
     case HeadCrabErrorType.UnprocessableMessage:
       return false;
     case HeadCrabErrorType.WebsocketClosed:
-      return false;
+      return false; // because we want to attempt reconnecting
     case HeadCrabErrorType.CommandNotAllowed:
       return false;
     case HeadCrabErrorType.RepeatedWords:
