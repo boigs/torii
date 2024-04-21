@@ -5,6 +5,8 @@
 
 .skeleton {
   width: 100%;
+  border-top-right-radius: var(--input-border-radius);
+  border-bottom-right-radius: var(--input-border-radius);
 
   .wordInput {
     border-top-left-radius: 0;

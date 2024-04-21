@@ -23,6 +23,7 @@ import Image from 'next/image';
 
 import CustomCard from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
+import { Player, Round } from 'src/domain';
 import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
@@ -30,7 +31,8 @@ import ConfirmModal from './ConfirmModal';
 import styles from './WordsInput.module.scss';
 
 interface WordInputProps {
-  word: string;
+  player: Player;
+  round: Round;
   onSubmit: (words: string[]) => Promise<void>;
   className?: string;
 }
@@ -39,14 +41,13 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
+const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
     onOpen: openEmptyFieldsModal,
     onClose: closeEmptyFieldsModal,
   } = useDisclosure();
-
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
     labelNumber: number,
     formName: `word${number}`,
@@ -55,6 +56,8 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
     {}
   );
+  const word = round.word;
+  const areWordsValid = !!round.playerWords[player.nickname] ?? false;
 
   const onFormSubmit = async (formValues: FormValues) => {
     const words = Object.entries(formValues)
@@ -82,7 +85,7 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
     setDoneSubmitting(true);
   };
 
-  return isDoneSubmitting ? (
+  return isDoneSubmitting && areWordsValid ? (
     <CustomCard
       header={
         <Center gap='4px'>
@@ -172,4 +175,4 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
   );
 };
 
-export default WordInput;
+export default WordsInput;
