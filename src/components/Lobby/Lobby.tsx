@@ -15,8 +15,7 @@ interface LobbyProps {
   className?: string;
 }
 
-function Lobby({ className }: LobbyProps) {
-  return (
+const Lobby = ({ className }: LobbyProps) => (
     <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
@@ -40,6 +39,5 @@ function Lobby({ className }: LobbyProps) {
       </CardBody>
     </Card>
   );
-}
 
 export default Lobby;

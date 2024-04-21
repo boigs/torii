@@ -4,8 +4,7 @@ import Card from 'src/components/Card';
 
 import styles from './LoadingCard.module.scss';
 
-function LoadingCard() {
-  return (
+const LoadingCard = () => (
     <Card header='Loading...'>
       <Text align='center' className={styles.loadingText}>
         Loading, please wait...
@@ -21,6 +20,5 @@ function LoadingCard() {
       </Center>
     </Card>
   );
-}
 
 export default LoadingCard;

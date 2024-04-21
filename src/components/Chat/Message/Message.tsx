@@ -10,8 +10,7 @@ export interface MessageProps {
   content: string;
 }
 
-function Message({ sender, content }: MessageProps) {
-  return (
+const Message = ({ sender, content }: MessageProps) => (
     <>
       <HStack className={styles.messageContainer}>
         <div className={styles.avatar}>
@@ -24,6 +23,5 @@ function Message({ sender, content }: MessageProps) {
       </HStack>
     </>
   );
-}
 
 export default Message;

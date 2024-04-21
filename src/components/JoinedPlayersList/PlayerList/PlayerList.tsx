@@ -7,8 +7,7 @@ interface PlayerListProps {
   players: Player[];
 }
 
-function PlayerList({ players }: PlayerListProps) {
-  return (
+const PlayerList = ({ players }: PlayerListProps) => (
     <List spacing='12px'>
       {players.map((player) => (
         <ListItem key={player.nickname}>
@@ -17,6 +16,5 @@ function PlayerList({ players }: PlayerListProps) {
       ))}
     </List>
   );
-}
 
 export default PlayerList;

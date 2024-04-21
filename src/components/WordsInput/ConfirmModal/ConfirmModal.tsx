@@ -19,12 +19,12 @@ export interface ConfirmModalProps {
   onClose?: () => void;
 }
 
-function ConfirmModal({
+const ConfirmModal = ({
   isOpen,
   isSubmitting,
   onSubmit,
   onClose,
-}: ConfirmModalProps) {
+}: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen ?? false} onClose={() => onClose?.()}>
       <ModalOverlay />
@@ -57,6 +57,6 @@ function ConfirmModal({
       </ModalContent>
     </Modal>
   );
-}
+};
 
 export default ConfirmModal;

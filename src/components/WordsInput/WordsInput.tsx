@@ -36,7 +36,7 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-function WordInput({ word, onSubmit, className }: WordInputProps) {
+const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
@@ -160,6 +160,6 @@ function WordInput({ word, onSubmit, className }: WordInputProps) {
       </Formik>
     </Card>
   );
-}
+};
 
 export default WordInput;

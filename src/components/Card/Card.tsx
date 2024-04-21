@@ -16,8 +16,7 @@ interface CardProps {
   children?: ReactNode;
 }
 
-function Card({ header, className, children }: CardProps) {
-  return (
+const Card = ({ header, className, children }: CardProps) => (
     <ChakraCard size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
@@ -28,6 +27,5 @@ function Card({ header, className, children }: CardProps) {
       <CardBody className={styles.body}>{children}</CardBody>
     </ChakraCard>
   );
-}
 
 export default Card;
