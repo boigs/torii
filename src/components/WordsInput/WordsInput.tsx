@@ -57,7 +57,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     {}
   );
   const word = round.word;
-  const areWordsValid = round.playerWords[player.nickname] ?? false;
+  const areWordsValid = !!round.playerWords[player.nickname] ?? false;
 
   const onFormSubmit = async (formValues: FormValues) => {
     const words = Object.entries(formValues)
