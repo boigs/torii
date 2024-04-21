@@ -76,6 +76,10 @@ const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
       return false;
     case HeadCrabErrorType.WebsocketClosed:
       return false;
+    case HeadCrabErrorType.CommandNotAllowed:
+      return false;
+    case HeadCrabErrorType.RepeatedWords:
+      return false;
   }
 };
 

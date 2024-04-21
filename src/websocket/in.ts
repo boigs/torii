@@ -14,6 +14,8 @@ export enum HeadCrabErrorType {
   Internal = 'INTERNAL_SERVER',
   UnprocessableMessage = 'UNPROCESSABLE_WEBSOCKET_MESSAGE',
   WebsocketClosed = 'WEBSOCKET_CLOSED',
+  RepeatedWords = 'REPEATED_WORDS',
+  CommandNotAllowed = 'COMMAND_NOT_ALLOWED',
 }
 
 export interface MessageTypeIn {
