@@ -62,6 +62,23 @@ const createGame: () => Promise<string> = () =>
     .then((response) => response.json())
     .then((response) => (response as { id: string }).id);
 
+const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.GameDoesNotExist:
+      return true;
+    case HeadCrabErrorType.PlayerAlreadyExists:
+      return true;
+    case HeadCrabErrorType.NotEnoughPlayers:
+      return false;
+    case HeadCrabErrorType.Internal:
+      return true;
+    case HeadCrabErrorType.UnprocessableMessage:
+      return false;
+    case HeadCrabErrorType.WebsocketClosed:
+      return false;
+  }
+};
+
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
   const gameActor = useActor(
@@ -124,13 +141,12 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               description: headcrabErrorToString(errorMessage),
               position: 'top',
             });
-            if (
-              errorMessage.type !== HeadCrabErrorType.UnprocessableMessage &&
-              errorMessage.type !== HeadCrabErrorType.NotEnoughPlayers
-            ) {
+
+            if (shouldEndGameAfterError(errorMessage.type)) {
+              // this event makes the FSM go to the "disconnected" state
               send({
                 type: 'ERROR_MESSAGE',
-                value: { message: message as HeadcrabError },
+                value: { message: errorMessage },
               });
             }
           }

@@ -13,6 +13,7 @@ export enum HeadCrabErrorType {
   NotEnoughPlayers = 'NOT_ENOUGH_PLAYERS',
   Internal = 'INTERNAL_SERVER',
   UnprocessableMessage = 'UNPROCESSABLE_WEBSOCKET_MESSAGE',
+  WebsocketClosed = 'WEBSOCKET_CLOSED',
 }
 
 export interface MessageTypeIn {
