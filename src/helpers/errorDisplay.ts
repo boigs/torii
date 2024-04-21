@@ -12,8 +12,10 @@ export const headcrabErrorToString = (error: HeadcrabError): string => {
       return 'This action cannot be processed at this moment.';
     case HeadCrabErrorType.RepeatedWords:
       return 'You cannot submit the same word more than once.';
+    case HeadCrabErrorType.CommandNotAllowed:
+      return 'You cannot perform that action.';
     case HeadCrabErrorType.Internal:
-    default:
+    case HeadCrabErrorType.WebsocketClosed:
       return 'Unknown error. Please contact support.';
   }
 };
