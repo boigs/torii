@@ -46,7 +46,6 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/consistent-type-assertions": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "prefer-arrow/prefer-arrow-functions": [
