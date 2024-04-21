@@ -1,3 +1,13 @@
+.pleaseWaitContainer {
+
+  .pleaseWaitText {
+    text-align: center;
+    // https://stackoverflow.com/a/36092670
+    min-width: 100%;
+    width: 0;
+  }
+}
+
 .instructions {
   margin-left: 4px;
   margin-right: 4px;
