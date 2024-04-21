@@ -21,6 +21,7 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import CustomCard from 'src/components/Card';
+import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
 
@@ -151,8 +152,9 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
               isSubmitting={props.isSubmitting}
               onClose={closeEmptyFieldsModal}
               onSubmit={() => {
-                const handler = async () => await onModalSubmit(props);
-                handler().catch((error) => console.error(error));
+                onModalSubmit(props).catch((error) =>
+                  logger.error(error, 'ConfirmModal submit')
+                );
               }}
             />
           </>

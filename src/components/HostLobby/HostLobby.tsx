@@ -16,6 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
 
+import logger from 'src/logger';
+
 import styles from './HostLobby.module.scss';
 
 interface HostLobbyValues {
@@ -73,9 +75,11 @@ const HostLobby = ({ onSubmit, className }: HostLobbyProps) => {
                       keepWithinRange={true}
                       clampValueOnBlur={true}
                       onChange={(val) => {
-                        const handler = async () =>
-                          await form.setFieldValue(field.name, Number(val));
-                        handler().catch((error) => console.error(error));
+                        form
+                          .setFieldValue(field.name, Number(val))
+                          .catch((error) =>
+                            logger.error(error, 'set amountOfRounds')
+                          );
                       }}
                     >
                       <NumberInputField />
