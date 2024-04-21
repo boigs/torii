@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Button,
   Card,
@@ -10,11 +12,15 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  Spinner,
   Text,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
+
+import CustomCard from 'src/components/Card';
 
 import ConfirmModal from './ConfirmModal';
 
@@ -31,6 +37,7 @@ type FormValues = Record<string, string>;
 const NUM_INPUTS = 8;
 
 function WordInput({ word, onSubmit, className }: WordInputProps) {
+  const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
     onOpen: openEmptyFieldsModal,
@@ -56,6 +63,7 @@ function WordInput({ word, onSubmit, className }: WordInputProps) {
       openEmptyFieldsModal();
     } else {
       await onSubmit(words);
+      setDoneSubmitting(true);
     }
   };
 
@@ -68,9 +76,26 @@ function WordInput({ word, onSubmit, className }: WordInputProps) {
     await onSubmit(words);
     closeEmptyFieldsModal();
     formikProps.setSubmitting(false);
+    setDoneSubmitting(true);
   };
 
-  return (
+  return isDoneSubmitting ? (
+    <CustomCard header='Cool 😎'>
+      <VStack>
+        <Text align='center'>
+          Great! Please wait while the rest of the players finish their
+          submissions.
+        </Text>
+        <Spinner
+          thickness='4px'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+          speed='1.75s'
+        />
+      </VStack>
+    </CustomCard>
+  ) : (
     <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>

@@ -7,7 +7,9 @@ import styles from './LoadingCard.module.scss';
 function LoadingCard() {
   return (
     <Card header='Loading...'>
-      <Text className={styles.loadingText}>Loading, please wait...</Text>
+      <Text align='center' className={styles.loadingText}>
+        Loading, please wait...
+      </Text>
       <Center>
         <Spinner
           thickness='4px'
