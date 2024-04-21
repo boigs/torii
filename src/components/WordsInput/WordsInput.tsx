@@ -12,7 +12,6 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -21,6 +20,7 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import CustomCard from 'src/components/Card';
+import Spinner from 'src/components/Spinner';
 import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
@@ -87,13 +87,7 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
           Great! Please wait while the rest of the players finish their
           submissions.
         </Text>
-        <Spinner
-          thickness='4px'
-          emptyColor='gray.200'
-          color='blue.500'
-          size='xl'
-          speed='1.75s'
-        />
+        <Spinner />
       </VStack>
     </CustomCard>
   ) : (
