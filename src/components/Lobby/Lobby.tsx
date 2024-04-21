@@ -5,9 +5,10 @@ import {
   Center,
   Divider,
   Heading,
-  Spinner,
   Text,
 } from '@chakra-ui/react';
+
+import Spinner from 'src/components/Spinner';
 
 import styles from './Lobby.module.scss';
 
@@ -28,13 +29,7 @@ const Lobby = ({ className }: LobbyProps) => (
         Please wait until the host starts the game.
       </Text>
       <Center>
-        <Spinner
-          thickness='4px'
-          emptyColor='gray.200'
-          color='blue.500'
-          size='xl'
-          speed='1.75s'
-        />
+        <Spinner />
       </Center>
     </CardBody>
   </Card>
