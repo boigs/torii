@@ -6,6 +6,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Center,
   Divider,
   FormControl,
   Heading,
@@ -18,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
+import Image from 'next/image';
 
 import CustomCard from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
@@ -81,11 +83,23 @@ const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
   };
 
   return isDoneSubmitting ? (
-    <CustomCard header='Cool 😎'>
-      <VStack>
-        <Text align='center'>
-          Great! Please wait while the rest of the players finish their
-          submissions.
+    <CustomCard
+      header={
+        <Center gap='4px'>
+          <div>Done</div>
+          <Image
+            style={{ marginBottom: '-2px' }}
+            src='/svg/check.svg'
+            alt='check'
+            width='24'
+            height='24'
+          />
+        </Center>
+      }
+    >
+      <VStack className={styles.pleaseWaitContainer}>
+        <Text className={styles.pleaseWaitText}>
+          Please wait while the rest of the players finish their submissions.
         </Text>
         <Spinner />
       </VStack>
