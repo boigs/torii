@@ -5,13 +5,12 @@ import { ReactNode } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import classNames from 'classnames';
 
-const AnimatedParent = ({
-  children,
-  className,
-}: {
+interface AnimatedParentProps {
   children: ReactNode;
   className?: string;
-}) => {
+}
+
+const AnimatedParent = ({ children, className }: AnimatedParentProps) => {
   const [parent] = useAutoAnimate();
 
   return (

@@ -1,14 +1,14 @@
-export type StartGameOptions = {
+export interface StartGameOptions {
   amountOfRounds: number;
-};
+}
 
-export type PlayerWordSubmission = {
+export interface PlayerWordSubmission {
   word: string;
-};
+}
 
-export type WsMessageOut = {
+export interface WsMessageOut {
   kind: string;
-};
+}
 
 export const startGameMessage: (options: StartGameOptions) => WsMessageOut = (
   options

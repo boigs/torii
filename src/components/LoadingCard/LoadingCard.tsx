@@ -4,7 +4,7 @@ import Card from 'src/components/Card';
 
 import styles from './LoadingCard.module.scss';
 
-const LoadingCard: React.FC = () => (
+const LoadingCard = () => (
   <Card header='Loading...'>
     <Text align='center' className={styles.loadingText}>
       Loading, please wait...

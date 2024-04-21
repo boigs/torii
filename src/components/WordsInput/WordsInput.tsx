@@ -21,20 +21,23 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import CustomCard from 'src/components/Card';
+import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
 
 import styles from './WordsInput.module.scss';
 
-type WordInputProps = {
+interface WordInputProps {
   word: string;
   onSubmit: (words: string[]) => Promise<void>;
   className?: string;
-};
+}
+
+type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
+const WordInput = ({ word, onSubmit, className }: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
@@ -51,7 +54,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     {}
   );
 
-  const onFormSubmit = async (formValues: { [key: string]: string }) => {
+  const onFormSubmit = async (formValues: FormValues) => {
     const words = Object.entries(formValues)
       .sort(([key1], [key2]) => key1.localeCompare(key2))
       .map(([_, word]) => word);
@@ -65,9 +68,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
     }
   };
 
-  const onModalSubmit = async (
-    formikProps: FormikProps<{ [key: string]: string }>
-  ) => {
+  const onModalSubmit = async (formikProps: FormikProps<FormValues>) => {
     const words = Object.entries(formikProps.values)
       .sort(([key1], [key2]) => key1.localeCompare(key2))
       .map(([_, word]) => word);
@@ -110,7 +111,7 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
         </div>
       </CardHeader>
       <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
-        {(props) => (
+        {(props: FormikProps<FormValues>) => (
           <>
             <Form>
               <CardBody className={styles.body}>
@@ -150,7 +151,11 @@ const WordInput: React.FC<WordInputProps> = ({ word, onSubmit, className }) => {
               isOpen={isEmptyFieldsModalOpen}
               isSubmitting={props.isSubmitting}
               onClose={closeEmptyFieldsModal}
-              onSubmit={() => onModalSubmit(props)}
+              onSubmit={() => {
+                onModalSubmit(props).catch((error) =>
+                  logger.error(error, 'ConfirmModal submit')
+                );
+              }}
             />
           </>
         )}

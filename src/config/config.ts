@@ -1,8 +1,8 @@
-type Configuration = {
+interface Configuration {
   environment: Environment;
   headcrabHttpBaseUrl: string;
   headcrabWsBaseUrl: string;
-};
+}
 
 enum Environment {
   DEV = 'dev',

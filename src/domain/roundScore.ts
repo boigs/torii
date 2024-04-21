@@ -1,7 +1,7 @@
-type RoundScore = {
+interface RoundScore {
   currentPlayer: string;
   currentWord: string;
-  playerWordSubmission: { [nickname: string]: string };
-};
+  playerWordSubmission: Record<string, string>;
+}
 
 export default RoundScore;

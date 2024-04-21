@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
 import classNames from 'classnames';
@@ -26,7 +26,7 @@ import {
 
 import styles from './page.module.scss';
 
-const Game: React.FC = () => {
+const Game = () => {
   const router = useRouter();
   const { gameActor, sendWebsocketMessage } = useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
@@ -40,7 +40,7 @@ const Game: React.FC = () => {
     }
   }, [state, send, router]);
 
-  const sendGameStartMessage = async (values: HostLobbyValues) => {
+  const sendGameStartMessage = (values: HostLobbyValues) => {
     logger.debug({ values }, 'sending start message');
     sendWebsocketMessage(startGameMessage(values));
   };

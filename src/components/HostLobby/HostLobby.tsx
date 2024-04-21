@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Button,
   Card,
@@ -18,23 +16,25 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
 
+import logger from 'src/logger';
+
 import styles from './HostLobby.module.scss';
 
-type HostLobbyValues = {
+interface HostLobbyValues {
   amountOfRounds: number;
-};
+}
 
-type HostLobbyProps = {
+interface HostLobbyProps {
   onSubmit: (values: HostLobbyValues) => void;
   className?: string;
-};
+}
 
-type FormValues = {
+interface FormValues {
   amountOfRounds: number;
-};
+}
 
-const HostLobby: React.FC<HostLobbyProps> = ({ onSubmit, className }) => {
-  const onFormSubmit = async (values: FormValues) => {
+const HostLobby = ({ onSubmit, className }: HostLobbyProps) => {
+  const onFormSubmit = (values: FormValues) => {
     onSubmit({ amountOfRounds: values.amountOfRounds });
   };
 
@@ -74,9 +74,13 @@ const HostLobby: React.FC<HostLobbyProps> = ({ onSubmit, className }) => {
                       max={5}
                       keepWithinRange={true}
                       clampValueOnBlur={true}
-                      onChange={(val) =>
-                        form.setFieldValue(field.name, Number(val))
-                      }
+                      onChange={(val) => {
+                        form
+                          .setFieldValue(field.name, Number(val))
+                          .catch((error) =>
+                            logger.error(error, 'set amountOfRounds')
+                          );
+                      }}
                     >
                       <NumberInputField />
                       <NumberInputStepper>

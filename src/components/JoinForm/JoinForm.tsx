@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Link } from '@chakra-ui/next-js';
 import {
   Button,
@@ -16,28 +14,28 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikProps } from 'formik';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
-type JoinFormProps = {
+interface JoinFormProps {
   gameId?: string;
   loading?: boolean;
   onSubmit?: (value: JoinFormValues) => void;
-};
+}
 
-type JoinFormValues = {
+interface JoinFormValues {
   nickname: string;
   gameId: string;
-};
+}
 
-type FormValues = {
+interface FormValues {
   gameId: string;
   nickname: string;
-};
+}
 
-const JoinForm: React.FC<JoinFormProps> = ({ gameId, loading, onSubmit }) => {
-  const onFormSubmit = async (values: FormValues) => {
+const JoinForm = ({ gameId, loading, onSubmit }: JoinFormProps) => {
+  const onFormSubmit = (values: FormValues) => {
     const { nickname, gameId } = values;
     onSubmit?.({ nickname, gameId });
   };
@@ -56,7 +54,7 @@ const JoinForm: React.FC<JoinFormProps> = ({ gameId, loading, onSubmit }) => {
         }}
         onSubmit={onFormSubmit}
       >
-        {(props) => (
+        {(props: FormikProps<FormValues>) => (
           <Form>
             <CardBody>
               <Flex flexDirection='column' gap='12px'>

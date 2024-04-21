@@ -26,7 +26,7 @@ runs:
 
     - name: Run Tests
       shell: bash
-      run: npm test
+      run: npm run test
 
     - name: Set Node version variable
       id: node-version

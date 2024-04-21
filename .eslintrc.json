@@ -1,20 +1,62 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "parserOptions": {
+    "project": true,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  // Recommended TS rules https://typescript-eslint.io/users/configs/#recommended-configurations
+  // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
+  // Vitest rules https://www.npmjs.com/package/eslint-plugin-vitest
+  // Disable rules that are unnecessary or might conflict with Prettier https://github.com/prettier/eslint-config-prettier
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "vitest",
+    "prefer-arrow"
+  ],
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:vitest/recommended",
-    "next/core-web-vitals",
+    // Manually add the next linter https://nextjs.org/docs/pages/building-your-application/configuring/eslint#recommended-plugin-ruleset
+    "plugin:@next/next/core-web-vitals",
+    // It is important for prettier to be the last, so that it can disable any previous rule
     "prettier"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "vitest": {
+      // This ensures that rules like expect-expect account for type-related assertions in tests.
+      "typecheck": true
+    }
+  },
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
-    ]
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "prefer-arrow/prefer-arrow-functions": [
+      "error",
+      {
+        "disallowPrototype": true,
+        "singleReturnOnly": true,
+        "classPropertiesAllowed": false
+      }
+    ],
+    "prefer-arrow-callback": "error",
+    "func-style": ["error", "expression", { "allowArrowFunctions": true }]
   },
   "ignorePatterns": ["*.typegen.ts"]
 }
