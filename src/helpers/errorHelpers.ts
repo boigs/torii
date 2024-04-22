@@ -14,6 +14,8 @@ export const headcrabErrorToString = (error: HeadcrabError): string => {
       return 'You cannot submit the same word more than once.';
     case HeadCrabErrorType.CommandNotAllowed:
       return 'You cannot perform that action.';
+    case HeadCrabErrorType.GameAlreadyInProgress:
+      return 'You cannot join because the game is already in progress.';
     case HeadCrabErrorType.Internal:
     case HeadCrabErrorType.WebsocketClosed:
       return 'Unknown error. Please contact support.';
@@ -38,6 +40,8 @@ export const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
       return false;
     case HeadCrabErrorType.RepeatedWords:
       return false;
+    case HeadCrabErrorType.GameAlreadyInProgress:
+      return true;
   }
 };
 
