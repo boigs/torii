@@ -72,6 +72,7 @@ const JoinForm = ({ gameId, loading, onSubmit }: JoinFormProps) => {
                       validate={(value: string) =>
                         validateNonEmpty(value, 'Game id')
                       }
+                      data-1p-ignore
                     />
                     <FormErrorMessage>{props.errors.gameId}</FormErrorMessage>
                   </FormControl>
