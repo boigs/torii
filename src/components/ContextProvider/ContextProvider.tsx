@@ -9,7 +9,7 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
-import { headcrabErrorToString } from 'src/helpers/errorDisplay';
+import { headcrabErrorToString } from 'src/helpers/errorHelpers';
 import logger from 'src/logger';
 import {
   ChatMessage,
