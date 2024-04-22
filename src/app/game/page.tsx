@@ -35,7 +35,12 @@ const Game = () => {
     if (state.matches('disconnected')) {
       router.replace('/join');
     }
-    if (state.matches('lobby') && !state.context.gameJoined) {
+    if (
+      (state.matches('lobby') ||
+        state.matches('playersWritingWords') ||
+        state.matches('playersSendingWordSubmission')) &&
+      !state.context.gameJoined
+    ) {
       send({ type: 'GAME_JOINED' });
     }
   }, [state, send, router]);

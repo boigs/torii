@@ -23,7 +23,11 @@ const Join = ({ params: { id } }: JoinQuery) => {
   useEffect(() => {
     if (state.context.gameJoined) {
       send({ type: 'RESET' });
-    } else if (state.matches('lobby')) {
+    } else if (
+      state.matches('lobby') ||
+      state.matches('playersWritingWords') ||
+      state.matches('playersSendingWordSubmission')
+    ) {
       router.push('/game');
     }
   }, [state, send, router]);

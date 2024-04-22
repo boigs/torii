@@ -21,7 +21,7 @@ interface MyWordsProps {
 }
 
 const MyWords = ({ round, player }: MyWordsProps) => {
-  const submittedWords = round.playerWords[player.nickname];
+  const submittedWords = round.playerWords[player.nickname] ?? [];
 
   return round.score.currentPlayer === player.nickname ? null : (
     <Card
