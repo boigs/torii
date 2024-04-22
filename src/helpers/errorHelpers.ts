@@ -19,3 +19,33 @@ export const headcrabErrorToString = (error: HeadcrabError): string => {
       return 'Unknown error. Please contact support.';
   }
 };
+
+export const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.GameDoesNotExist:
+      return true;
+    case HeadCrabErrorType.PlayerAlreadyExists:
+      return true;
+    case HeadCrabErrorType.NotEnoughPlayers:
+      return false;
+    case HeadCrabErrorType.Internal:
+      return true;
+    case HeadCrabErrorType.UnprocessableMessage:
+      return false;
+    case HeadCrabErrorType.WebsocketClosed:
+      return false; // because we want to attempt reconnecting
+    case HeadCrabErrorType.CommandNotAllowed:
+      return false;
+    case HeadCrabErrorType.RepeatedWords:
+      return false;
+  }
+};
+
+export const shouldShowErrorToast = (error: HeadCrabErrorType): boolean => {
+  switch (error) {
+    case HeadCrabErrorType.WebsocketClosed:
+      return false;
+    default:
+      return true;
+  }
+};

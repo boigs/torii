@@ -9,12 +9,15 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import gameFsm from 'src/fsm/game';
-import { headcrabErrorToString } from 'src/helpers/errorHelpers';
+import {
+  headcrabErrorToString,
+  shouldEndGameAfterError,
+  shouldShowErrorToast,
+} from 'src/helpers/errorHelpers';
 import logger from 'src/logger';
 import {
   ChatMessage,
   GameState,
-  HeadCrabErrorType,
   HeadcrabError,
   HeadcrabState,
   WsMessageIn,
@@ -61,36 +64,6 @@ const createGame: () => Promise<string> = () =>
   fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
     .then((response) => response.json())
     .then((response) => (response as { id: string }).id);
-
-const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
-  switch (error) {
-    case HeadCrabErrorType.GameDoesNotExist:
-      return true;
-    case HeadCrabErrorType.PlayerAlreadyExists:
-      return true;
-    case HeadCrabErrorType.NotEnoughPlayers:
-      return false;
-    case HeadCrabErrorType.Internal:
-      return true;
-    case HeadCrabErrorType.UnprocessableMessage:
-      return false;
-    case HeadCrabErrorType.WebsocketClosed:
-      return false; // because we want to attempt reconnecting
-    case HeadCrabErrorType.CommandNotAllowed:
-      return false;
-    case HeadCrabErrorType.RepeatedWords:
-      return false;
-  }
-};
-
-const shouldShowErrorToast = (error: HeadCrabErrorType): boolean => {
-  switch (error) {
-    case HeadCrabErrorType.WebsocketClosed:
-      return false;
-    default:
-      return true;
-  }
-};
 
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
