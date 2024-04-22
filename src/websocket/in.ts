@@ -16,6 +16,7 @@ export enum HeadCrabErrorType {
   WebsocketClosed = 'WEBSOCKET_CLOSED',
   RepeatedWords = 'REPEATED_WORDS',
   CommandNotAllowed = 'COMMAND_NOT_ALLOWED',
+  GameAlreadyInProgress = 'GAME_ALREADY_IN_PROGRESS',
 }
 
 export interface MessageTypeIn {
