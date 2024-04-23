@@ -148,23 +148,33 @@ const gameFsm = setup({
     }),
   },
 }).createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJibcyNeXStlZSTTU15HeMQk3na1K10AZlV9KbtTZVyQTwKfEg42JjpmAIqyKtZOHgF68UaolsRzXWV9I1upqf0781MklKThhFUPjqdnKZDOlVOZlqtvMQjBBcLBMLJCJhJJASn59nRNkw6qEGpFmqAYvprEYrKopjcpvZlOSpndvrTjFYbmTTLonLYcu4VvlIURobD4fhEciICQAFLUACSADkMVsTiEROc8dFEESrCSyRSqTS6do1S8jJZks4ZkkblZBuCeYU+ZgAE5gdDSfBQDjoVBgEgQWRgIwEABuogA1n6HU7ke7PdilREmqrEmNUqZKYtyeYppbFt8ukkOjcbrxeC82cowVyIbajOHnQQ3R6vWB7fbRPajMIADbOgBmrdQ1cdzrAUbAMbCyvjV1imbSs0p1mLT109OLRkWql4VlMk3etNU1q8VYAVqICHWRyQAOpkABCzGoxQA0oE6MVqNLpWRipVKDQKGPcUnAlriTNdU2pcwMyzZRvksVJ9EMLczEmSDdH6A81ihE8z1dC8yjYaUuAAEToAJqDoAAZagbxvABNACJ0uYDEmUKwNTUKZzXMHo7HMKwvn1BB5nGPidXZMl9wrG0fCMbD8HPBsSnKQiyBIsi6AABQothaMoZg6EvChJQCGUOAM2giOYBi4yYxRrkMPMM2sZRBmQ1Rl0E-QkimIxzUcUEt0gwZJLyQ8ZLkhTPSUgjiNI8itJ0vSdgAVRvBhjJMwjzIoIjrIufE7MSSxVCMDj+kBPpkgEhJeg1QxIIGUEbjMVwpLCqEO1EAAjLqtA2eU6AlGVVLylUpz43RdAeUYNzUMZunNHMiweFzLV4Pp3iJakMN5IxOp6vr8JUtT4u03SKH0wzjNM7LLNGoDCuNOqHCSLz1vsJlqrVdbSvmfQ2N0PjXreHaq07dAtCbWBL3tRpXUvVsIFgfrtiGz9ctOHFGIKmI7EmownCec1dBSVRfg8hJ-vaNl1v0bjDFsFJQZk8HIftaHYZdKAEftJHouOuLNLOpLmFS9KAkyszLws+7bJiSxNwJ1NyVsd4BlMb41CmrdeGpDlC30ZmoVZqHmDAfAYXhxHmAAVy61BYQkWQUYONGRsx2N8oTOxflK5wXreRxzF4KZvlBeDWWeMt5jJ943C5fBRAgOB5ErHwzhsnHECsb4khKmxN2JqxOIcWwjb5GE4QRMAkUgDOvanAw82cS0GpTWONEE4qOmeYvkncwHJvLgcI0isB67G5j3PaPcU04yCmvMHNulK-pLAsF4enQtrML5CLcIbCeHvl8ljGLW5aqeVimWXvNBnSDeekBYf9t6o+5euUmjE4ykelsSayxL0EvMPMQJXrmimECXoyRh4m3ZjDOG3NEbwCxpnBMyQxhrgQi9TcvQvoIC8j5Pyedg7zAMMoXQsCuxs1gGbC2dYeYQFtvbR2D1AIf0SE4DUoxg4fBsL3DM3wwFGlmkWd4rE86tTcEAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJirOyMk3STeXiTzU15TK1V9eMQkq2NeXRsAZhHlXjVdc1yQTwKfEg42JjpmAIqyKtZOHgF68UaolsRzc2UrIwX+voNB-VmxhAmko11TLNlN0Hsp9OYVmsNt4ijs9gApagASQAcmQACJ1UINSLNUAxcz6VTmIy8cGzJIOVTU+6mb4TWZGRazKxJIm6Wb9B5Q-IwohGCC4WCYWSETCSSAlPxHOhw84hERXXHRRBEp7DTkc+zKTlA0baRBA4xWCGqWamXROWw5dzrXmFfmC4WisDiyWI1Gy3byy4RJoqhBqowaiGzbW6sHffT6VKWZLOeZvSauW3Qh1GTAAJzA6Gk+CgHHQqDAJAgsjARgIADdRABrCtZnMSwvFrGKv03fF3XgPIyAwY6+4sgffGZ-HsrOxk5SW5SrVP2nwZ7O5ggFoslsCZzOiTNGYQAG1zADNd6hl02wC2wG2wkr-bdYiy0iMw9YybNZrpvmH9H21LwVhDACSRAqoPJeOmABWogEGu14kAA6mQABCzDUMUADSgR0MU1AomixSVJQNAULeOIPl2iQ9qk-amIO5jDvR3yWKk0aAaYZhtPcAIpnkkFLjBcH5ghZRsCiXDonQATUHQAAy1AoShACa5H3p2ih3I8TxqBS9zKDOPasj+KxMuYkxOPMYJmuBC4CcQRhCfg8EbiU5QSRi0myQACnJbDKZQzB0IhFBIgEqIcMFtDoswakdnimmJIYfyMdYiycUMqjfgagagR0-Q0kB9yDLZ-GbA5TkucWbniZJXl0L5-mBfsACqKEMGF4USVFFCYhc2LqQlBKWKoTJmqY9ETUkFhJEk3zAk8hi0vYPFmHxdr2fyB6iAARjtWg1R5UkyQ1fkBRQQUhWFEU9TFcXXENdzEotDhst03TWMkUa9EyX76FY3GsuC61pkuh7oFoW6wIhmaNPmiG7hAsCHXVJ2NedQXMG1HUBF1kWIdF93Ko+liAc8YaAoSIEDHSOXLMGAw6taEJkm4tr4KIEBwPIoPEL6D0BlY9KjTYgFqKovDDqBpUbeVjpCiK+BihKED88TVEGH8ziTLSgLUo4LHUqSsz-ZylK6JOugQXLF6riJG5q5RiVZSSYGAnpcb3KOVipM46QWDGBkTdbfKObBzn28WjsaQSnJTNaC2ftp5je+OE2WAHBl+yH6bbXtCTtgLJMpKNFJhgZtgW3OKc5V+fycW9jGccCyQ52DR6Q5m0Ow3mUAI5mSPR49iQgn20avWLs1RnlfSmJS5iSxbMZW3ZNvg53sDMGA+CCvDiPMAArjtqBChIGkUTHT2PB0Pa9BMnz-Yx3wN0YpOLIMKSsg4bMuEAA */
   context: defaultContext,
+
   initial: 'disconnected',
+
   on: {
     ERROR_MESSAGE: {
       target: '.disconnected',
     },
+
     RESET: {
       target: '.disconnected',
     },
+
     CHAT_MESSAGE: {
       actions: 'addChatMessage',
     },
+
     GAME_STATE_MESSAGE: {
       actions: 'assignGameState',
     },
+
+    GAME_JOINED: {
+      actions: 'setGameJoinedToTrue',
+    },
   },
+
   states: {
     disconnected: {
       entry: 'resetContext',
@@ -208,9 +218,6 @@ const gameFsm = setup({
     },
     lobby: {
       on: {
-        GAME_JOINED: {
-          actions: 'setGameJoinedToTrue',
-        },
         CHANGED_TO_PLAYERS_WRITING_WORDS: {
           target: 'playersWritingWords',
         },
@@ -218,21 +225,12 @@ const gameFsm = setup({
     },
     playersWritingWords: {
       on: {
-        GAME_JOINED: {
-          actions: 'setGameJoinedToTrue',
-        },
         CHANGED_TO_PLAYERS_SUBMITTING_WORD: {
           target: 'playersSendingWordSubmission',
         },
       },
     },
-    playersSendingWordSubmission: {
-      on: {
-        GAME_JOINED: {
-          actions: 'setGameJoinedToTrue',
-        },
-      },
-    },
+    playersSendingWordSubmission: {},
   },
 });
 

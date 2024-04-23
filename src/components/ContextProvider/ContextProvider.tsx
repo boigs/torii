@@ -8,6 +8,7 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
+import { Player } from 'src/domain';
 import gameFsm from 'src/fsm/game';
 import {
   headcrabErrorToString,
@@ -28,11 +29,19 @@ import { WsMessageOut } from 'src/websocket/out';
 interface ContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
+  getPlayer: () => Player | undefined;
+  isInsideOfGame: () => boolean;
 }
 
 export const Context = createContext<ContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
   sendWebsocketMessage: () => {
+    throw new Error('Not implemented');
+  },
+  getPlayer: () => {
+    throw new Error('Not implemented');
+  },
+  isInsideOfGame: () => {
     throw new Error('Not implemented');
   },
 });
@@ -186,6 +195,20 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         gameActor: actorRef,
         sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
+        getPlayer: () => {
+          const context = actorRef.getSnapshot().context;
+          return context.players.find(
+            ({ nickname }) => nickname === context.nickname
+          );
+        },
+        isInsideOfGame: () => {
+          const state = actorRef.getSnapshot();
+          return (
+            state.matches('lobby') ||
+            state.matches('playersWritingWords') ||
+            state.matches('playersSendingWordSubmission')
+          );
+        },
       }}
     >
       {children}
