@@ -28,17 +28,18 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage } = useContext(Context);
+  const { gameActor, sendWebsocketMessage, player, isInsideOfGame } =
+    useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
 
   useEffect(() => {
     if (state.matches('disconnected')) {
       router.replace('/join');
     }
-    if (state.matches('lobby') && !state.context.gameJoined) {
+    if (isInsideOfGame && !state.context.gameJoined) {
       send({ type: 'GAME_JOINED' });
     }
-  }, [state, send, router]);
+  }, [state, send, router, isInsideOfGame]);
 
   const sendGameStartMessage = (values: HostLobbyValues) => {
     logger.debug({ values }, 'sending start message');
@@ -64,9 +65,7 @@ const Game = () => {
         <AnimatedParent className={styles.gameContainerGrid}>
           {state.matches('lobby') && (
             <>
-              {state.context.players.find(
-                ({ nickname }) => state.context.nickname === nickname
-              )?.isHost ? (
+              {player?.isHost ? (
                 <HostLobby
                   className={styles.lobby}
                   onSubmit={sendGameStartMessage}
@@ -84,11 +83,7 @@ const Game = () => {
                   ? styles.wordsInputPlaying
                   : null
               )}
-              player={
-                state.context.players.find(
-                  ({ nickname }) => nickname === state.context.nickname
-                )!
-              }
+              player={player!}
               // as players submit their words, the round is updated
               round={state.context.rounds.at(-1)!}
               onSubmit={sendWordsMessage}
@@ -104,11 +99,7 @@ const Game = () => {
               <MyWords
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
-                player={
-                  state.context.players.find(
-                    ({ nickname }) => nickname === state.context.nickname
-                  )!
-                }
+                player={player!}
               />
             </div>
           )}

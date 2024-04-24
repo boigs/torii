@@ -148,23 +148,33 @@ const gameFsm = setup({
     }),
   },
 }).createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJjzZSTjZX1Ve2UrNSSAZn14xHNdXJBPAp8SDjYmOmYAirIq1k4eAXrxRqiWseVlcyNVJPMrc0HB3UHL-STR2NUT-UHeKwcH3iHdV3cpvlvMQjBBcLBMLJCJhJJASn5VnR5kw6qEGpFmqAYt0rEZPoNxu8nATBl0nqTjJddKpBqZqV1dDkAdNgURQeDIfhobCICQAFLUACSADkkQstiERLsMdFEDi8TTCb0SWTtHL9KlLMlnIMzuMrLx-nkvIU2ZgAE5gdDSfBQDjoVBgEgQWRgIwEABuogA1m6LVbYfbHaipREmrLErw2kZTO9TMoCVcDfGnrorEkjFHdONeLwNfTzJMWaajP7rQQ7Q6nWBzebROajMIADbWgBm9dQpct1rAQbAIbC0vDB1idzSqje9gNbxu5LzMbUH1MVj+QzURaBJYAVqICBW+yQAOpkABCzGoxQA0oE6MVqMLhWRipVKDQKAP0cOsWMo6lY4aE3MJMAKeSxUn0QwrFMMwVyAv4jUBE0fCMHc91tA8yjYYUuAAEToAJqDoAAZagTxPABND8h32b9Ej6XE1EGc42mUOwLkeNUEBuE5jgNYknG6XUNyQkEm1EAAjcStDmcU6AFEUyBwqiwxoxQxnOfQ8WSJIejYrpnFTNMjCYqxaXGCwdN+YSZlEiSpJKcpsMU-DCIABSIthyMoZg6EPChBQCEUOF82gcOYZS9kxNSEDY3FLAgpJLgGZcRk4m4MwcZc9SyfRzHjazWUbFstBrWBD3NRpbUPesIFgBysNwly6HczzvKWABVE8GACwLsJCiglO2NFqKimJGXTU5THjcwHmzbpTHJXQMqmz5zhyvLlDcAF8FECA4HkYsfB2FTRsQKwniSDNxpzcxeGpXhhgQw6QTBCEoTAGFIGOyKIwMDNnANICpt1BwNE4yxVEzYZTOSVRdGzeGCpLMsbUrR1vplEc4ZOUkHGuZiXiA1N+iMZx0gsDUjimpHkNQ-B9yrDGv2iq5bszWwjkS656PMYmM0NcmZqOMmadsySElDH6R21SGmPeI5bHh45ebSpaYweB4rmg9pklFtlm3QErzTKirUeq81aqZ1SxruQZMyuMwTIeaxFozaCkk12kNXOJI9aKw3SuYMB8DBKqauYABXcTUHBCRVM-a29CsFcjFu3LlB+Gx01ShJ0vVj3zi9nXfa2oA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJirOyMk3STeXiTzU15TK1V9eMQkq2NeXRsAZhHlXjVdc1yQTwKfEg42JjpmAIqyKtZOHgF68UaolsRzc2UrIwX+voNB-VmxhAmko11TLNlN0Hsp9OYVmsNt4ijs9gApagASQAcmQACJ1UINSLNUAxcz6VTmIy8cGzJIOVTU+6mb4TWZGRazKxJIm6Wb9B5Q-IwohGCC4WCYWSETCSSAlPxHOhw84hERXXHRRBEp7DTkc+zKTlA0baRBA4xWCGqWamXROWw5dzrXmFfmC4WisDiyWI1Gy3byy4RJoqhBqowaiGzbW6sHffT6VKWZLOeZvSauW3Qh1GTAAJzA6Gk+CgHHQqDAJAgsjARgIADdRABrCtZnMSwvFrGKv03fF3XgPIyAwY6+4sgffGZ-HsrOxk5SW5SrVP2nwZ7O5ggFoslsCZzOiTNGYQAG1zADNd6hl02wC2wG2wkr-bdYiy0iMw9YybNZrpvmH9H21LwVhDACSRAqoPJeOmABWogEGu14kAA6mQABCzDUMUADSgR0MU1AomixSVJQNAULeOIPl2iQ9qk-amIO5jDvR3yWKk0aAaYZhtPcAIpnkkFLjBcH5ghZRsCiXDonQATUHQAAy1AoShACa5H3p2ih3I8TxqBS9zKDOPasj+KxMuYkxOPMYJmuBC4CcQRhCfg8EbiU5QSRi0myQACnJbDKZQzB0IhFBIgEqIcMFtDoswakdnimmJIYfyMdYiycUMqjfgagagR0-Q0kB9yDLZ-GbA5TkucWbniZJXl0L5-mBfsACqKEMGF4USVFFCYhc2LqQlBKWKoTJmqY9ETUkFhJEk3zAk8hi0vYPFmHxdr2fyB6iAARjtWg1R5UkyQ1fkBRQQUhWFEU9TFcXXENdzEotDhst03TWMkUa9EyX76FY3GsuC61pkuh7oFoW6wIhmaNPmiG7hAsCHXVJ2NedQXMG1HUBF1kWIdF93Ko+liAc8YaAoSIEDHSOXLMGAw6taEJkm4tr4KIEBwPIoPEL6D0BlY9KjTYgFqKovDDqBpUbeVjpCiK+BihKED88TVEGH8ziTLSgLUo4LHUqSsz-ZylK6JOugQXLF6riJG5q5RiVZSSYGAnpcb3KOVipM46QWDGBkTdbfKObBzn28WjsaQSnJTNaC2ftp5je+OE2WAHBl+yH6bbXtCTtgLJMpKNFJhgZtgW3OKc5V+fycW9jGccCyQ52DR6Q5m0Ow3mUAI5mSPR49iQgn20avWLs1RnlfSmJS5iSxbMZW3ZNvg53sDMGA+CCvDiPMAArjtqBChIGkUTHT2PB0Pa9BMnz-Yx3wN0YpOLIMKSsg4bMuEAA */
   context: defaultContext,
+
   initial: 'disconnected',
+
   on: {
     ERROR_MESSAGE: {
       target: '.disconnected',
     },
+
     RESET: {
       target: '.disconnected',
     },
+
     CHAT_MESSAGE: {
       actions: 'addChatMessage',
     },
+
     GAME_STATE_MESSAGE: {
       actions: 'assignGameState',
     },
+
+    GAME_JOINED: {
+      actions: 'setGameJoinedToTrue',
+    },
   },
+
   states: {
     disconnected: {
       entry: 'resetContext',
@@ -202,13 +212,12 @@ const gameFsm = setup({
         CHANGED_TO_LOBBY: {
           target: 'lobby',
         },
+        CHANGED_TO_PLAYERS_WRITING_WORDS: 'playersWritingWords',
+        CHANGED_TO_PLAYERS_SUBMITTING_WORD: 'playersSendingWordSubmission',
       },
     },
     lobby: {
       on: {
-        GAME_JOINED: {
-          actions: 'setGameJoinedToTrue',
-        },
         CHANGED_TO_PLAYERS_WRITING_WORDS: {
           target: 'playersWritingWords',
         },
@@ -221,9 +230,7 @@ const gameFsm = setup({
         },
       },
     },
-    playersSendingWordSubmission: {
-      on: {},
-    },
+    playersSendingWordSubmission: {},
   },
 });
 
