@@ -29,8 +29,8 @@ import { WsMessageOut } from 'src/websocket/out';
 interface ContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
-  getPlayer: () => Player | undefined;
-  isInsideOfGame: () => boolean;
+  player: Player | undefined;
+  isInsideOfGame: boolean;
 }
 
 export const Context = createContext<ContextType>({
@@ -38,12 +38,8 @@ export const Context = createContext<ContextType>({
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
-  getPlayer: () => {
-    throw new Error('Not implemented');
-  },
-  isInsideOfGame: () => {
-    throw new Error('Not implemented');
-  },
+  player: undefined,
+  isInsideOfGame: false,
 });
 
 const UNKNOWN_WS_ERROR: UseToastOptions = {
@@ -195,20 +191,16 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         gameActor: actorRef,
         sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
-        getPlayer: () => {
-          const context = actorRef.getSnapshot().context;
-          return context.players.find(
-            ({ nickname }) => nickname === context.nickname
-          );
-        },
-        isInsideOfGame: () => {
-          const state = actorRef.getSnapshot();
-          return (
-            state.matches('lobby') ||
-            state.matches('playersWritingWords') ||
-            state.matches('playersSendingWordSubmission')
-          );
-        },
+        player: actorRef
+          .getSnapshot()
+          .context.players.find(
+            ({ nickname }) =>
+              nickname === actorRef.getSnapshot().context.nickname
+          ),
+        isInsideOfGame:
+          actorRef.getSnapshot().matches('lobby') ||
+          actorRef.getSnapshot().matches('playersWritingWords') ||
+          actorRef.getSnapshot().matches('playersSendingWordSubmission'),
       }}
     >
       {children}

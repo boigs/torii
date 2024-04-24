@@ -23,7 +23,7 @@ const Join = ({ params: { id } }: JoinQuery) => {
   useEffect(() => {
     if (state.context.gameJoined) {
       send({ type: 'RESET' });
-    } else if (isInsideOfGame()) {
+    } else if (isInsideOfGame) {
       router.push('/game');
     }
   }, [state, send, router, isInsideOfGame]);

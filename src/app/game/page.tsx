@@ -28,7 +28,7 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, getPlayer, isInsideOfGame } =
+  const { gameActor, sendWebsocketMessage, player, isInsideOfGame } =
     useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
 
@@ -36,7 +36,7 @@ const Game = () => {
     if (state.matches('disconnected')) {
       router.replace('/join');
     }
-    if (isInsideOfGame() && !state.context.gameJoined) {
+    if (isInsideOfGame && !state.context.gameJoined) {
       send({ type: 'GAME_JOINED' });
     }
   }, [state, send, router, isInsideOfGame]);
@@ -65,7 +65,7 @@ const Game = () => {
         <AnimatedParent className={styles.gameContainerGrid}>
           {state.matches('lobby') && (
             <>
-              {getPlayer()?.isHost ? (
+              {player?.isHost ? (
                 <HostLobby
                   className={styles.lobby}
                   onSubmit={sendGameStartMessage}
@@ -83,7 +83,7 @@ const Game = () => {
                   ? styles.wordsInputPlaying
                   : null
               )}
-              player={getPlayer()!}
+              player={player!}
               // as players submit their words, the round is updated
               round={state.context.rounds.at(-1)!}
               onSubmit={sendWordsMessage}
@@ -99,7 +99,7 @@ const Game = () => {
               <MyWords
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
-                player={getPlayer()!}
+                player={player!}
               />
             </div>
           )}
