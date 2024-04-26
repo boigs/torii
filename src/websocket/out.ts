@@ -30,7 +30,7 @@ export const playerWordsMessage: (words: string[]) => WsMessageOut = (
 });
 
 export const submitPlayerWordForScoringMessage: (
-  word: string
+  word: string | null
 ) => WsMessageOut = (word) => ({
   kind: 'playerWordSubmission',
   word,

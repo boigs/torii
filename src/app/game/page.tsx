@@ -16,12 +16,14 @@ import Lobby from 'src/components/Lobby';
 import MyWords from 'src/components/MyWords';
 import Scoring from 'src/components/Scoring';
 import WordsInput from 'src/components/WordsInput';
+import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
 import logger from 'src/logger';
 import {
   chatMessage,
   playerWordsMessage,
   startGameMessage,
+  submitPlayerWordForScoringMessage,
 } from 'src/websocket/out';
 
 import styles from './page.module.scss';
@@ -55,6 +57,10 @@ const Game = () => {
     logger.debug({ words }, 'sending player words');
     sendWebsocketMessage(playerWordsMessage(words));
     await artificialSleep(350);
+  };
+
+  const sendWordForVoting = (word: Word | null) => {
+    sendWebsocketMessage(submitPlayerWordForScoringMessage(word?.word ?? null));
   };
 
   return (
@@ -100,6 +106,7 @@ const Game = () => {
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
                 player={player!}
+                onWordClicked={sendWordForVoting}
               />
             </div>
           )}
