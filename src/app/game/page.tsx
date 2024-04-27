@@ -15,6 +15,7 @@ import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
 import Scoring from 'src/components/Scoring';
 import VotingCard from 'src/components/VotingCard';
+import VotingSummary from 'src/components/VotingSummary';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -108,6 +109,11 @@ const Game = () => {
                 round={state.context.rounds.at(-1)!}
                 player={player!}
                 onWordClicked={sendWordForVoting}
+              />
+              <VotingSummary
+                round={state.context.rounds.at(-1)!}
+                you={player!}
+                players={state.context.players}
               />
             </div>
           )}
