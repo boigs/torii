@@ -5,7 +5,7 @@ import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 import Card from 'src/components/Card';
 import { Player, Round, Word } from 'src/domain';
 
-import styles from './MyWords.module.scss';
+import styles from './VotingCard.module.scss';
 
 interface MyWordsProps {
   round: Round;
@@ -14,7 +14,7 @@ interface MyWordsProps {
   className?: string;
 }
 
-const MyWords = ({ round, player, onWordClicked }: MyWordsProps) => {
+const VotingCard = ({ round, player, onWordClicked }: MyWordsProps) => {
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [anyButtonClicked, setAnyButtonClicked] = useState(false);
   const submittedWords = round.playerWords[player.nickname] ?? [];
@@ -65,4 +65,4 @@ const MyWords = ({ round, player, onWordClicked }: MyWordsProps) => {
   );
 };
 
-export default MyWords;
+export default VotingCard;

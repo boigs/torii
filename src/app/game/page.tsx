@@ -13,8 +13,8 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
-import MyWords from 'src/components/MyWords';
 import Scoring from 'src/components/Scoring';
+import VotingCard from 'src/components/VotingCard';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -103,7 +103,7 @@ const Game = () => {
                 you={player!}
                 players={state.context.players}
               />
-              <MyWords
+              <VotingCard
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
                 player={player!}
