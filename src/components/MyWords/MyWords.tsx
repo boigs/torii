@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Button, Center, HStack, Text, VStack } from '@chakra-ui/react';
+import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
-import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
 import { Player, Round, Word } from 'src/domain';
+
+import styles from './MyWords.module.scss';
 
 interface MyWordsProps {
   round: Round;
@@ -15,49 +16,50 @@ interface MyWordsProps {
 
 const MyWords = ({ round, player, onWordClicked }: MyWordsProps) => {
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+  const [anyButtonClicked, setAnyButtonClicked] = useState(false);
   const submittedWords = round.playerWords[player.nickname] ?? [];
 
   const onWordButtonClicked = (submittedWord: Word | null) => {
     setSelectedWord(submittedWord);
+    setAnyButtonClicked(true);
     onWordClicked(submittedWord);
   };
 
+  useEffect(() => {
+    setSelectedWord(null);
+    setAnyButtonClicked(false);
+  }, [round.score.currentWord]);
+
   return round.score.currentPlayer === player.nickname ? null : (
-    <Card
-      header={
-        <Center>
-          <HStack>
-            <Avatar player={player} />
-            <Text>{player.nickname}</Text>
-          </HStack>
-        </Center>
-      }
-    >
-      <VStack>
-        <Text>
-          Click the word you think matches
+    <Card header={<Text>Voting Card</Text>}>
+      <VStack className={styles.wordsContainer}>
+        <Text className={styles.votingInstructions}>
+          From the words you submitted, click the word you think matches{' '}
           <i>&quot;{round.score.currentWord}&quot;</i>
         </Text>
-        <HStack>
+        <HStack className={styles.buttonsContainer}>
           {submittedWords.map((submittedWord) => (
             <Button
-              disabled={submittedWord.isUsed}
               key={submittedWord.word}
-              colorScheme='blue'
+              isDisabled={submittedWord.isUsed}
               onClick={() => onWordButtonClicked(submittedWord)}
-              isActive={selectedWord?.word === submittedWord.word}
+              isActive={
+                !submittedWord.isUsed &&
+                selectedWord?.word === submittedWord.word
+              }
+              colorScheme='blue'
             >
               {submittedWord.word}
             </Button>
           ))}
-          <Button
-            isActive={selectedWord === null}
-            colorScheme='gray'
-            onClick={() => onWordButtonClicked(null)}
-          >
-            Skip
-          </Button>
         </HStack>
+        <Button
+          isActive={anyButtonClicked && selectedWord === null}
+          colorScheme='gray'
+          onClick={() => onWordButtonClicked(null)}
+        >
+          Skip
+        </Button>
       </VStack>
     </Card>
   );

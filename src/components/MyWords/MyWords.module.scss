@@ -1,14 +1,13 @@
-.wordInputLeftAddon {
-  width: 45px;
-  justify-content: center;
-}
+.wordsContainer {
+  min-width: 100%;
+  width: 0;
 
-.wordInput {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  .votingInstructions {
+    text-align: center;
+  }
 
-  &:hover,
-  &:focus-visible {
-    border-color: var(--chakra-colors-gray-200);
+  .buttonsContainer {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

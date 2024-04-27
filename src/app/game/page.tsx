@@ -100,6 +100,7 @@ const Game = () => {
               <Scoring
                 className={classNames()}
                 round={state.context.rounds.at(-1)!}
+                you={player!}
                 players={state.context.players}
               />
               <MyWords

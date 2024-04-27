@@ -17,11 +17,12 @@ import styles from './Scoring.module.scss';
 
 interface ScoringProps {
   round: Round;
+  you: Player;
   players: Player[];
   className?: string;
 }
 
-const Scoring = ({ round, players }: ScoringProps) => {
+const Scoring = ({ round, you, players }: ScoringProps) => {
   const player = players.find(
     (player) => player.nickname === round.score.currentPlayer
   )!;
@@ -43,6 +44,11 @@ const Scoring = ({ round, players }: ScoringProps) => {
       }
     >
       <VStack>
+        {you.nickname === player.nickname ? (
+          <Text>These are the words you submitted</Text>
+        ) : (
+          <Text>These are the words submitted by {player.nickname}</Text>
+        )}
         {submittedWords.map((submittedWord, index) => (
           <InputGroup key={index}>
             <InputLeftAddon className={styles.wordInputLeftAddon}>
