@@ -1,5 +1,5 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { CardBody, Flex, List, ListItem, Text } from '@chakra-ui/react';
+import { Button, CardBody, Flex, List, ListItem, Text } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
@@ -49,6 +49,7 @@ const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
             </ListItem>
           ))}
         </List>
+        {you.isHost && <Button>Submit</Button>}
       </CardBody>
     </Card>
   );
