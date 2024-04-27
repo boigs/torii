@@ -1,0 +1,25 @@
+.votingSummaryContainer {
+  padding-top: 0;
+  padding-bottom: 0;
+
+  .votingDescriptionText {
+    text-align: center;
+  }
+
+  .votingWordsList {
+    margin-top: 12px;
+
+    .votingWord {
+      margin-bottom: 12px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .votingWordLine {
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}

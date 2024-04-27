@@ -1,12 +1,15 @@
-import { Spinner as ChakraSpinner } from '@chakra-ui/react';
+import { Spinner as ChakraSpinner, ResponsiveValue } from '@chakra-ui/react';
 
-const Spinner = () => (
+interface SpinnerProps {
+  size?: ResponsiveValue<string>;
+}
+
+const Spinner = ({ size }: SpinnerProps) => (
   <ChakraSpinner
-    width='48px'
     thickness='4px'
     emptyColor='gray.200'
     color='blue.500'
-    size='xl'
+    size={size ?? 'xl'}
     speed='1.75s'
   />
 );
