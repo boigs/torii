@@ -1,6 +1,5 @@
 import {
   Button,
-  CardBody,
   Center,
   Flex,
   List,
@@ -37,54 +36,49 @@ const VotingSummary = ({
 
   return (
     <Card header={<Text>Voting Summary</Text>} className={className}>
-      <CardBody className={styles.votingSummaryContainer}>
-        <Text className={styles.votingDescriptionText}>
-          This is what other players are casting as their vote:
-        </Text>
-        <List className={styles.votingWordsList}>
-          {playersExceptCurrentScorePlayer.map((player) => (
-            <ListItem key={player.nickname} className={styles.votingWord}>
-              <Flex className={styles.votingWordLine}>
-                <PlayerComponent
-                  player={{
-                    ...player,
-                    // I don't want any crown shown in this component
-                    isHost: false,
-                  }}
-                />
-                {!(player.nickname in round.score.playerWordSubmission) ? (
-                  <Tooltip placement='left' hasArrow label='Waiting for vote'>
-                    <Center>
-                      <Spinner size='md' />
-                    </Center>
-                  </Tooltip>
-                ) : round.score.playerWordSubmission[player.nickname] ===
-                  null ? (
-                  <Tooltip placement='left' hasArrow label='Skipped'>
-                    <span className={styles.skippedCross}>
-                      <Image
-                        src='/svg/cross.svg'
-                        alt='skipped'
-                        width='20'
-                        height='20'
-                      />
-                    </span>
-                  </Tooltip>
-                ) : (
-                  <Text>
-                    {round.score.playerWordSubmission[player.nickname]}
-                  </Text>
-                )}
-              </Flex>
-            </ListItem>
-          ))}
-        </List>
-        {you.isHost && (
-          <Button colorScheme='blue' className={styles.acceptBallotButton}>
-            Accept
-          </Button>
-        )}
-      </CardBody>
+      <Text className={styles.votingDescriptionText}>
+        This is what other players are casting as their vote:
+      </Text>
+      <List className={styles.votingWordsList}>
+        {playersExceptCurrentScorePlayer.map((player) => (
+          <ListItem key={player.nickname} className={styles.votingWord}>
+            <Flex className={styles.votingWordLine}>
+              <PlayerComponent
+                player={{
+                  ...player,
+                  // I don't want any crown shown in this component
+                  isHost: false,
+                }}
+              />
+              {!(player.nickname in round.score.playerWordSubmission) ? (
+                <Tooltip placement='left' hasArrow label='Waiting for vote'>
+                  <Center>
+                    <Spinner size='md' />
+                  </Center>
+                </Tooltip>
+              ) : round.score.playerWordSubmission[player.nickname] === null ? (
+                <Tooltip placement='left' hasArrow label='Skipped'>
+                  <span className={styles.skippedCross}>
+                    <Image
+                      src='/svg/cross.svg'
+                      alt='skipped'
+                      width='20'
+                      height='20'
+                    />
+                  </span>
+                </Tooltip>
+              ) : (
+                <Text>{round.score.playerWordSubmission[player.nickname]}</Text>
+              )}
+            </Flex>
+          </ListItem>
+        ))}
+      </List>
+      {you.isHost && (
+        <Button colorScheme='blue' className={styles.acceptBallotButton}>
+          Accept
+        </Button>
+      )}
     </Card>
   );
 };
