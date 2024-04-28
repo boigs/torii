@@ -25,6 +25,10 @@ interface VotingSummaryProps {
 }
 
 const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
+  const playersExceptCurrentScorePlayer = players.filter(
+    ({ nickname }) => nickname !== round.score.currentPlayer
+  );
+
   return (
     <Card header={<Text>Voting Summary</Text>}>
       <CardBody className={styles.votingSummaryContainer}>
@@ -32,7 +36,7 @@ const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
           This is what other players are casting as their vote
         </Text>
         <List className={styles.votingWordsList}>
-          {players.map((player) => (
+          {playersExceptCurrentScorePlayer.map((player) => (
             <ListItem key={player.nickname} className={styles.votingWord}>
               <Flex className={styles.votingWordLine}>
                 <PlayerComponent
