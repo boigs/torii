@@ -21,17 +21,23 @@ interface VotingSummaryProps {
   you: Player;
   players: Player[];
   round: Round;
+  className?: string;
 }
 
-const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
+const VotingSummary = ({
+  you,
+  players,
+  round,
+  className,
+}: VotingSummaryProps) => {
   const playersExceptCurrentScorePlayer = players.filter(
     ({ nickname }) => nickname !== round.score.currentPlayer
   );
 
   return (
-    <Card header={<Text>Voting Summary</Text>}>
+    <Card header={<Text>Voting Summary</Text>} className={className}>
       <Text className={styles.votingDescriptionText}>
-        This is what other players are casting as their vote
+        This is what other players are casting as their vote:
       </Text>
       <List className={styles.votingWordsList}>
         {playersExceptCurrentScorePlayer.map((player) => (

@@ -22,7 +22,7 @@ interface ScoringProps {
   className?: string;
 }
 
-const Scoring = ({ round, you, players }: ScoringProps) => {
+const Scoring = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
     (player) => player.nickname === round.score.currentPlayer
   )!;
@@ -34,6 +34,7 @@ const Scoring = ({ round, you, players }: ScoringProps) => {
 
   return (
     <Card
+      className={className}
       header={
         <Center>
           <HStack>
@@ -44,11 +45,11 @@ const Scoring = ({ round, you, players }: ScoringProps) => {
       }
     >
       <VStack>
-        {you.nickname === player.nickname ? (
-          <Text>These are the words you submitted</Text>
-        ) : (
-          <Text>These are the words submitted by {player.nickname}</Text>
-        )}
+        <Text className={styles.instructions}>
+          {you.nickname === player.nickname
+            ? 'These are the words you submitted:'
+            : `These are the words submitted by ${player.nickname}:`}
+        </Text>
         {submittedWords.map((submittedWord, index) => (
           <InputGroup key={index}>
             <InputLeftAddon className={styles.wordInputLeftAddon}>

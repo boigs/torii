@@ -2,7 +2,7 @@
 
 import { useContext, useEffect } from 'react';
 
-import { Center } from '@chakra-ui/react';
+import { Center, VStack } from '@chakra-ui/react';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 
@@ -97,25 +97,27 @@ const Game = () => {
             />
           )}
           {state.matches('playersSendingWordSubmission') && (
-            <div>
+            // TODO remove this VStack container
+            <VStack spacing='24px'>
               <Scoring
-                className={classNames()}
+                className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.rounds.at(-1)!}
                 you={player!}
                 players={state.context.players}
               />
               <VotingCard
-                className={classNames()}
+                className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.rounds.at(-1)!}
                 player={player!}
                 onWordClicked={sendWordForVoting}
               />
               <VotingSummary
+                className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.rounds.at(-1)!}
                 you={player!}
                 players={state.context.players}
               />
-            </div>
+            </VStack>
           )}
           <JoinedPlayersList
             className={classNames(
