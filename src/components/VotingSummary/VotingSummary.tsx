@@ -1,5 +1,14 @@
-import { CloseIcon } from '@chakra-ui/icons';
-import { Button, CardBody, Flex, List, ListItem, Text } from '@chakra-ui/react';
+import {
+  Button,
+  CardBody,
+  Center,
+  Flex,
+  List,
+  ListItem,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
+import Image from 'next/image';
 
 import Card from 'src/components/Card';
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
@@ -34,12 +43,23 @@ const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
                   }}
                 />
                 {!(player.nickname in round.score.playerWordSubmission) ? (
-                  <Spinner size='md' />
+                  <Tooltip placement='left' hasArrow label='Waiting for vote'>
+                    <Center>
+                      <Spinner size='md' />
+                    </Center>
+                  </Tooltip>
                 ) : round.score.playerWordSubmission[player.nickname] ===
                   null ? (
-                  <Text>
-                    <CloseIcon color='blue.600' />
-                  </Text>
+                  <Tooltip placement='left' hasArrow label='Skipped'>
+                    <span className={styles.skippedCross}>
+                      <Image
+                        src='/svg/cross.svg'
+                        alt='skipped'
+                        width='20'
+                        height='20'
+                      />
+                    </span>
+                  </Tooltip>
                 ) : (
                   <Text>
                     {round.score.playerWordSubmission[player.nickname]}
@@ -49,7 +69,11 @@ const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
             </ListItem>
           ))}
         </List>
-        {you.isHost && <Button>Submit</Button>}
+        {you.isHost && (
+          <Button colorScheme='blue' className={styles.acceptBallotButton}>
+            Accept
+          </Button>
+        )}
       </CardBody>
     </Card>
   );

@@ -19,7 +19,18 @@
       .votingWordLine {
         justify-content: space-between;
         align-items: center;
+
+        .skippedCross {
+          display: flex;
+          justify-content: center;
+          width: 24px;
+        }
       }
     }
+  }
+
+  .acceptBallotButton {
+    margin-top: 16px;
+    width: 100%;
   }
 }
