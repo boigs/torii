@@ -11,7 +11,7 @@ import styles from './Avatar.module.scss';
 
 export interface AvatarProps {
   player: Player;
-  size?: number;
+  size?: 24 | 32;
   crownClassName?: string;
 }
 
@@ -42,7 +42,8 @@ const Avatar = ({ player, size, crownClassName }: AvatarProps) => {
         <img
           className={classNames([
             styles.crownBase,
-            crownClassName ?? styles.defaultCrown,
+            size === 24 ? styles.crown24 : styles.crown32, // add more if needed
+            crownClassName,
           ])}
           src='/svg/crown.svg'
           alt='crown'

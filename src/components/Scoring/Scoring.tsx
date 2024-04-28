@@ -38,7 +38,7 @@ const Scoring = ({ round, you, players, className }: ScoringProps) => {
       header={
         <Center>
           <HStack>
-            <Avatar player={player} />
+            <Avatar size={24} player={player} />
             <Text>{player.nickname}</Text>
           </HStack>
         </Center>
