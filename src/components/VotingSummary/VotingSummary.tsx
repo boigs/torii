@@ -32,7 +32,7 @@ const VotingSummary = ({
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentScorePlayer = players.filter(
-    ({ nickname }) => nickname !== round.score.currentPlayer
+    ({ nickname }) => nickname !== round.votingItem!.playerNickname
   );
 
   return (
@@ -52,14 +52,13 @@ const VotingSummary = ({
                     isHost: false,
                   }}
                 />
-                {!(player.nickname in round.score.playerWordSubmission) ? (
+                {!(player.nickname in round.playerVotingWords) ? (
                   <Tooltip placement='left' hasArrow label='Waiting for vote'>
                     <Center>
                       <Spinner size='md' />
                     </Center>
                   </Tooltip>
-                ) : round.score.playerWordSubmission[player.nickname] ===
-                  null ? (
+                ) : round.playerVotingWords[player.nickname] === null ? (
                   <Tooltip placement='left' hasArrow label='Skipped'>
                     <span className={styles.skippedCross}>
                       <Image
@@ -71,9 +70,7 @@ const VotingSummary = ({
                     </span>
                   </Tooltip>
                 ) : (
-                  <Text>
-                    {round.score.playerWordSubmission[player.nickname]}
-                  </Text>
+                  <Text>{round.playerVotingWords[player.nickname]}</Text>
                 )}
               </Flex>
             </ListItem>

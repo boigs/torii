@@ -31,8 +31,8 @@ export interface HeadcrabError {
 
 export enum HeadcrabState {
   LOBBY = 'Lobby',
-  PLAYERS_WRITING_WORDS = 'PlayersWritingWords',
-  PLAYERS_SENDING_WORD_SUBMISSION = 'PlayersSendingWordSubmission',
+  PLAYERS_SUBMITTING_WORDS = 'PlayersSubmittingWords',
+  PLAYERS_SUBMITTING_VOTING_WORD = 'PlayersSubmittingVotingWord',
 }
 
 export interface GameState {

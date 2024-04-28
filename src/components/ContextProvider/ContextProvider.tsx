@@ -156,11 +156,11 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               case HeadcrabState.LOBBY:
                 send({ type: 'CHANGED_TO_LOBBY' });
                 break;
-              case HeadcrabState.PLAYERS_WRITING_WORDS:
-                send({ type: 'CHANGED_TO_PLAYERS_WRITING_WORDS' });
+              case HeadcrabState.PLAYERS_SUBMITTING_WORDS:
+                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
                 break;
-              case HeadcrabState.PLAYERS_SENDING_WORD_SUBMISSION:
-                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORD' });
+              case HeadcrabState.PLAYERS_SUBMITTING_VOTING_WORD:
+                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
                 break;
             }
           }
@@ -199,8 +199,8 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           ),
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
-          actorRef.getSnapshot().matches('playersWritingWords') ||
-          actorRef.getSnapshot().matches('playersSendingWordSubmission'),
+          actorRef.getSnapshot().matches('playersSubmittingWords') ||
+          actorRef.getSnapshot().matches('playersSubmittingVotingWord'),
       }}
     >
       {children}

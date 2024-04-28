@@ -34,11 +34,11 @@ const VotingCard = ({
   useEffect(() => {
     setSelectedWord(null);
     setAnyButtonClicked(false);
-  }, [round.score.currentWord]);
+  }, [round.votingItem]);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
-      {round.score.currentPlayer === player.nickname ? (
+      {round.votingItem!.playerNickname === player.nickname ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
@@ -50,7 +50,7 @@ const VotingCard = ({
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
             From the words you submitted, click the word you think matches with{' '}
-            <i>{round.score.currentWord}</i>
+            <i>{round.votingItem!.word}</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (
