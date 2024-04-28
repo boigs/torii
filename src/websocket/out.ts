@@ -5,6 +5,7 @@ export interface WsMessageOut {
 export interface StartGameOptions {
   amountOfRounds: number;
 }
+
 export const startGame: (options: StartGameOptions) => WsMessageOut = (
   options
 ) => ({
@@ -15,6 +16,7 @@ export const startGame: (options: StartGameOptions) => WsMessageOut = (
 export interface ChatMessageOptions {
   content: string;
 }
+
 export const chatMessage: (options: ChatMessageOptions) => WsMessageOut = (
   options
 ) => ({
@@ -25,6 +27,7 @@ export const chatMessage: (options: ChatMessageOptions) => WsMessageOut = (
 export interface PlayerWordsOptions {
   words: string[];
 }
+
 export const playerWords: (options: PlayerWordsOptions) => WsMessageOut = (
   options
 ) => ({
@@ -35,6 +38,7 @@ export const playerWords: (options: PlayerWordsOptions) => WsMessageOut = (
 export interface PlayerVotingWordOptions {
   word: string | null;
 }
+
 export const playerVotingWord: (
   options: PlayerVotingWordOptions
 ) => WsMessageOut = (options) => ({
