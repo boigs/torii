@@ -22,7 +22,7 @@ interface ScoringProps {
   className?: string;
 }
 
-const Scoring = ({ round, you, players }: ScoringProps) => {
+const Scoring = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
     (player) => player.nickname === round.score.currentPlayer
   )!;
@@ -34,6 +34,7 @@ const Scoring = ({ round, you, players }: ScoringProps) => {
 
   return (
     <Card
+      className={className}
       header={
         <Center>
           <HStack>
