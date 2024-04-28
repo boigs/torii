@@ -13,7 +13,7 @@ export interface MessageProps {
 const Message = ({ sender, content }: MessageProps) => (
   <HStack className={styles.messageContainer}>
     <div className={styles.avatar}>
-      <Avatar player={sender} size={24} crownClassName={styles.crown} />
+      <Avatar player={sender} size={24} />
     </div>
     <Text className={styles.message}>
       <span className={styles.messageSender}>{sender.nickname}:</span> {content}
