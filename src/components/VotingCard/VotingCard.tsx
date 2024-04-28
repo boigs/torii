@@ -37,15 +37,15 @@ const VotingCard = ({ round, player, onWordClicked }: MyWordsProps) => {
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
-            submitted
+            submitted.
           </Text>
           <Spinner size='lg' />
         </VStack>
       ) : (
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
-            From the words you submitted, click the word you think matches{' '}
-            <i>&quot;{round.score.currentWord}&quot;</i>
+            From the words you submitted, click the word you think matches with{' '}
+            <i>{round.score.currentWord}</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (

@@ -33,7 +33,7 @@ const VotingSummary = ({ you, players, round }: VotingSummaryProps) => {
     <Card header={<Text>Voting Summary</Text>}>
       <CardBody className={styles.votingSummaryContainer}>
         <Text className={styles.votingDescriptionText}>
-          This is what other players are casting as their vote
+          This is what other players are casting as their vote:
         </Text>
         <List className={styles.votingWordsList}>
           {playersExceptCurrentScorePlayer.map((player) => (
