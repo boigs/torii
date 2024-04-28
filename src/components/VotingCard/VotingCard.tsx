@@ -15,7 +15,12 @@ interface MyWordsProps {
   className?: string;
 }
 
-const VotingCard = ({ round, player, onWordClicked }: MyWordsProps) => {
+const VotingCard = ({
+  round,
+  player,
+  onWordClicked,
+  className,
+}: MyWordsProps) => {
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [anyButtonClicked, setAnyButtonClicked] = useState(false);
   const submittedWords = round.playerWords[player.nickname] ?? [];
@@ -32,20 +37,20 @@ const VotingCard = ({ round, player, onWordClicked }: MyWordsProps) => {
   }, [round.score.currentWord]);
 
   return (
-    <Card header={<Text>Voting Card</Text>}>
+    <Card className={className} header={<Text>Voting Card</Text>}>
       {round.score.currentPlayer === player.nickname ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
-            submitted
+            submitted.
           </Text>
           <Spinner size='lg' />
         </VStack>
       ) : (
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
-            From the words you submitted, click the word you think matches{' '}
-            <i>&quot;{round.score.currentWord}&quot;</i>
+            From the words you submitted, click the word you think matches with{' '}
+            <i>{round.score.currentWord}</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (

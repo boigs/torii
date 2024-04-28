@@ -118,7 +118,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
           <Text align='center' size='sm'>
             Write the words that come to your mind for:
           </Text>
-          <Text className={styles.chosenWord}>{word}</Text>
+          <Text className={styles.chosenWord}>{word}.</Text>
         </div>
       </CardHeader>
       <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
