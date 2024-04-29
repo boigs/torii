@@ -17,6 +17,7 @@ import Lobby from 'src/components/Lobby';
 import VotingCard from 'src/components/VotingCard';
 import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
+import WordScores from 'src/components/WordScores';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -121,13 +122,26 @@ const Game = () => {
                 players={state.context.players}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
               />
+              <WordScores
+                player={player!}
+                round={state.context.rounds.at(-1)!}
+                className={classNames(styles.width100)} // TODO remove this style
+              />
             </VStack>
           )}
           {state.matches('endOfRound') && (
-            <EndOfRound
-              player={player!}
-              onNextRoundClicked={sendContinueToNextRound}
-            />
+            <VStack spacing='24px'>
+              <EndOfRound
+                player={player!}
+                onNextRoundClicked={sendContinueToNextRound}
+                className={classNames(styles.width100)} // TODO remove this style
+              />
+              <WordScores
+                player={player!}
+                round={state.context.rounds.at(-1)!}
+                className={classNames(styles.width100)} // TODO remove this style
+              />
+            </VStack>
           )}
           <JoinedPlayersList
             className={classNames(

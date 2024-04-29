@@ -11,9 +11,8 @@ import Image from 'next/image';
 
 import Card from 'src/components/Card';
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
+import Spinner from 'src/components/Spinner';
 import { Player, Round } from 'src/domain';
-
-import Spinner from '../Spinner';
 
 import styles from './VotingSummary.module.scss';
 
