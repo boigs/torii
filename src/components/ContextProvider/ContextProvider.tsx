@@ -162,6 +162,14 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               case HeadcrabState.PLAYERS_SUBMITTING_VOTING_WORD:
                 send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
                 break;
+              case HeadcrabState.END_OF_ROUND: {
+                send({ type: 'CHANGED_TO_END_OF_ROUND' });
+                break;
+              }
+              case HeadcrabState.END_OF_GAME: {
+                send({ type: 'CHANGED_TO_END_OF_GAME' });
+                break;
+              }
             }
           }
           break;

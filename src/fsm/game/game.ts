@@ -60,6 +60,14 @@ interface ChangedToPlayersSubmittingVotingWord {
   type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD';
 }
 
+interface ChangedToEndOfRound {
+  type: 'CHANGED_TO_END_OF_ROUND';
+}
+
+interface ChangedToGame {
+  type: 'CHANGED_TO_END_OF_GAME';
+}
+
 interface Context {
   gameId: string;
   nickname: string;
@@ -96,7 +104,9 @@ const gameFsm = setup({
       | ChatMessageEvent
       | ChangedToLobby
       | ChangedToPlayersSubmittingWords
-      | ChangedToPlayersSubmittingVotingWord;
+      | ChangedToPlayersSubmittingVotingWord
+      | ChangedToEndOfRound
+      | ChangedToGame;
   },
   actions: {
     assignNickname: assign(({ event }) => {
@@ -209,12 +219,12 @@ const gameFsm = setup({
       entry: 'setConnectToGameToTrue',
       on: {
         WEBSOCKET_CONNECT_ERROR: 'disconnected',
-        CHANGED_TO_LOBBY: {
-          target: 'lobby',
-        },
+        CHANGED_TO_LOBBY: 'lobby',
         CHANGED_TO_PLAYERS_SUBMITTING_WORDS: 'playersSubmittingWords',
         CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD:
           'playersSubmittingVotingWord',
+        CHANGED_TO_END_OF_ROUND: 'endOfRound',
+        CHANGED_TO_END_OF_GAME: 'endOfGame',
       },
     },
     lobby: {
@@ -231,7 +241,24 @@ const gameFsm = setup({
         },
       },
     },
-    playersSubmittingVotingWord: {},
+    playersSubmittingVotingWord: {
+      on: {
+        CHANGED_TO_END_OF_ROUND: {
+          target: 'endOfRound',
+        },
+      },
+    },
+    endOfRound: {
+      on: {
+        CHANGED_TO_END_OF_GAME: {
+          target: 'endOfGame',
+        },
+        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: {
+          target: 'playersSubmittingWords',
+        },
+      },
+    },
+    endOfGame: {},
   },
 });
 

@@ -33,6 +33,8 @@ export enum HeadcrabState {
   LOBBY = 'Lobby',
   PLAYERS_SUBMITTING_WORDS = 'PlayersSubmittingWords',
   PLAYERS_SUBMITTING_VOTING_WORD = 'PlayersSubmittingVotingWord',
+  END_OF_ROUND = 'EndOfRound',
+  END_OF_GAME = 'EndOfGame',
 }
 
 export interface GameState {

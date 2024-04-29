@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import AnimatedParent from 'src/components/AnimatedParent';
 import Chat from 'src/components/Chat';
 import { Context } from 'src/components/ContextProvider';
+import EndOfRound from 'src/components/EndOfRound';
 import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
@@ -22,6 +23,7 @@ import { artificialSleep } from 'src/helpers/sleep';
 import {
   acceptPlayersVotingWords,
   chatMessage,
+  continueToNextRound,
   playerVotingWord,
   playerWords,
   startGame,
@@ -64,6 +66,10 @@ const Game = () => {
 
   const sendAcceptPlayersVotingWords = () => {
     sendWebsocketMessage(acceptPlayersVotingWords());
+  };
+
+  const sendContinueToNextRound = () => {
+    sendWebsocketMessage(continueToNextRound());
   };
 
   return (
@@ -116,6 +122,12 @@ const Game = () => {
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
               />
             </VStack>
+          )}
+          {state.matches('endOfRound') && (
+            <EndOfRound
+              player={player!}
+              onNextRoundClicked={sendContinueToNextRound}
+            />
           )}
           <JoinedPlayersList
             className={classNames(
