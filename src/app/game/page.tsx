@@ -20,6 +20,7 @@ import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
+  acceptPlayersVotingWords,
   chatMessage,
   playerVotingWord,
   playerWords,
@@ -59,6 +60,10 @@ const Game = () => {
 
   const sendPlayerVotingWord = (word: Word | null) => {
     sendWebsocketMessage(playerVotingWord({ word: word?.word ?? null }));
+  };
+
+  const sendAcceptPlayersVotingWords = () => {
+    sendWebsocketMessage(acceptPlayersVotingWords());
   };
 
   return (
@@ -108,6 +113,7 @@ const Game = () => {
                 round={state.context.rounds.at(-1)!}
                 you={player!}
                 players={state.context.players}
+                onAcceptButtonClicked={sendAcceptPlayersVotingWords}
               />
             </VStack>
           )}
