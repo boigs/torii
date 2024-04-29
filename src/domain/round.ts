@@ -1,10 +1,11 @@
-import RoundScore from './roundScore';
+import VotingItem from './votingItem';
 import Word from './word';
 
 interface Round {
   word: string;
   playerWords: Record<string, Word[]>;
-  score: RoundScore;
+  playerVotingWords: Record<string, string | null>;
+  votingItem: VotingItem | null;
 }
 
 export default Round;

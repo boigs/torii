@@ -52,12 +52,12 @@ interface ChangedToLobby {
   type: 'CHANGED_TO_LOBBY';
 }
 
-interface ChangedToPlayersWritingWords {
-  type: 'CHANGED_TO_PLAYERS_WRITING_WORDS';
+interface ChangedToPlayersSubmittingWords {
+  type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS';
 }
 
-interface ChangedToPlayersSubmittingWord {
-  type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORD';
+interface ChangedToPlayersSubmittingVotingWord {
+  type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD';
 }
 
 interface Context {
@@ -95,8 +95,8 @@ const gameFsm = setup({
       | GameStateMessageEvent
       | ChatMessageEvent
       | ChangedToLobby
-      | ChangedToPlayersWritingWords
-      | ChangedToPlayersSubmittingWord;
+      | ChangedToPlayersSubmittingWords
+      | ChangedToPlayersSubmittingVotingWord;
   },
   actions: {
     assignNickname: assign(({ event }) => {
@@ -212,25 +212,26 @@ const gameFsm = setup({
         CHANGED_TO_LOBBY: {
           target: 'lobby',
         },
-        CHANGED_TO_PLAYERS_WRITING_WORDS: 'playersWritingWords',
-        CHANGED_TO_PLAYERS_SUBMITTING_WORD: 'playersSendingWordSubmission',
+        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: 'playersSubmittingWords',
+        CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD:
+          'playersSubmittingVotingWord',
       },
     },
     lobby: {
       on: {
-        CHANGED_TO_PLAYERS_WRITING_WORDS: {
-          target: 'playersWritingWords',
+        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: {
+          target: 'playersSubmittingWords',
         },
       },
     },
-    playersWritingWords: {
+    playersSubmittingWords: {
       on: {
-        CHANGED_TO_PLAYERS_SUBMITTING_WORD: {
-          target: 'playersSendingWordSubmission',
+        CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD: {
+          target: 'playersSubmittingVotingWord',
         },
       },
     },
-    playersSendingWordSubmission: {},
+    playersSubmittingVotingWord: {},
   },
 });
 

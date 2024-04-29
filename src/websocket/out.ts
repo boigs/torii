@@ -1,37 +1,47 @@
-export interface StartGameOptions {
-  amountOfRounds: number;
-}
-
-export interface PlayerWordSubmission {
-  word: string;
-}
-
 export interface WsMessageOut {
   kind: string;
 }
 
-export const startGameMessage: (options: StartGameOptions) => WsMessageOut = (
+export interface StartGameOptions {
+  amountOfRounds: number;
+}
+
+export const startGame: (options: StartGameOptions) => WsMessageOut = (
   options
 ) => ({
   kind: 'startGame',
   ...options,
 });
 
-export const chatMessage: (content: string) => WsMessageOut = (content) => ({
+export interface ChatMessageOptions {
+  content: string;
+}
+
+export const chatMessage: (options: ChatMessageOptions) => WsMessageOut = (
+  options
+) => ({
   kind: 'chatMessage',
-  content,
+  ...options,
 });
 
-export const playerWordsMessage: (words: string[]) => WsMessageOut = (
-  words
+export interface PlayerWordsOptions {
+  words: string[];
+}
+
+export const playerWords: (options: PlayerWordsOptions) => WsMessageOut = (
+  options
 ) => ({
   kind: 'playerWords',
-  words,
+  ...options,
 });
 
-export const submitPlayerWordForScoringMessage: (
-  word: string | null
-) => WsMessageOut = (word) => ({
-  kind: 'playerWordSubmission',
-  word,
+export interface PlayerVotingWordOptions {
+  word: string | null;
+}
+
+export const playerVotingWord: (
+  options: PlayerVotingWordOptions
+) => WsMessageOut = (options) => ({
+  kind: 'playerVotingWord',
+  ...options,
 });

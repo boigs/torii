@@ -19,12 +19,11 @@ import VotingSummary from 'src/components/VotingSummary';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
-import logger from 'src/logger';
 import {
   chatMessage,
-  playerWordsMessage,
-  startGameMessage,
-  submitPlayerWordForScoringMessage,
+  playerVotingWord,
+  playerWords,
+  startGame,
 } from 'src/websocket/out';
 
 import styles from './page.module.scss';
@@ -44,24 +43,22 @@ const Game = () => {
     }
   }, [state, send, router, isInsideOfGame]);
 
-  const sendGameStartMessage = (values: HostLobbyValues) => {
-    logger.debug({ values }, 'sending start message');
-    sendWebsocketMessage(startGameMessage(values));
+  const sendGameStart = (values: HostLobbyValues) => {
+    sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
   };
 
-  const sendChatMessage = async (text: string) => {
+  const sendChatMessage = async (content: string) => {
     await artificialSleep(100);
-    sendWebsocketMessage(chatMessage(text));
+    sendWebsocketMessage(chatMessage({ content }));
   };
 
-  const sendWordsMessage = async (words: string[]) => {
-    logger.debug({ words }, 'sending player words');
-    sendWebsocketMessage(playerWordsMessage(words));
+  const sendPlayerWords = async (words: string[]) => {
+    sendWebsocketMessage(playerWords({ words }));
     await artificialSleep(350);
   };
 
-  const sendWordForVoting = (word: Word | null) => {
-    sendWebsocketMessage(submitPlayerWordForScoringMessage(word?.word ?? null));
+  const sendPlayerVotingWord = (word: Word | null) => {
+    sendWebsocketMessage(playerVotingWord({ word: word?.word ?? null }));
   };
 
   return (
@@ -73,30 +70,25 @@ const Game = () => {
           {state.matches('lobby') && (
             <>
               {player?.isHost ? (
-                <HostLobby
-                  className={styles.lobby}
-                  onSubmit={sendGameStartMessage}
-                />
+                <HostLobby className={styles.lobby} onSubmit={sendGameStart} />
               ) : (
                 <Lobby className={styles.lobby} />
               )}
             </>
           )}
-          {state.matches('playersWritingWords') && (
+          {state.matches('playersSubmittingWords') && (
             <WordsInput
               className={classNames(
                 styles.wordsInput,
-                state.matches('playersWritingWords')
-                  ? styles.wordsInputPlaying
-                  : null
+                styles.wordsInputPlaying
               )}
               player={player!}
               // as players submit their words, the round is updated
               round={state.context.rounds.at(-1)!}
-              onSubmit={sendWordsMessage}
+              onSubmit={sendPlayerWords}
             />
           )}
-          {state.matches('playersSendingWordSubmission') && (
+          {state.matches('playersSubmittingVotingWord') && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <Scoring
@@ -109,7 +101,7 @@ const Game = () => {
                 className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.rounds.at(-1)!}
                 player={player!}
-                onWordClicked={sendWordForVoting}
+                onWordClicked={sendPlayerVotingWord}
               />
               <VotingSummary
                 className={classNames(styles.width100)} // TODO remove this style
@@ -122,7 +114,7 @@ const Game = () => {
           <JoinedPlayersList
             className={classNames(
               [styles.joinedPlayersList],
-              state.matches('playersWritingWords')
+              state.matches('playersSubmittingWords')
                 ? styles.joinedPlayersListPlaying
                 : null
             )}
@@ -132,7 +124,9 @@ const Game = () => {
           <Chat
             className={classNames(
               [styles.chat],
-              state.matches('playersWritingWords') ? styles.chatPlaying : null
+              state.matches('playersSubmittingWords')
+                ? styles.chatPlaying
+                : null
             )}
             onSubmit={sendChatMessage}
             messages={state.context.messages}

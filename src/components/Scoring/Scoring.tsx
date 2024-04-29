@@ -24,10 +24,10 @@ interface ScoringProps {
 
 const Scoring = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
-    (player) => player.nickname === round.score.currentPlayer
+    (player) => player.nickname === round.votingItem!.playerNickname
   )!;
   const submittedWords = round.playerWords[player.nickname];
-  const currentVotingWord = round.score.currentWord;
+  const currentVotingWord = round.votingItem!.word;
   const currentVotingWordIndex = submittedWords.findIndex(
     (word) => word.word === currentVotingWord
   );
