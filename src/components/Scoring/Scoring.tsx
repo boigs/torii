@@ -28,9 +28,6 @@ const Scoring = ({ round, you, players, className }: ScoringProps) => {
   )!;
   const submittedWords = round.playerWords[player.nickname];
   const currentVotingWord = round.votingItem!.word;
-  const currentVotingWordIndex = submittedWords.findIndex(
-    (word) => word.word === currentVotingWord
-  );
 
   return (
     <Card
@@ -59,12 +56,17 @@ const Scoring = ({ round, you, players, className }: ScoringProps) => {
               className={styles.skeleton}
               startColor='gray.300'
               endColor='gray.200'
-              isLoaded={index <= currentVotingWordIndex}
+              isLoaded={submittedWord.isUsed}
             >
               <Input
                 readOnly={true}
                 className={styles.wordInput}
                 value={submittedWord.word}
+                variant={
+                  submittedWord.word === currentVotingWord
+                    ? 'outline'
+                    : 'filled'
+                }
               />
             </Skeleton>
           </InputGroup>
