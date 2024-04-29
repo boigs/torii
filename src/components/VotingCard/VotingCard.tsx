@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
@@ -8,7 +6,7 @@ import { Player, Round, Word } from 'src/domain';
 
 import styles from './VotingCard.module.scss';
 
-interface MyWordsProps {
+interface VotingCardProps {
   round: Round;
   player: Player;
   onWordClicked: (word: Word | null) => void;
@@ -20,21 +18,9 @@ const VotingCard = ({
   player,
   onWordClicked,
   className,
-}: MyWordsProps) => {
-  const [selectedWord, setSelectedWord] = useState<Word | null>(null);
-  const [anyButtonClicked, setAnyButtonClicked] = useState(false);
+}: VotingCardProps) => {
   const submittedWords = round.playerWords[player.nickname] ?? [];
-
-  const onWordButtonClicked = (submittedWord: Word | null) => {
-    setSelectedWord(submittedWord);
-    setAnyButtonClicked(true);
-    onWordClicked(submittedWord);
-  };
-
-  useEffect(() => {
-    setSelectedWord(null);
-    setAnyButtonClicked(false);
-  }, [round.votingItem]);
+  const votedWord = round.playerVotingWords[player.nickname];
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
@@ -49,18 +35,17 @@ const VotingCard = ({
       ) : (
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
-            From the words you submitted, click the word you think matches with{' '}
-            <i>{round.votingItem!.word}</i>
+            From the words you submitted, click the word you think matches with:{' '}
+            <i>{round.votingItem!.word}.</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (
               <Button
                 key={submittedWord.word}
                 isDisabled={submittedWord.isUsed}
-                onClick={() => onWordButtonClicked(submittedWord)}
+                onClick={() => onWordClicked(submittedWord)}
                 isActive={
-                  !submittedWord.isUsed &&
-                  selectedWord?.word === submittedWord.word
+                  !submittedWord.isUsed && votedWord === submittedWord.word
                 }
                 colorScheme='blue'
               >
@@ -69,9 +54,9 @@ const VotingCard = ({
             ))}
           </HStack>
           <Button
-            isActive={anyButtonClicked && selectedWord === null}
+            isActive={votedWord === null}
             colorScheme='gray'
-            onClick={() => onWordButtonClicked(null)}
+            onClick={() => onWordClicked(null)}
           >
             Skip
           </Button>
