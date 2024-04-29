@@ -80,7 +80,7 @@ const VotingSummary = ({
         <Button
           colorScheme='blue'
           className={styles.acceptBallotButton}
-          onClick={() => onAcceptButtonClicked()}
+          onClick={onAcceptButtonClicked}
         >
           Accept
         </Button>
