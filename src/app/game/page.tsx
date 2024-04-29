@@ -14,8 +14,8 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import LoadingCard from 'src/components/LoadingCard';
 import Lobby from 'src/components/Lobby';
-import Scoring from 'src/components/Scoring';
 import VotingCard from 'src/components/VotingCard';
+import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
@@ -102,7 +102,7 @@ const Game = () => {
           {state.matches('playersSubmittingVotingWord') && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
-              <Scoring
+              <VotingItems
                 className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.rounds.at(-1)!}
                 you={player!}
