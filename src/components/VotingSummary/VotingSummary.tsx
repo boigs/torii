@@ -21,6 +21,7 @@ interface VotingSummaryProps {
   you: Player;
   players: Player[];
   round: Round;
+  onAcceptButtonClicked: () => void;
   className?: string;
 }
 
@@ -28,6 +29,7 @@ const VotingSummary = ({
   you,
   players,
   round,
+  onAcceptButtonClicked,
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentScorePlayer = players.filter(
@@ -75,7 +77,11 @@ const VotingSummary = ({
         ))}
       </List>
       {you.isHost && (
-        <Button colorScheme='blue' className={styles.acceptBallotButton}>
+        <Button
+          colorScheme='blue'
+          className={styles.acceptBallotButton}
+          onClick={onAcceptButtonClicked}
+        >
           Accept
         </Button>
       )}

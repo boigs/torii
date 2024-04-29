@@ -45,3 +45,7 @@ export const playerVotingWord: (
   kind: 'playerVotingWord',
   ...options,
 });
+
+export const acceptPlayersVotingWords: () => WsMessageOut = () => ({
+  kind: 'acceptPlayersVotingWords',
+});
