@@ -13,7 +13,7 @@ import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
 import { Player, Round } from 'src/domain';
 
-import styles from './Scoring.module.scss';
+import styles from './VotingItems.module.scss';
 
 interface ScoringProps {
   round: Round;
@@ -22,7 +22,7 @@ interface ScoringProps {
   className?: string;
 }
 
-const Scoring = ({ round, you, players, className }: ScoringProps) => {
+const VotingItems = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
     (player) => player.nickname === round.votingItem!.playerNickname
   )!;
@@ -74,4 +74,4 @@ const Scoring = ({ round, you, players, className }: ScoringProps) => {
   );
 };
 
-export default Scoring;
+export default VotingItems;
