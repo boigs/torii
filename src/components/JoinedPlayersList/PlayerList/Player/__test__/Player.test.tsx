@@ -13,7 +13,7 @@ describe('Player component...', () => {
   const disconnectedPlayer = {
     nickname: 'any-nickname',
     isHost: false,
-    isConnected: true,
+    isConnected: false,
   } as PlayerDomain;
 
   it("should render the player's nickname", () => {
