@@ -1,12 +1,10 @@
+import { HeadcrabError, VotingItem, Word } from 'src/domain';
 import ChatMessage from 'src/domain/chatMessage';
 import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
 import HeadCrabErrorType from 'src/domain/headcrabErrorType';
 import HeadcrabState from 'src/domain/headcrabState';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
-import VotingItem from 'src/domain/votingItem';
-import Word from 'src/domain/word';
 
 export enum WsTypeIn {
   Error = 'error',
@@ -19,7 +17,7 @@ export interface MessageTypeIn {
 }
 
 export type WsMessageIn = MessageTypeIn &
-  (GameStateDto | HeadcrabError | ChatMessageDto);
+  (GameStateDto | HeadcrabErrorDto | ChatMessageDto);
 
 interface HeadcrabErrorDto {
   type: string;
@@ -30,12 +28,12 @@ interface HeadcrabErrorDto {
 export const headcrabErrorDtoToDomain = (
   message: WsMessageIn
 ): HeadcrabError => {
-  const error = message as unknown as HeadcrabErrorDto;
-  return new HeadcrabError(
-    headcrabErrorTypeDtoToDomain(error.type),
-    error.title,
-    error.detail
-  );
+  const error = message as HeadcrabErrorDto;
+  return {
+    type: headcrabErrorTypeDtoToDomain(error.type),
+    title: error.title,
+    detail: error.detail,
+  };
 };
 
 interface GameStateDto {
@@ -60,7 +58,7 @@ interface ChatMessageDto {
 
 export const chatMessageDtoToDomain = (message: WsMessageIn): ChatMessage => {
   const chatMessage = message as ChatMessageDto;
-  return new ChatMessage(chatMessage.sender, chatMessage.content);
+  return { sender: chatMessage.sender, content: chatMessage.content };
 };
 
 const headcrabErrorTypeDtoToDomain = (error: string): HeadCrabErrorType => {
@@ -112,7 +110,11 @@ interface PlayerDto {
 }
 
 const playerDtoToDomain = (player: PlayerDto): Player => {
-  return new Player(player.nickname, player.isHost, player.isConnected);
+  return {
+    nickname: player.nickname,
+    isHost: player.isHost,
+    isConnected: player.isConnected,
+  };
 };
 
 interface RoundDto {
@@ -151,7 +153,7 @@ interface WordDto {
 }
 
 const wordDtoToDomain = (word: WordDto): Word => {
-  return new Word(word.word, word.isUsed, word.score);
+  return { value: word.word, isUsed: word.isUsed, score: word.score };
 };
 
 interface VotingItemDto {
@@ -164,5 +166,5 @@ const votingItemDtoToDomain = (
 ): VotingItem | null => {
   return item === undefined || item === null
     ? null
-    : new VotingItem(item.playerNickname, item.word);
+    : { nickname: item.playerNickname, word: item.word };
 };

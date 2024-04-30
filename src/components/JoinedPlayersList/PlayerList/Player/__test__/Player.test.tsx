@@ -5,8 +5,16 @@ import PlayerDomain from 'src/domain/player';
 import Player from '../Player';
 
 describe('Player component...', () => {
-  const player = new PlayerDomain('any-nickname', false, true);
-  const disconnectedPlayer = new PlayerDomain('any-nickname', false, false);
+  const player = {
+    nickname: 'any-nickname',
+    isHost: false,
+    isConnected: true,
+  } as PlayerDomain;
+  const disconnectedPlayer = {
+    nickname: 'any-nickname',
+    isHost: false,
+    isConnected: true,
+  } as PlayerDomain;
 
   it("should render the player's nickname", () => {
     const { container } = render(<Player player={player} />);

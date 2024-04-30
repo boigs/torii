@@ -46,8 +46,11 @@ const VotingSummary = ({
           <ListItem key={player.nickname} className={styles.votingWord}>
             <Flex className={styles.votingWordLine}>
               <PlayerComponent
-                // I don't want any crown shown in this component
-                player={new Player(player.nickname, false, player.isConnected)}
+                player={{
+                  ...player,
+                  // I don't want any crown shown in this component
+                  isHost: false,
+                }}
               />
               {!round.playerVoted(player.nickname) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
