@@ -76,7 +76,11 @@ interface Context {
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  game: createGameState([], [], HeadcrabState.Undefined),
+  game: createGameState({
+    players: [],
+    rounds: [],
+    state: HeadcrabState.Undefined,
+  }),
   websocketShouldBeConnected: false,
   gameJoined: false,
   messages: [],
