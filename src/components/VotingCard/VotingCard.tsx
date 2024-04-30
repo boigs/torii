@@ -2,7 +2,9 @@ import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
-import { Player, Round, Word } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
+import Word from 'src/domain/word';
 
 import styles from './VotingCard.module.scss';
 
@@ -19,12 +21,12 @@ const VotingCard = ({
   onWordClicked,
   className,
 }: VotingCardProps) => {
-  const submittedWords = round.playerWords[player.nickname] ?? [];
-  const votedWord = round.playerVotingWords[player.nickname];
+  const submittedWords = round.playerWords(player.nickname);
+  const votedWord = round.playerVotingWord(player.nickname);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
-      {round.votingItem!.playerNickname === player.nickname ? (
+      {round.votingItem().nickname === player.nickname ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
@@ -36,20 +38,20 @@ const VotingCard = ({
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
             From the words you submitted, click the word you think matches with:{' '}
-            <i>{round.votingItem!.word}.</i>
+            <i>{round.votingItem().word}.</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (
               <Button
-                key={submittedWord.word}
+                key={submittedWord.value}
                 isDisabled={submittedWord.isUsed}
                 onClick={() => onWordClicked(submittedWord)}
                 isActive={
-                  !submittedWord.isUsed && votedWord === submittedWord.word
+                  !submittedWord.isUsed && votedWord === submittedWord.value
                 }
                 colorScheme='blue'
               >
-                {submittedWord.word}
+                {submittedWord.value}
               </Button>
             ))}
           </HStack>

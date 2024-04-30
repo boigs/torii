@@ -1,7 +1,7 @@
 import { List, ListItem } from '@chakra-ui/react';
 
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
-import { Player } from 'src/domain';
+import Player from 'src/domain/player';
 
 interface PlayerListProps {
   players: Player[];

@@ -12,7 +12,8 @@ import Image from 'next/image';
 import Card from 'src/components/Card';
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
 import Spinner from 'src/components/Spinner';
-import { Player, Round } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 
 import styles from './VotingSummary.module.scss';
 
@@ -32,7 +33,7 @@ const VotingSummary = ({
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentScorePlayer = players.filter(
-    ({ nickname }) => nickname !== round.votingItem!.playerNickname
+    ({ nickname }) => nickname !== round.votingItem().nickname
   );
 
   return (
@@ -45,19 +46,16 @@ const VotingSummary = ({
           <ListItem key={player.nickname} className={styles.votingWord}>
             <Flex className={styles.votingWordLine}>
               <PlayerComponent
-                player={{
-                  ...player,
-                  // I don't want any crown shown in this component
-                  isHost: false,
-                }}
+                // I don't want any crown shown in this component
+                player={new Player(player.nickname, false, player.isConnected)}
               />
-              {!(player.nickname in round.playerVotingWords) ? (
+              {!round.playerVoted(player.nickname) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
                   <Center>
                     <Spinner size='md' />
                   </Center>
                 </Tooltip>
-              ) : round.playerVotingWords[player.nickname] === null ? (
+              ) : round.playerVotingWord(player.nickname) === null ? (
                 <Tooltip placement='left' hasArrow label='Skipped'>
                   <span className={styles.skippedCross}>
                     <Image
@@ -69,7 +67,7 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.playerVotingWords[player.nickname]}</Text>
+                <Text>{round.playerVotingWord(player.nickname)}</Text>
               )}
             </Flex>
           </ListItem>

@@ -1,14 +1,14 @@
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import type { Player } from 'src/domain';
+import PlayerDomain from 'src/domain/player';
 
 import Avatar from './Avatar';
 
 import styles from './Player.module.scss';
 
 interface PlayerProps {
-  player: Player;
+  player: PlayerDomain;
 }
 
 const Player = ({ player }: PlayerProps) => {

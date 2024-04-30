@@ -16,7 +16,7 @@ import {
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
-import { Player } from 'src/domain';
+import Player from 'src/domain/player';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 import Message from './Message';
@@ -73,11 +73,8 @@ const Chat = ({ messages, players, onSubmit, className }: ChatProps) => {
             <Fragment key={_.uniqueId()}>
               <Message
                 sender={
-                  players.find((player) => player.nickname === sender) ?? {
-                    nickname: sender,
-                    isHost: false,
-                    isConnected: true,
-                  }
+                  players.find((player) => player.nickname === sender) ??
+                  new Player(sender, false, true)
                 }
                 content={content}
               />

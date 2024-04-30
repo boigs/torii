@@ -19,7 +19,7 @@ import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
 import WordScores from 'src/components/WordScores';
 import WordsInput from 'src/components/WordsInput';
-import { Word } from 'src/domain';
+import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
   acceptPlayersVotingWords,
@@ -62,7 +62,9 @@ const Game = () => {
   };
 
   const sendPlayerVotingWord = (word: Word | null) => {
-    sendWebsocketMessage(playerVotingWord({ word: word?.word ?? null }));
+    sendWebsocketMessage(
+      playerVotingWord({ word: word === null ? null : word.value })
+    );
   };
 
   const sendAcceptPlayersVotingWords = () => {
@@ -96,7 +98,7 @@ const Game = () => {
               )}
               player={player!}
               // as players submit their words, the round is updated
-              round={state.context.rounds.at(-1)!}
+              round={state.context.game.lastRound()}
               onSubmit={sendPlayerWords}
             />
           )}
@@ -105,26 +107,26 @@ const Game = () => {
             <VStack spacing='24px'>
               <VotingItems
                 className={classNames(styles.width100)} // TODO remove this style
-                round={state.context.rounds.at(-1)!}
+                round={state.context.game.lastRound()}
                 you={player!}
-                players={state.context.players}
+                players={state.context.game.players}
               />
               <VotingCard
                 className={classNames(styles.width100)} // TODO remove this style
-                round={state.context.rounds.at(-1)!}
+                round={state.context.game.lastRound()}
                 player={player!}
                 onWordClicked={sendPlayerVotingWord}
               />
               <VotingSummary
                 className={classNames(styles.width100)} // TODO remove this style
-                round={state.context.rounds.at(-1)!}
+                round={state.context.game.lastRound()}
                 you={player!}
-                players={state.context.players}
+                players={state.context.game.players}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
               />
               <WordScores
                 player={player!}
-                round={state.context.rounds.at(-1)!}
+                round={state.context.game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
@@ -138,7 +140,7 @@ const Game = () => {
               />
               <WordScores
                 player={player!}
-                round={state.context.rounds.at(-1)!}
+                round={state.context.game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
@@ -151,7 +153,7 @@ const Game = () => {
                 : null
             )}
             gameId={state.context.gameId}
-            players={state.context.players}
+            players={state.context.game.players}
           />
           <Chat
             className={classNames(
@@ -162,7 +164,7 @@ const Game = () => {
             )}
             onSubmit={sendChatMessage}
             messages={state.context.messages}
-            players={state.context.players}
+            players={state.context.game.players}
           />
         </AnimatedParent>
       )}

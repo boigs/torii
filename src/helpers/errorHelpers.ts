@@ -1,4 +1,5 @@
-import { HeadCrabErrorType, HeadcrabError } from 'src/websocket/in';
+import HeadcrabError from 'src/domain/headcrabError';
+import HeadCrabErrorType from 'src/domain/headcrabErrorType';
 
 export const headcrabErrorToString = (error: HeadcrabError): string => {
   switch (error.type) {
