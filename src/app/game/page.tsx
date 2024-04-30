@@ -19,7 +19,7 @@ import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
 import WordScores from 'src/components/WordScores';
 import WordsInput from 'src/components/WordsInput';
-import Word from 'src/domain/word';
+import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
   acceptPlayersVotingWords,

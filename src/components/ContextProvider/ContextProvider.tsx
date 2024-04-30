@@ -8,8 +8,8 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
+import { Player } from 'src/domain';
 import HeadcrabState from 'src/domain/headcrabState';
-import Player from 'src/domain/player';
 import gameFsm from 'src/fsm/game';
 import {
   headcrabErrorToString,

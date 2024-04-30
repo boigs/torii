@@ -16,7 +16,7 @@ import {
 import classNames from 'classnames';
 
 import PlayerList from 'src/components/JoinedPlayersList/PlayerList';
-import Player from 'src/domain/player';
+import { Player } from 'src/domain';
 
 import styles from './JoinedPlayersList.module.scss';
 

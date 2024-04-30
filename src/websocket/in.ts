@@ -1,10 +1,10 @@
-import { HeadcrabError, VotingItem, Word } from 'src/domain';
+import { GameState, HeadcrabError, Round, VotingItem, Word } from 'src/domain';
+import { Player } from 'src/domain';
 import ChatMessage from 'src/domain/chatMessage';
-import GameState from 'src/domain/gameState';
+import { createGameState } from 'src/domain/gameState';
 import HeadCrabErrorType from 'src/domain/headcrabErrorType';
 import HeadcrabState from 'src/domain/headcrabState';
-import Player from 'src/domain/player';
-import Round from 'src/domain/round';
+import { createRound } from 'src/domain/round';
 
 export enum WsTypeIn {
   Error = 'error',
@@ -44,7 +44,7 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
   const state = message as GameStateDto;
-  return new GameState(
+  return createGameState(
     state.players.map((player) => playerDtoToDomain(player)),
     state.rounds.map((round) => roundDtoToDomain(round)),
     headcrabStateToDomain(state.state)
@@ -125,7 +125,7 @@ interface RoundDto {
 }
 
 const roundDtoToDomain = (round: RoundDto): Round => {
-  return new Round(
+  return createRound(
     round.word,
     new Map(
       Array.from(Object.entries(round.playerWords), ([nickname, words]) => [

@@ -2,9 +2,8 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import ChatMessage from 'src/domain/chatMessage';
-import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
+import { ChatMessage, GameState, HeadcrabError } from 'src/domain';
+import { createGameState } from 'src/domain/gameState';
 import HeadcrabState from 'src/domain/headcrabState';
 
 interface CreateGameEvent {
@@ -77,7 +76,7 @@ interface Context {
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  game: new GameState([], [], HeadcrabState.Undefined),
+  game: createGameState([], [], HeadcrabState.Undefined),
   websocketShouldBeConnected: false,
   gameJoined: false,
   messages: [],

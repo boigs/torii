@@ -2,9 +2,7 @@ import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
-import Player from 'src/domain/player';
-import Round from 'src/domain/round';
-import Word from 'src/domain/word';
+import { Player, Round, Word } from 'src/domain';
 
 import styles from './VotingCard.module.scss';
 
@@ -21,12 +19,12 @@ const VotingCard = ({
   onWordClicked,
   className,
 }: VotingCardProps) => {
-  const submittedWords = round.playerWords(player.nickname);
-  const votedWord = round.playerVotingWord(player.nickname);
+  const submittedWords = round.getPlayerWords(player.nickname);
+  const votedWord = round.getPlayerVotingWord(player.nickname);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
-      {round.votingItem().nickname === player.nickname ? (
+      {round.getVotingItem().nickname === player.nickname ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
@@ -38,7 +36,7 @@ const VotingCard = ({
         <VStack className={styles.wordsContainer}>
           <Text className={styles.votingInstructions}>
             From the words you submitted, click the word you think matches with:{' '}
-            <i>{round.votingItem().word}.</i>
+            <i>{round.getVotingItem().word}.</i>
           </Text>
           <HStack className={styles.buttonsContainer}>
             {submittedWords.map((submittedWord) => (

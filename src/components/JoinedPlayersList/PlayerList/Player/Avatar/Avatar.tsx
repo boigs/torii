@@ -5,7 +5,7 @@ import { thumbs } from '@dicebear/collection';
 import { createAvatar } from '@dicebear/core';
 import classNames from 'classnames';
 
-import Player from 'src/domain/player';
+import { Player } from 'src/domain';
 
 import styles from './Avatar.module.scss';
 

@@ -23,8 +23,7 @@ import Image from 'next/image';
 
 import CustomCard from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
-import Player from 'src/domain/player';
-import Round from 'src/domain/round';
+import { Player, Round } from 'src/domain';
 import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
@@ -58,7 +57,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     {}
   );
   const word = round.word;
-  const areWordsValid = round.playerSentWords(player.nickname);
+  const areWordsValid = round.hasPlayerSentWords(player.nickname);
 
   const onFormSubmit = async (formValues: FormValues) => {
     const words = Object.entries(formValues)

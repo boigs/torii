@@ -11,8 +11,7 @@ import {
 
 import Card from 'src/components/Card';
 import Avatar from 'src/components/JoinedPlayersList/PlayerList/Player/Avatar';
-import Player from 'src/domain/player';
-import Round from 'src/domain/round';
+import { Player, Round } from 'src/domain';
 
 import styles from './VotingItems.module.scss';
 
@@ -25,10 +24,10 @@ interface ScoringProps {
 
 const VotingItems = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
-    (player) => player.nickname === round.votingItem().nickname
+    (player) => player.nickname === round.getVotingItem().nickname
   )!;
-  const submittedWords = round.playerWords(player.nickname);
-  const currentVotingWord = round.votingItem().word;
+  const submittedWords = round.getPlayerWords(player.nickname);
+  const currentVotingWord = round.getVotingItem().word;
   const currentVotingWordIndex = submittedWords.findIndex(
     (word) => word.value === currentVotingWord
   );

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
-import Player from 'src/domain/player';
+import { Player } from 'src/domain';
 import Round from 'src/domain/round';
 
 import styles from './WordScores.module.scss';
@@ -21,7 +21,7 @@ interface WordScores {
 }
 
 const WordScores = ({ player, round, className }: WordScores) => {
-  const words = round.playerWords(player.nickname);
+  const words = round.getPlayerWords(player.nickname);
 
   return (
     <Card header='Score' className={className}>

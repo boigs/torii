@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import PlayerDomain from 'src/domain/player';
+import { Player as PlayerDomain } from 'src/domain';
 
 import Player from '../Player';
 

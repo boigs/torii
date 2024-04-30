@@ -16,7 +16,7 @@ import {
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
-import Player from 'src/domain/player';
+import { Player } from 'src/domain';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 import Message from './Message';

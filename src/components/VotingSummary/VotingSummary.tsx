@@ -12,8 +12,7 @@ import Image from 'next/image';
 import Card from 'src/components/Card';
 import PlayerComponent from 'src/components/JoinedPlayersList/PlayerList/Player';
 import Spinner from 'src/components/Spinner';
-import Player from 'src/domain/player';
-import Round from 'src/domain/round';
+import { Player, Round } from 'src/domain';
 
 import styles from './VotingSummary.module.scss';
 
@@ -33,7 +32,7 @@ const VotingSummary = ({
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentScorePlayer = players.filter(
-    ({ nickname }) => nickname !== round.votingItem().nickname
+    ({ nickname }) => nickname !== round.getVotingItem().nickname
   );
 
   return (
@@ -52,13 +51,13 @@ const VotingSummary = ({
                   isHost: false,
                 }}
               />
-              {!round.playerVoted(player.nickname) ? (
+              {!round.hasPlayerVoted(player.nickname) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
                   <Center>
                     <Spinner size='md' />
                   </Center>
                 </Tooltip>
-              ) : round.playerVotingWord(player.nickname) === null ? (
+              ) : round.getPlayerVotingWord(player.nickname) === null ? (
                 <Tooltip placement='left' hasArrow label='Skipped'>
                   <span className={styles.skippedCross}>
                     <Image
@@ -70,7 +69,7 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.playerVotingWord(player.nickname)}</Text>
+                <Text>{round.getPlayerVotingWord(player.nickname)}</Text>
               )}
             </Flex>
           </ListItem>

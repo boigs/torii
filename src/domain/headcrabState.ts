@@ -1,4 +1,4 @@
-export enum HeadcrabState {
+enum HeadcrabState {
   Lobby,
   PlayersSubmittingWords,
   PlayersSubmittingVotingWord,
