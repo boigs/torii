@@ -32,11 +32,11 @@ interface HeadcrabErrorDto {
 export const headcrabErrorDtoToDomain = (
   message: WsMessageIn
 ): HeadcrabError => {
-  const error = message as HeadcrabErrorDto;
+  const headcrabError = message as HeadcrabErrorDto;
   return {
-    type: headcrabErrorTypeDtoToDomain(error.type),
-    title: error.title,
-    detail: error.detail,
+    type: headcrabErrorTypeDtoToDomain(headcrabError.type),
+    title: headcrabError.title,
+    detail: headcrabError.detail,
   };
 };
 
@@ -47,11 +47,11 @@ interface GameStateDto {
 }
 
 export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
-  const state = message as GameStateDto;
+  const gameState = message as GameStateDto;
   return new GameState({
-    players: state.players.map((player) => playerDtoToDomain(player)),
-    rounds: state.rounds.map((round) => roundDtoToDomain(round)),
-    state: headcrabStateToDomain(state.state),
+    players: gameState.players.map((player) => playerDtoToDomain(player)),
+    rounds: gameState.rounds.map((round) => roundDtoToDomain(round)),
+    state: headcrabStateToDomain(gameState.state),
   });
 };
 
