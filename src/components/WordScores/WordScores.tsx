@@ -9,8 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
-import { Player } from 'src/domain';
-import Round from 'src/domain/round';
+import { Player, Round } from 'src/domain';
 
 import styles from './WordScores.module.scss';
 

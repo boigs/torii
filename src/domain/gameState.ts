@@ -2,28 +2,28 @@ import HeadcrabState from './headcrabState';
 import Player from './player';
 import Round from './round';
 
-interface GameState {
+class GameState {
   readonly players: Player[];
   readonly rounds: Round[];
   readonly state: HeadcrabState;
-  lastRound(): Round;
-}
 
-export const createGameState = ({
-  players,
-  rounds,
-  state,
-}: {
-  players: Player[];
-  rounds: Round[];
-  state: HeadcrabState;
-}): GameState => {
-  return {
+  constructor({
     players,
     rounds,
     state,
-    lastRound: () => rounds.at(-1)!,
-  };
-};
+  }: {
+    players: Player[];
+    rounds: Round[];
+    state: HeadcrabState;
+  }) {
+    this.players = players;
+    this.rounds = rounds;
+    this.state = state;
+  }
+
+  lastRound(): Round {
+    return this.rounds.at(-1)!;
+  }
+}
 
 export default GameState;

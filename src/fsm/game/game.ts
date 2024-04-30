@@ -3,7 +3,6 @@
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
 import { ChatMessage, GameState, HeadcrabError } from 'src/domain';
-import { createGameState } from 'src/domain/gameState';
 import HeadcrabState from 'src/domain/headcrabState';
 
 interface CreateGameEvent {
@@ -76,7 +75,7 @@ interface Context {
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  game: createGameState({
+  game: new GameState({
     players: [],
     rounds: [],
     state: HeadcrabState.Undefined,

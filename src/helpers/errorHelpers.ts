@@ -1,5 +1,4 @@
-import { HeadcrabError } from 'src/domain';
-import HeadCrabErrorType from 'src/domain/headcrabErrorType';
+import { HeadCrabErrorType, HeadcrabError } from 'src/domain';
 
 export const headcrabErrorToString = (error: HeadcrabError): string => {
   switch (error.type) {

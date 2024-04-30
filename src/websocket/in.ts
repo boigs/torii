@@ -1,10 +1,14 @@
-import { GameState, HeadcrabError, Round, VotingItem, Word } from 'src/domain';
-import { Player } from 'src/domain';
-import ChatMessage from 'src/domain/chatMessage';
-import { createGameState } from 'src/domain/gameState';
-import HeadCrabErrorType from 'src/domain/headcrabErrorType';
+import {
+  ChatMessage,
+  GameState,
+  HeadCrabErrorType,
+  HeadcrabError,
+  Player,
+  Round,
+  VotingItem,
+  Word,
+} from 'src/domain';
 import HeadcrabState from 'src/domain/headcrabState';
-import { createRound } from 'src/domain/round';
 
 export enum WsTypeIn {
   Error = 'error',
@@ -44,7 +48,7 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
   const state = message as GameStateDto;
-  return createGameState({
+  return new GameState({
     players: state.players.map((player) => playerDtoToDomain(player)),
     rounds: state.rounds.map((round) => roundDtoToDomain(round)),
     state: headcrabStateToDomain(state.state),
@@ -125,22 +129,19 @@ interface RoundDto {
 }
 
 const roundDtoToDomain = (round: RoundDto): Round => {
-  return createRound({
+  return new Round({
     word: round.word,
     playerWords: new Map(
-      Array.from(Object.entries(round.playerWords), ([nickname, words]) => [
+      Object.entries(round.playerWords).map(([nickname, words]) => [
         nickname,
         words.map((word) => wordDtoToDomain(word)),
       ])
     ),
     playerVotingWords: new Map(
-      Array.from(
-        Object.entries(round.playerVotingWords),
-        ([nickname, votingWord]) => [
-          nickname,
-          votingWord === undefined ? null : votingWord,
-        ]
-      )
+      Object.entries(round.playerVotingWords).map(([nickname, votingWord]) => [
+        nickname,
+        votingWord === undefined ? null : votingWord,
+      ])
     ),
     votingItem: votingItemDtoToDomain(round.votingItem),
   });
