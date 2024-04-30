@@ -1,7 +1,7 @@
-import HeadCrabErrorType from './headcrabErrorType';
+import HeadcrabErrorType from './headcrabErrorType';
 
 interface HeadcrabError {
-  readonly type: HeadCrabErrorType;
+  readonly type: HeadcrabErrorType;
   readonly title: string;
   readonly detail: string;
 }

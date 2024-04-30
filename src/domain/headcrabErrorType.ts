@@ -1,4 +1,4 @@
-export enum HeadCrabErrorType {
+export enum HeadcrabErrorType {
   Internal,
   WebsocketClosed,
   UnprocessableMessage,
@@ -10,4 +10,4 @@ export enum HeadCrabErrorType {
   GameAlreadyInProgress,
 }
 
-export default HeadCrabErrorType;
+export default HeadcrabErrorType;

@@ -2,8 +2,12 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import { ChatMessage, GameState, HeadcrabError } from 'src/domain';
-import HeadcrabState from 'src/domain/headcrabState';
+import {
+  ChatMessage,
+  GameState,
+  HeadcrabError,
+  HeadcrabState,
+} from 'src/domain';
 
 interface CreateGameEvent {
   type: 'CREATE_GAME';

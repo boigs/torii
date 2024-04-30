@@ -1,14 +1,14 @@
 import {
   ChatMessage,
   GameState,
-  HeadCrabErrorType,
   HeadcrabError,
+  HeadcrabErrorType,
+  HeadcrabState,
   Player,
   Round,
   VotingItem,
   Word,
 } from 'src/domain';
-import HeadcrabState from 'src/domain/headcrabState';
 
 export enum WsTypeIn {
   Error = 'error',
@@ -65,26 +65,26 @@ export const chatMessageDtoToDomain = (message: WsMessageIn): ChatMessage => {
   return { sender: chatMessage.sender, content: chatMessage.content };
 };
 
-const headcrabErrorTypeDtoToDomain = (error: string): HeadCrabErrorType => {
+const headcrabErrorTypeDtoToDomain = (error: string): HeadcrabErrorType => {
   switch (error) {
     case 'INTERNAL_SERVER':
-      return HeadCrabErrorType.Internal;
+      return HeadcrabErrorType.Internal;
     case 'WEBSOCKET_CLOSED':
-      return HeadCrabErrorType.WebsocketClosed;
+      return HeadcrabErrorType.WebsocketClosed;
     case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
-      return HeadCrabErrorType.UnprocessableMessage;
+      return HeadcrabErrorType.UnprocessableMessage;
     case 'COMMAND_NOT_ALLOWED':
-      return HeadCrabErrorType.CommandNotAllowed;
+      return HeadcrabErrorType.CommandNotAllowed;
     case 'NOT_ENOUGH_PLAYERS':
-      return HeadCrabErrorType.NotEnoughPlayers;
+      return HeadcrabErrorType.NotEnoughPlayers;
     case 'GAME_DOES_NOT_EXIST':
-      return HeadCrabErrorType.GameDoesNotExist;
+      return HeadcrabErrorType.GameDoesNotExist;
     case 'PLAYER_ALREADY_EXISTS':
-      return HeadCrabErrorType.PlayerAlreadyExists;
+      return HeadcrabErrorType.PlayerAlreadyExists;
     case 'REPEATED_WORDS':
-      return HeadCrabErrorType.RepeatedWords;
+      return HeadcrabErrorType.RepeatedWords;
     case 'GAME_ALREADY_IN_PROGRESS':
-      return HeadCrabErrorType.GameAlreadyInProgress;
+      return HeadcrabErrorType.GameAlreadyInProgress;
     default:
       throw `Could not deserialize the Headcrab error type. headcrab_error_type: ${error}`;
   }
