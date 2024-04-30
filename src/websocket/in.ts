@@ -124,8 +124,8 @@ const playerDtoToDomain = (player: PlayerDto): Player => {
 interface RoundDto {
   word: string;
   playerWords: Record<string, WordDto[]>;
-  playerVotingWords: Record<string, string | null | undefined>;
-  votingItem: VotingItemDto | null | undefined;
+  playerVotingWords: Record<string, string | null>;
+  votingItem: VotingItemDto | null;
 }
 
 const roundDtoToDomain = (round: RoundDto): Round => {
@@ -140,7 +140,7 @@ const roundDtoToDomain = (round: RoundDto): Round => {
     playerVotingWords: new Map(
       Object.entries(round.playerVotingWords).map(([nickname, votingWord]) => [
         nickname,
-        votingWord === undefined ? null : votingWord,
+        votingWord,
       ])
     ),
     votingItem: votingItemDtoToDomain(round.votingItem),
@@ -163,9 +163,9 @@ interface VotingItemDto {
 }
 
 const votingItemDtoToDomain = (
-  item: VotingItemDto | null | undefined
+  item: VotingItemDto | null
 ): VotingItem | null => {
-  return item === undefined || item === null
+  return item === null
     ? null
     : { nickname: item.playerNickname, word: item.word };
 };
