@@ -13,12 +13,17 @@ interface Round {
   getVotingItem(): VotingItem;
 }
 
-export const createRound = (
-  word: string,
-  playerWords: Map<string, Word[]>,
-  playerVotingWords: Map<string, string | null>,
-  votingItem: VotingItem | null
-): Round => {
+export const createRound = ({
+  word,
+  playerWords,
+  playerVotingWords,
+  votingItem,
+}: {
+  word: string;
+  playerWords: Map<string, Word[]>;
+  playerVotingWords: Map<string, string | null>;
+  votingItem: VotingItem | null;
+}): Round => {
   return {
     word,
     playerWords,

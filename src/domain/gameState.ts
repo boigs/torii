@@ -9,11 +9,15 @@ interface GameState {
   lastRound(): Round;
 }
 
-export const createGameState = (
-  players: Player[],
-  rounds: Round[],
-  state: HeadcrabState
-): GameState => {
+export const createGameState = ({
+  players,
+  rounds,
+  state,
+}: {
+  players: Player[];
+  rounds: Round[];
+  state: HeadcrabState;
+}): GameState => {
   return {
     players,
     rounds,

@@ -44,11 +44,11 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
   const state = message as GameStateDto;
-  return createGameState(
-    state.players.map((player) => playerDtoToDomain(player)),
-    state.rounds.map((round) => roundDtoToDomain(round)),
-    headcrabStateToDomain(state.state)
-  );
+  return createGameState({
+    players: state.players.map((player) => playerDtoToDomain(player)),
+    rounds: state.rounds.map((round) => roundDtoToDomain(round)),
+    state: headcrabStateToDomain(state.state),
+  });
 };
 
 interface ChatMessageDto {
@@ -125,15 +125,15 @@ interface RoundDto {
 }
 
 const roundDtoToDomain = (round: RoundDto): Round => {
-  return createRound(
-    round.word,
-    new Map(
+  return createRound({
+    word: round.word,
+    playerWords: new Map(
       Array.from(Object.entries(round.playerWords), ([nickname, words]) => [
         nickname,
         words.map((word) => wordDtoToDomain(word)),
       ])
     ),
-    new Map(
+    playerVotingWords: new Map(
       Array.from(
         Object.entries(round.playerVotingWords),
         ([nickname, votingWord]) => [
@@ -142,8 +142,8 @@ const roundDtoToDomain = (round: RoundDto): Round => {
         ]
       )
     ),
-    votingItemDtoToDomain(round.votingItem)
-  );
+    votingItem: votingItemDtoToDomain(round.votingItem),
+  });
 };
 
 interface WordDto {
