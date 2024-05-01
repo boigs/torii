@@ -5,7 +5,7 @@ class Round {
   readonly word: string;
   private readonly playerWords: Map<string, Word[]>;
   private readonly playerVotingWords: Map<string, string | null>;
-  readonly votingItem: VotingItem | null;
+  private readonly votingItem: VotingItem | null;
 
   constructor({
     word,

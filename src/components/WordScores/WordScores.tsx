@@ -5,11 +5,12 @@ import {
   InputGroup,
   InputLeftAddon,
   Text,
+  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 
 import Card from 'src/components/Card';
-import { Player, Round } from 'src/domain';
+import { Player, Round, Word } from 'src/domain';
 
 import styles from './WordScores.module.scss';
 
@@ -21,6 +22,15 @@ interface WordScores {
 
 const WordScores = ({ player, round, className }: WordScores) => {
   const words = round.getPlayerWords(player.nickname);
+
+  const currentlyVotingForMyWord = (votingWord: Word) => {
+    const { nickname, word } = round.getVotingItem();
+    return player.nickname === nickname && word === votingWord.value;
+  };
+
+  const hasWordBeenUsed = (votingWord: Word) => {
+    return votingWord.isUsed && !currentlyVotingForMyWord(votingWord);
+  };
 
   return (
     <Card header='Score' className={className}>
@@ -41,9 +51,17 @@ const WordScores = ({ player, round, className }: WordScores) => {
                 value={word.value}
               />
             </InputGroup>
-            <Center className={styles.score}>
-              <Text>{word.score}</Text>
-            </Center>
+            <Tooltip
+              placement='right'
+              hasArrow
+              label={
+                hasWordBeenUsed(word) ? undefined : 'Not used in a vote yet'
+              }
+            >
+              <Center className={styles.score}>
+                <Text>{hasWordBeenUsed(word) ? word.score : '-'}</Text>
+              </Center>
+            </Tooltip>
           </Flex>
         ))}
       </VStack>
