@@ -1,10 +1,10 @@
 enum HeadcrabState {
-  Lobby,
-  PlayersSubmittingWords,
-  PlayersSubmittingVotingWord,
-  EndOfRound,
-  EndOfGame,
-  Undefined,
+  Lobby = 'Lobby',
+  PlayersSubmittingWords = 'PlayersSubmittingWords',
+  PlayersSubmittingVotingWord = 'PlayersSubmittingVotingWord',
+  EndOfRound = 'EndOfRound',
+  EndOfGame = 'EndOfGame',
+  Undefined = 'Undefined',
 }
 
 export default HeadcrabState;
