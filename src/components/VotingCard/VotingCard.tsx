@@ -21,6 +21,7 @@ const VotingCard = ({
 }: VotingCardProps) => {
   const submittedWords = round.getPlayerWords(player.nickname);
   const votedWord = round.getPlayerVotingWord(player.nickname);
+  const hasVoted = round.hasPlayerVoted(player.nickname);
   const haveAllWordsBeenUsed = submittedWords.every((word) => word.isUsed);
 
   return (
@@ -65,7 +66,7 @@ const VotingCard = ({
                 ))}
               </HStack>
               <Button
-                isActive={votedWord === null}
+                isActive={hasVoted && votedWord === null}
                 colorScheme='gray'
                 onClick={() => onWordClicked(null)}
               >
