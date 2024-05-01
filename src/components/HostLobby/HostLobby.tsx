@@ -70,7 +70,7 @@ const HostLobby = ({ onSubmit, className }: HostLobbyProps) => {
                     <NumberInput
                       className={styles.amountOfRoundsInput}
                       defaultValue={3}
-                      min={3}
+                      min={1}
                       max={5}
                       keepWithinRange={true}
                       clampValueOnBlur={true}

@@ -235,6 +235,9 @@ const gameFsm = setup({
         CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD: {
           target: 'playersSubmittingVotingWord',
         },
+        CHANGED_TO_END_OF_ROUND: {
+          target: 'endOfRound',
+        },
       },
     },
     playersSubmittingVotingWord: {

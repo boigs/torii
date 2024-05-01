@@ -28,6 +28,10 @@ class GameState {
   lastRound(): Round {
     return this.rounds.at(-1)!;
   }
+
+  isLastRound(): boolean {
+    return this.rounds.length === this.amountOfRounds;
+  }
 }
 
 export default GameState;

@@ -134,8 +134,9 @@ const Game = () => {
           {state.matches('endOfRound') && (
             <VStack spacing='24px'>
               <EndOfRound
+                isLastRound={state.context.game.isLastRound()}
                 player={player!}
-                onNextRoundClicked={sendContinueToNextRound}
+                onContinueClicked={sendContinueToNextRound}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
