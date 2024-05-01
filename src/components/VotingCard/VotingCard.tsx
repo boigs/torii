@@ -35,23 +35,20 @@ const VotingCard = ({
         </VStack>
       ) : (
         <VStack className={styles.wordsContainer}>
-          <Text className={styles.votingInstructions}>
-            {haveAllWordsBeenUsed ? (
-              <>
+          {haveAllWordsBeenUsed ? (
+            <>
+              <Text className={styles.votingInstructions}>
                 You have already used all your words, so you cannot use them for
                 voting. Please wait while other players cast their votes.
-              </>
-            ) : (
-              <>
-                From the words you submitted, click the word you think matches
-                with: <i>{round.getVotingItem().word}.</i>
-              </>
-            )}
-          </Text>
-          {haveAllWordsBeenUsed ? (
-            <Spinner size='lg' />
+              </Text>
+              <Spinner size='lg' />
+            </>
           ) : (
             <>
+              <Text className={styles.votingInstructions}>
+                From the words you submitted, click the word you think matches
+                with: <i>{round.getVotingItem().word}.</i>
+              </Text>
               <HStack className={styles.buttonsContainer}>
                 {submittedWords.map((submittedWord) => (
                   <Button
