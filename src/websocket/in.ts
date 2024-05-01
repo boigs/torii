@@ -86,7 +86,9 @@ const headcrabErrorTypeDtoToDomain = (error: string): HeadcrabErrorType => {
     case 'GAME_ALREADY_IN_PROGRESS':
       return HeadcrabErrorType.GameAlreadyInProgress;
     default:
-      throw `Could not deserialize the Headcrab error type. headcrab_error_type: ${error}`;
+      throw new Error(
+        `Could not deserialize the headcrab error type: ${error}`
+      );
   }
 };
 
@@ -103,7 +105,7 @@ const headcrabStateToDomain = (state: string): HeadcrabState => {
     case 'EndOfGame':
       return HeadcrabState.EndOfGame;
     default:
-      throw `Could not deserialize the Headcrab state. headcrab_state: ${state}`;
+      throw new Error(`Could not deserialize the headcrab state: ${state}`);
   }
 };
 
@@ -134,15 +136,10 @@ const roundDtoToDomain = (round: RoundDto): Round => {
     playerWords: new Map(
       Object.entries(round.playerWords).map(([nickname, words]) => [
         nickname,
-        words.map((word) => wordDtoToDomain(word)),
+        words.map(wordDtoToDomain),
       ])
     ),
-    playerVotingWords: new Map(
-      Object.entries(round.playerVotingWords).map(([nickname, votingWord]) => [
-        nickname,
-        votingWord,
-      ])
-    ),
+    playerVotingWords: new Map(Object.entries(round.playerVotingWords)),
     votingItem: votingItemDtoToDomain(round.votingItem),
   });
 };
@@ -154,7 +151,7 @@ interface WordDto {
 }
 
 const wordDtoToDomain = (word: WordDto): Word => {
-  return { value: word.word, isUsed: word.isUsed, score: word.score };
+  return { ...word, value: word.word };
 };
 
 interface VotingItemDto {

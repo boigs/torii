@@ -3,8 +3,8 @@ import Word from './word';
 
 class Round {
   readonly word: string;
-  readonly playerWords: Map<string, Word[]>;
-  readonly playerVotingWords: Map<string, string | null>;
+  private readonly playerWords: Map<string, Word[]>;
+  private readonly playerVotingWords: Map<string, string | null>;
   readonly votingItem: VotingItem | null;
 
   constructor({
@@ -27,7 +27,7 @@ class Round {
   getPlayerWords(nickname: string): Word[] {
     const words = this.playerWords.get(nickname);
     if (words === undefined) {
-      throw `Could not find the words of player '${nickname}'`;
+      throw new Error(`Could not find the words of player '${nickname}'`);
     }
     return words;
   }
@@ -46,7 +46,7 @@ class Round {
 
   getVotingItem(): VotingItem {
     if (this.votingItem === null) {
-      throw 'The Voting item is empty';
+      throw new Error('No voting item found');
     }
     return this.votingItem;
   }
