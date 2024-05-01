@@ -8,30 +8,54 @@ import styles from './EndOfRound.module.scss';
 
 interface EndOfRoundProps {
   player: Player;
-  onNextRoundClicked?: () => void;
+  isLastRound: boolean;
+  onContinueClicked: () => void;
   className?: string;
 }
 
+interface Labels {
+  title: string;
+  hostInstructions: string;
+  nonHostInstructions: string;
+  continueButtonText: string;
+}
+
+const roundOverLabels: Labels = {
+  title: "Round's Over",
+  hostInstructions: 'Press the button to start the next round.',
+  nonHostInstructions: 'Please wait until the host starts the next round.',
+  continueButtonText: 'Next round',
+};
+
+const gameOverLabels: Labels = {
+  title: "Game's Over",
+  hostInstructions: "Press the button to view the game's summary.",
+  nonHostInstructions:
+    "Please wait until the hosts advances to game's summary.",
+  continueButtonText: 'Go to game summary',
+};
+
 const EndOfRound = ({
   player,
-  onNextRoundClicked,
+  isLastRound,
+  onContinueClicked,
   className,
 }: EndOfRoundProps) => {
+  const labels = isLastRound ? gameOverLabels : roundOverLabels;
+
   return (
-    <Card header="Round's Over" className={className}>
+    <Card header={labels.title} className={className}>
       <VStack>
         <Text className={styles.instructions}>
-          {player.isHost
-            ? 'Press the button to start the next round.'
-            : 'Please wait until the host starts the next round.'}
+          {player.isHost ? labels.hostInstructions : labels.nonHostInstructions}
         </Text>
         {player.isHost ? (
           <Button
             colorScheme='blue'
-            onClick={onNextRoundClicked}
+            onClick={onContinueClicked}
             className={styles.button}
           >
-            Next round
+            {labels.continueButtonText}
           </Button>
         ) : (
           <Spinner />
