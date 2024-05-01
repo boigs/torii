@@ -31,8 +31,11 @@ const VotingSummary = ({
   onAcceptButtonClicked,
   className,
 }: VotingSummaryProps) => {
-  const playersExceptCurrentScorePlayer = players.filter(
+  const playersExceptCurrentVotingItem = players.filter(
     ({ nickname }) => nickname !== round.getVotingItem().nickname
+  );
+  const haveAllPlayersVoted = players.every(({ nickname }) =>
+    round.hasPlayerVoted(nickname)
   );
 
   return (
@@ -41,7 +44,7 @@ const VotingSummary = ({
         This is what other players are casting as their vote:
       </Text>
       <List className={styles.votingWordsList}>
-        {playersExceptCurrentScorePlayer.map((player) => (
+        {playersExceptCurrentVotingItem.map((player) => (
           <ListItem key={player.nickname} className={styles.votingWord}>
             <Flex className={styles.votingWordLine}>
               <PlayerComponent
@@ -76,13 +79,23 @@ const VotingSummary = ({
         ))}
       </List>
       {you.isHost && (
-        <Button
-          colorScheme='blue'
-          className={styles.acceptBallotButton}
-          onClick={onAcceptButtonClicked}
+        <Tooltip
+          hasArrow
+          label={
+            haveAllPlayersVoted
+              ? undefined
+              : 'Please wait until all players cast their vote'
+          }
         >
-          Accept
-        </Button>
+          <Button
+            colorScheme='blue'
+            className={styles.acceptBallotButton}
+            onClick={onAcceptButtonClicked}
+            isDisabled={!haveAllPlayersVoted}
+          >
+            Accept
+          </Button>
+        </Tooltip>
       )}
     </Card>
   );
