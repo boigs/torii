@@ -1,6 +1,6 @@
 interface VotingItem {
-  playerNickname: string;
-  word: string;
+  readonly nickname: string;
+  readonly word: string;
 }
 
 export default VotingItem;

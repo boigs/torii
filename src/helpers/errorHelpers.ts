@@ -1,53 +1,54 @@
-import { HeadCrabErrorType, HeadcrabError } from 'src/websocket/in';
+import { HeadcrabError, HeadcrabErrorType } from 'src/domain';
 
 export const headcrabErrorToString = (error: HeadcrabError): string => {
   switch (error.type) {
-    case HeadCrabErrorType.GameDoesNotExist:
+    case HeadcrabErrorType.GameDoesNotExist:
       return 'The game you are trying to join does not seem to exist.';
-    case HeadCrabErrorType.PlayerAlreadyExists:
+    case HeadcrabErrorType.PlayerAlreadyExists:
       return 'There is another player with that nickname already.';
-    case HeadCrabErrorType.NotEnoughPlayers:
+    case HeadcrabErrorType.NotEnoughPlayers:
       return 'Not enough players to start the game, at least 3 are needed.';
-    case HeadCrabErrorType.UnprocessableMessage:
+    case HeadcrabErrorType.UnprocessableMessage:
       return 'This action cannot be processed at this moment.';
-    case HeadCrabErrorType.RepeatedWords:
+    case HeadcrabErrorType.RepeatedWords:
       return 'You cannot submit the same word more than once.';
-    case HeadCrabErrorType.CommandNotAllowed:
+    case HeadcrabErrorType.CommandNotAllowed:
       return 'You cannot perform that action.';
-    case HeadCrabErrorType.GameAlreadyInProgress:
+    case HeadcrabErrorType.GameAlreadyInProgress:
       return 'You cannot join because the game is already in progress.';
-    case HeadCrabErrorType.Internal:
-    case HeadCrabErrorType.WebsocketClosed:
+    case HeadcrabErrorType.Internal:
+    case HeadcrabErrorType.WebsocketClosed:
       return 'Unknown error. Please contact support.';
   }
 };
 
-export const shouldEndGameAfterError = (error: HeadCrabErrorType): boolean => {
+export const shouldEndGameAfterError = (error: HeadcrabErrorType): boolean => {
   switch (error) {
-    case HeadCrabErrorType.GameDoesNotExist:
+    case HeadcrabErrorType.GameDoesNotExist:
       return true;
-    case HeadCrabErrorType.PlayerAlreadyExists:
+    case HeadcrabErrorType.PlayerAlreadyExists:
       return true;
-    case HeadCrabErrorType.NotEnoughPlayers:
+    case HeadcrabErrorType.NotEnoughPlayers:
       return false;
-    case HeadCrabErrorType.Internal:
+    case HeadcrabErrorType.Internal:
       return true;
-    case HeadCrabErrorType.UnprocessableMessage:
+    case HeadcrabErrorType.UnprocessableMessage:
       return false;
-    case HeadCrabErrorType.WebsocketClosed:
-      return false; // because we want to attempt reconnecting
-    case HeadCrabErrorType.CommandNotAllowed:
+    case HeadcrabErrorType.WebsocketClosed:
+      // Because we want to attempt reconnecting
       return false;
-    case HeadCrabErrorType.RepeatedWords:
+    case HeadcrabErrorType.CommandNotAllowed:
       return false;
-    case HeadCrabErrorType.GameAlreadyInProgress:
+    case HeadcrabErrorType.RepeatedWords:
+      return false;
+    case HeadcrabErrorType.GameAlreadyInProgress:
       return true;
   }
 };
 
-export const shouldShowErrorToast = (error: HeadCrabErrorType): boolean => {
+export const shouldShowErrorToast = (error: HeadcrabErrorType): boolean => {
   switch (error) {
-    case HeadCrabErrorType.WebsocketClosed:
+    case HeadcrabErrorType.WebsocketClosed:
       return false;
     default:
       return true;

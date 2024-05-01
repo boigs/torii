@@ -1,7 +1,7 @@
 interface Player {
-  nickname: string;
-  isHost: boolean;
-  isConnected: boolean;
+  readonly nickname: string;
+  readonly isHost: boolean;
+  readonly isConnected: boolean;
 }
 
 export default Player;

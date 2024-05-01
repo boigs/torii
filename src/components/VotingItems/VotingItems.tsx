@@ -24,12 +24,12 @@ interface ScoringProps {
 
 const VotingItems = ({ round, you, players, className }: ScoringProps) => {
   const player = players.find(
-    (player) => player.nickname === round.votingItem!.playerNickname
+    (player) => player.nickname === round.getVotingItem().nickname
   )!;
-  const submittedWords = round.playerWords[player.nickname];
-  const currentVotingWord = round.votingItem!.word;
+  const submittedWords = round.getPlayerWords(player.nickname);
+  const currentVotingWord = round.getVotingItem().word;
   const currentVotingWordIndex = submittedWords.findIndex(
-    (word) => word.word === currentVotingWord
+    (word) => word.value === currentVotingWord
   );
 
   return (
@@ -64,7 +64,7 @@ const VotingItems = ({ round, you, players, className }: ScoringProps) => {
               <Input
                 readOnly={true}
                 className={styles.wordInput}
-                value={submittedWord.word}
+                value={submittedWord.value}
               />
             </Skeleton>
           </InputGroup>

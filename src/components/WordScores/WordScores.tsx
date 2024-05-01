@@ -20,7 +20,7 @@ interface WordScores {
 }
 
 const WordScores = ({ player, round, className }: WordScores) => {
-  const words = round.playerWords[player.nickname] ?? [];
+  const words = round.getPlayerWords(player.nickname);
 
   return (
     <Card header='Score' className={className}>
@@ -38,7 +38,7 @@ const WordScores = ({ player, round, className }: WordScores) => {
               <Input
                 readOnly={true}
                 className={styles.word}
-                value={word.word}
+                value={word.value}
               />
             </InputGroup>
             <Center className={styles.score}>

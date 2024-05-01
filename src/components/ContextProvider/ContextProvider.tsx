@@ -8,7 +8,7 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
-import { Player } from 'src/domain';
+import { HeadcrabState, Player } from 'src/domain';
 import gameFsm from 'src/fsm/game';
 import {
   headcrabErrorToString,
@@ -17,12 +17,11 @@ import {
 } from 'src/helpers/errorHelpers';
 import logger from 'src/logger';
 import {
-  ChatMessage,
-  GameState,
-  HeadcrabError,
-  HeadcrabState,
   WsMessageIn,
   WsTypeIn,
+  chatMessageDtoToDomain,
+  gameStateDtoToDomain,
+  headcrabErrorDtoToDomain,
 } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
@@ -118,56 +117,59 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const message = JSON.parse(lastMessage.data as string) as WsMessageIn;
+      const messageDto = JSON.parse(lastMessage.data as string) as WsMessageIn;
       // move this into an error state of the fsm, and let each screen decide what to do?
       // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
-      switch (message.kind) {
+      switch (messageDto.kind) {
         case WsTypeIn.Error:
           {
-            const errorMessage = message as HeadcrabError;
+            const error = headcrabErrorDtoToDomain(messageDto);
 
-            if (shouldShowErrorToast(errorMessage.type)) {
+            if (shouldShowErrorToast(error.type)) {
               toast({
                 status: 'error',
                 isClosable: true,
                 duration: 5000,
-                description: headcrabErrorToString(errorMessage),
+                description: headcrabErrorToString(error),
                 position: 'top',
               });
             }
 
-            if (shouldEndGameAfterError(errorMessage.type)) {
+            if (shouldEndGameAfterError(error.type)) {
               // this event makes the FSM go to the "disconnected" state
               send({
                 type: 'ERROR_MESSAGE',
-                message: message as HeadcrabError,
+                error,
               });
             }
           }
           break;
         case WsTypeIn.GameState: {
-          const gameState = message as GameState;
+          const gameState = gameStateDtoToDomain(messageDto);
           send({
             type: 'GAME_STATE_MESSAGE',
-            message: gameState,
+            gameState,
           });
-          if (state.context.headcrabState !== gameState.state) {
+          if (state.context.game.state !== gameState.state) {
             switch (gameState.state) {
-              case HeadcrabState.LOBBY:
+              case HeadcrabState.Lobby:
                 send({ type: 'CHANGED_TO_LOBBY' });
                 break;
-              case HeadcrabState.PLAYERS_SUBMITTING_WORDS:
+              case HeadcrabState.PlayersSubmittingWords:
                 send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
                 break;
-              case HeadcrabState.PLAYERS_SUBMITTING_VOTING_WORD:
+              case HeadcrabState.PlayersSubmittingVotingWord:
                 send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
                 break;
-              case HeadcrabState.END_OF_ROUND: {
+              case HeadcrabState.EndOfRound: {
                 send({ type: 'CHANGED_TO_END_OF_ROUND' });
                 break;
               }
-              case HeadcrabState.END_OF_GAME: {
+              case HeadcrabState.EndOfGame: {
                 send({ type: 'CHANGED_TO_END_OF_GAME' });
+                break;
+              }
+              case HeadcrabState.Undefined: {
                 break;
               }
             }
@@ -175,10 +177,10 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           break;
         }
         case WsTypeIn.ChatText: {
-          const { sender, content } = message as ChatMessage;
+          const chatMessage = chatMessageDtoToDomain(messageDto);
           send({
             type: 'CHAT_MESSAGE',
-            message: { content, sender },
+            chatMessage,
           });
           break;
         }
@@ -190,7 +192,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     lastMessage,
     send,
     toast,
-    state.context.headcrabState,
+    state.context.game.state,
     state.context.websocketShouldBeConnected,
   ]);
 
@@ -201,7 +203,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
         player: actorRef
           .getSnapshot()
-          .context.players.find(
+          .context.game.players.find(
             ({ nickname }) =>
               nickname === actorRef.getSnapshot().context.nickname
           ),

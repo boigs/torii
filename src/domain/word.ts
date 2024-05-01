@@ -1,7 +1,7 @@
 interface Word {
-  word: string;
-  isUsed: boolean;
-  score: number;
+  readonly value: string;
+  readonly isUsed: boolean;
+  readonly score: number;
 }
 
 export default Word;

@@ -2,13 +2,12 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import { Player, Round } from 'src/domain';
 import {
   ChatMessage,
   GameState,
   HeadcrabError,
   HeadcrabState,
-} from 'src/websocket/in';
+} from 'src/domain';
 
 interface CreateGameEvent {
   type: 'CREATE_GAME';
@@ -27,17 +26,17 @@ interface GameJoinedEvent {
 
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
-  message: HeadcrabError;
+  error: HeadcrabError;
 }
 
 interface ChatMessageEvent {
   type: 'CHAT_MESSAGE';
-  message: ChatMessage;
+  chatMessage: ChatMessage;
 }
 
 interface GameStateMessageEvent {
   type: 'GAME_STATE_MESSAGE';
-  message: GameState;
+  gameState: GameState;
 }
 
 interface WebsocketConnectErrorEvent {
@@ -71,23 +70,23 @@ interface ChangedToGame {
 interface Context {
   gameId: string;
   nickname: string;
-  players: Player[];
-  rounds: Round[];
+  game: GameState;
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
   messages: ChatMessage[];
-  headcrabState?: HeadcrabState;
 }
 
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  players: [],
-  rounds: [],
+  game: new GameState({
+    players: [],
+    rounds: [],
+    state: HeadcrabState.Undefined,
+  }),
   websocketShouldBeConnected: false,
   gameJoined: false,
   messages: [],
-  headcrabState: undefined,
 };
 
 const gameFsm = setup({
@@ -129,11 +128,8 @@ const gameFsm = setup({
     }),
     assignGameState: assign(({ event }) => {
       assertEvent(event, 'GAME_STATE_MESSAGE');
-      const { players, rounds, state } = event.message;
       return {
-        players,
-        rounds,
-        headcrabState: state,
+        game: event.gameState,
       };
     }),
     setConnectToGameToTrue: assign(() => ({
@@ -145,9 +141,8 @@ const gameFsm = setup({
     resetContext: assign(() => defaultContext),
     addChatMessage: assign(({ context, event }) => {
       assertEvent(event, 'CHAT_MESSAGE');
-      const { sender, content } = event.message;
       return {
-        messages: [...context.messages, { sender, content }],
+        messages: [...context.messages, event.chatMessage],
       };
     }),
   },
