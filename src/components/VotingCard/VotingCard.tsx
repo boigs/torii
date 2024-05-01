@@ -21,6 +21,8 @@ const VotingCard = ({
 }: VotingCardProps) => {
   const submittedWords = round.getPlayerWords(player.nickname);
   const votedWord = round.getPlayerVotingWord(player.nickname);
+  const hasVoted = round.hasPlayerVoted(player.nickname);
+  const haveAllWordsBeenUsed = submittedWords.every((word) => word.isUsed);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
@@ -34,32 +36,44 @@ const VotingCard = ({
         </VStack>
       ) : (
         <VStack className={styles.wordsContainer}>
-          <Text className={styles.votingInstructions}>
-            From the words you submitted, click the word you think matches with:{' '}
-            <i>{round.getVotingItem().word}.</i>
-          </Text>
-          <HStack className={styles.buttonsContainer}>
-            {submittedWords.map((submittedWord) => (
+          {haveAllWordsBeenUsed ? (
+            <>
+              <Text className={styles.votingInstructions}>
+                You have already used all your words, so you cannot use them for
+                voting. Please wait while other players cast their votes.
+              </Text>
+              <Spinner size='lg' />
+            </>
+          ) : (
+            <>
+              <Text className={styles.votingInstructions}>
+                From the words you submitted, click the word you think matches
+                with: <i>{round.getVotingItem().word}.</i>
+              </Text>
+              <HStack className={styles.buttonsContainer}>
+                {submittedWords.map((submittedWord) => (
+                  <Button
+                    key={submittedWord.value}
+                    isDisabled={submittedWord.isUsed}
+                    onClick={() => onWordClicked(submittedWord)}
+                    isActive={
+                      !submittedWord.isUsed && votedWord === submittedWord.value
+                    }
+                    colorScheme='blue'
+                  >
+                    {submittedWord.value}
+                  </Button>
+                ))}
+              </HStack>
               <Button
-                key={submittedWord.value}
-                isDisabled={submittedWord.isUsed}
-                onClick={() => onWordClicked(submittedWord)}
-                isActive={
-                  !submittedWord.isUsed && votedWord === submittedWord.value
-                }
-                colorScheme='blue'
+                isActive={hasVoted && votedWord === null}
+                colorScheme='gray'
+                onClick={() => onWordClicked(null)}
               >
-                {submittedWord.value}
+                Skip
               </Button>
-            ))}
-          </HStack>
-          <Button
-            isActive={votedWord === null}
-            colorScheme='gray'
-            onClick={() => onWordClicked(null)}
-          >
-            Skip
-          </Button>
+            </>
+          )}
         </VStack>
       )}
     </Card>
