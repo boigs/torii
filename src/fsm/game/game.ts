@@ -83,6 +83,7 @@ const defaultContext: Context = {
     players: [],
     rounds: [],
     state: HeadcrabState.Undefined,
+    amountOfRounds: null,
   }),
   websocketShouldBeConnected: false,
   gameJoined: false,

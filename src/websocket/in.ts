@@ -44,6 +44,7 @@ interface GameStateDto {
   players: PlayerDto[];
   rounds: RoundDto[];
   state: string;
+  amountOfRounds: number | null;
 }
 
 export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
@@ -52,6 +53,7 @@ export const gameStateDtoToDomain = (message: WsMessageIn): GameState => {
     players: gameState.players.map((player) => playerDtoToDomain(player)),
     rounds: gameState.rounds.map((round) => roundDtoToDomain(round)),
     state: headcrabStateToDomain(gameState.state),
+    amountOfRounds: gameState.amountOfRounds,
   });
 };
 
