@@ -28,7 +28,7 @@ const VotingCard = ({
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
-            submitted.
+            submitted (currently <i>{round.getVotingItem().word}</i>).
           </Text>
           <Spinner size='lg' />
         </VStack>
