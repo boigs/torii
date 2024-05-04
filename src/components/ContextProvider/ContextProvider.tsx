@@ -184,6 +184,8 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
             }
           }
 
+          // The GameState is not used for rendering in the useEffect of this component, so it should be safe to update it
+          // Just make sure it is updated at the end of this case block so the previous value is not overwritten before used
           gameRef.current = gameState;
 
           break;
