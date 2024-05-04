@@ -34,9 +34,10 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, player, isInsideOfGame } =
+  const { gameActor, sendWebsocketMessage, isInsideOfGame } =
     useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
+  const you = state.context.game.you;
 
   useEffect(() => {
     if (state.matches('disconnected')) {
@@ -83,7 +84,7 @@ const Game = () => {
         <AnimatedParent className={styles.gameContainerGrid}>
           {state.matches('lobby') && (
             <>
-              {player?.isHost ? (
+              {you.isHost ? (
                 <HostLobby className={styles.lobby} onSubmit={sendGameStart} />
               ) : (
                 <Lobby className={styles.lobby} />
@@ -96,7 +97,7 @@ const Game = () => {
                 styles.wordsInput,
                 styles.wordsInputPlaying
               )}
-              player={player!}
+              you={you}
               // as players submit their words, the round is updated
               round={state.context.game.lastRound()}
               onSubmit={sendPlayerWords}
@@ -108,24 +109,23 @@ const Game = () => {
               <VotingItems
                 className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.game.lastRound()}
-                you={player!}
-                players={state.context.game.players}
+                you={you}
               />
               <VotingCard
                 className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.game.lastRound()}
-                player={player!}
+                you={you}
                 onWordClicked={sendPlayerVotingWord}
               />
               <VotingSummary
                 className={classNames(styles.width100)} // TODO remove this style
                 round={state.context.game.lastRound()}
-                you={player!}
+                you={you}
                 players={state.context.game.players}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
               />
               <WordScores
-                player={player!}
+                you={you}
                 round={state.context.game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
@@ -135,7 +135,7 @@ const Game = () => {
             <VStack spacing='24px'>
               <EndOfRound
                 isLastRound={state.context.game.isLastRound()}
-                player={player!}
+                you={you}
                 onContinueClicked={sendContinueToNextRound}
                 className={classNames(styles.width100)} // TODO remove this style
               />
@@ -161,7 +161,6 @@ const Game = () => {
             )}
             onSubmit={sendChatMessage}
             messages={state.context.messages}
-            players={state.context.game.players}
           />
         </AnimatedParent>
       )}

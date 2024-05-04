@@ -1,6 +1,12 @@
 'use client';
 
-import { ReactNode, createContext, useCallback, useEffect } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -8,7 +14,7 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
-import { HeadcrabState, Player } from 'src/domain';
+import { HeadcrabState } from 'src/domain';
 import gameFsm from 'src/fsm/game';
 import {
   headcrabErrorToString,
@@ -28,7 +34,6 @@ import { WsMessageOut } from 'src/websocket/out';
 interface ContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
-  player: Player | undefined;
   isInsideOfGame: boolean;
 }
 
@@ -37,7 +42,6 @@ export const Context = createContext<ContextType>({
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
-  player: undefined,
   isInsideOfGame: false,
 });
 
@@ -106,51 +110,59 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [state.context.gameJoined, send, toast]);
 
+  // Using a ref here as the GameState contains class objects that are reacreated within the useEffect, using it directly and including it as a depedency causes an inifite loop
+  const gameRef = useRef(state.context.game);
+
   useEffect(() => {
     logger.debug({ state }, 'state');
   }, [state]);
 
   useEffect(() => {
     if (state.context.websocketShouldBeConnected && lastMessage) {
+      const message = lastMessage.data as string;
+
       // Ignore the heartbeat pong responses
-      if (lastMessage.data === 'pong') {
+      if (message === 'pong') {
         return;
       }
 
-      const messageDto = JSON.parse(lastMessage.data as string) as WsMessageIn;
-      // move this into an error state of the fsm, and let each screen decide what to do?
-      // error message is printed twice, probably need to remember if we already saw it, or using an fsm for this would fix it
+      const messageDto = JSON.parse(message) as WsMessageIn;
       switch (messageDto.kind) {
-        case WsTypeIn.Error:
-          {
-            const error = headcrabErrorDtoToDomain(messageDto);
+        case WsTypeIn.Error: {
+          const headcrabError = headcrabErrorDtoToDomain(messageDto);
 
-            if (shouldShowErrorToast(error.type)) {
-              toast({
-                status: 'error',
-                isClosable: true,
-                duration: 5000,
-                description: headcrabErrorToString(error),
-                position: 'top',
-              });
-            }
-
-            if (shouldEndGameAfterError(error.type)) {
-              // this event makes the FSM go to the "disconnected" state
-              send({
-                type: 'ERROR_MESSAGE',
-                error,
-              });
-            }
+          if (shouldShowErrorToast(headcrabError.type)) {
+            toast({
+              status: 'error',
+              isClosable: true,
+              duration: 5000,
+              description: headcrabErrorToString(headcrabError),
+              position: 'top',
+            });
           }
+
+          if (shouldEndGameAfterError(headcrabError.type)) {
+            send({
+              type: 'ERROR_MESSAGE',
+              headcrabError,
+            });
+          }
+
           break;
+        }
+
         case WsTypeIn.GameState: {
-          const gameState = gameStateDtoToDomain(messageDto);
+          const gameState = gameStateDtoToDomain(
+            messageDto,
+            state.context.nickname
+          );
+
           send({
             type: 'GAME_STATE_MESSAGE',
             gameState,
           });
-          if (state.context.game.state !== gameState.state) {
+
+          if (gameRef.current.state !== gameState.state) {
             switch (gameState.state) {
               case HeadcrabState.Lobby:
                 send({ type: 'CHANGED_TO_LOBBY' });
@@ -161,27 +173,33 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
               case HeadcrabState.PlayersSubmittingVotingWord:
                 send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
                 break;
-              case HeadcrabState.EndOfRound: {
+              case HeadcrabState.EndOfRound:
                 send({ type: 'CHANGED_TO_END_OF_ROUND' });
                 break;
-              }
-              case HeadcrabState.EndOfGame: {
+              case HeadcrabState.EndOfGame:
                 send({ type: 'CHANGED_TO_END_OF_GAME' });
                 break;
-              }
-              case HeadcrabState.Undefined: {
+              case HeadcrabState.Undefined:
                 break;
-              }
             }
           }
+
+          gameRef.current = gameState;
+
           break;
         }
+
         case WsTypeIn.ChatText: {
-          const chatMessage = chatMessageDtoToDomain(messageDto);
+          const chatMessage = chatMessageDtoToDomain(
+            messageDto,
+            gameRef.current.nicknameToPlayer
+          );
+
           send({
             type: 'CHAT_MESSAGE',
             chatMessage,
           });
+
           break;
         }
       }
@@ -191,9 +209,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [
     lastMessage,
     send,
-    toast,
-    state.context.game.state,
+    state.context.nickname,
     state.context.websocketShouldBeConnected,
+    toast,
   ]);
 
   return (
@@ -201,12 +219,6 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         gameActor: actorRef,
         sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
-        player: actorRef
-          .getSnapshot()
-          .context.game.players.find(
-            ({ nickname }) =>
-              nickname === actorRef.getSnapshot().context.nickname
-          ),
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||

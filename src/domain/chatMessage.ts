@@ -1,5 +1,7 @@
+import Player from './player';
+
 interface ChatMessage {
-  readonly sender: string;
+  readonly sender: Player;
   readonly content: string;
 }
 

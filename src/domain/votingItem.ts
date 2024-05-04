@@ -1,5 +1,7 @@
+import Player from './player';
+
 interface VotingItem {
-  readonly nickname: string;
+  readonly player: Player;
   readonly word: string;
 }
 

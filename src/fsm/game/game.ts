@@ -26,7 +26,7 @@ interface GameJoinedEvent {
 
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
-  error: HeadcrabError;
+  headcrabError: HeadcrabError;
 }
 
 interface ChatMessageEvent {
@@ -80,7 +80,8 @@ const defaultContext: Context = {
   gameId: '',
   nickname: '',
   game: new GameState({
-    players: [],
+    you: { nickname: 'unset', isHost: false, isConnected: false },
+    nicknameToPlayer: new Map(),
     rounds: [],
     state: HeadcrabState.Undefined,
     amountOfRounds: null,

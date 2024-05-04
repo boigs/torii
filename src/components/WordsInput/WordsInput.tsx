@@ -31,7 +31,7 @@ import ConfirmModal from './ConfirmModal';
 import styles from './WordsInput.module.scss';
 
 interface WordInputProps {
-  player: Player;
+  you: Player;
   round: Round;
   onSubmit: (words: string[]) => Promise<void>;
   className?: string;
@@ -41,7 +41,12 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
+const WordsInput = ({
+  you: player,
+  round,
+  onSubmit,
+  className,
+}: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
@@ -56,8 +61,8 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
     {}
   );
-  const word = round.word;
-  const areWordsValid = round.hasPlayerSentWords(player.nickname);
+  const haveSentWordsSuccessfuly =
+    isDoneSubmitting && round.hasPlayerSentWords(player);
 
   const onFormSubmit = async (formValues: FormValues) => {
     const words = Object.entries(formValues)
@@ -85,7 +90,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     setDoneSubmitting(true);
   };
 
-  return isDoneSubmitting && areWordsValid ? (
+  return haveSentWordsSuccessfuly ? (
     <CustomCard
       header={
         <Center gap='4px'>
@@ -118,7 +123,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
           <Text align='center' size='sm'>
             Write the words that come to your mind for:
           </Text>
-          <Text className={styles.chosenWord}>{word}.</Text>
+          <Text className={styles.chosenWord}>{round.word}.</Text>
         </div>
       </CardHeader>
       <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
