@@ -46,6 +46,10 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
+    "@typescript-eslint/no-confusing-void-expression": [
+      "error",
+      { "ignoreArrowShorthand": true }
+    ],
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
