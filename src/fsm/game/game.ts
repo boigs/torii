@@ -80,7 +80,7 @@ const defaultContext: Context = {
   gameId: '',
   nickname: '',
   game: new GameState({
-    you: { nickname: 'unset', isHost: false, isConnected: false },
+    player: { nickname: 'unset', isHost: false, isConnected: false },
     nicknameToPlayer: new Map(),
     rounds: [],
     state: HeadcrabState.Undefined,

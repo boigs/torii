@@ -7,7 +7,7 @@ import { Player } from 'src/domain';
 import styles from './EndOfRound.module.scss';
 
 interface EndOfRoundProps {
-  you: Player;
+  player: Player;
   isLastRound: boolean;
   onContinueClicked: () => void;
   className?: string;
@@ -36,7 +36,7 @@ const gameOverLabels: Labels = {
 };
 
 const EndOfRound = ({
-  you,
+  player,
   isLastRound,
   onContinueClicked,
   className,
@@ -47,9 +47,9 @@ const EndOfRound = ({
     <Card header={labels.title} className={className}>
       <VStack>
         <Text className={styles.instructions}>
-          {you.isHost ? labels.hostInstructions : labels.nonHostInstructions}
+          {player.isHost ? labels.hostInstructions : labels.nonHostInstructions}
         </Text>
-        {you.isHost ? (
+        {player.isHost ? (
           <Button
             colorScheme='blue'
             onClick={onContinueClicked}

@@ -49,7 +49,7 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (
   message: WsMessageIn,
-  you: string
+  nickname: string
 ): GameState => {
   const gameState = message as GameStateDto;
   const nicknameToPlayer = new Map(
@@ -59,7 +59,7 @@ export const gameStateDtoToDomain = (
     ])
   );
   return new GameState({
-    you: GameState.getPlayer(nicknameToPlayer, you),
+    player: getPlayer(nicknameToPlayer, nickname),
     nicknameToPlayer,
     rounds: gameState.rounds.map((round) =>
       roundDtoToDomain(round, nicknameToPlayer)
@@ -80,7 +80,7 @@ export const chatMessageDtoToDomain = (
 ): ChatMessage => {
   const chatMessage = message as ChatMessageDto;
   return {
-    sender: GameState.getPlayer(nicknameToPlayer, chatMessage.sender),
+    sender: getPlayer(nicknameToPlayer, chatMessage.sender),
     content: chatMessage.content,
   };
 };
@@ -158,13 +158,13 @@ const roundDtoToDomain = (
     word: round.word,
     playerWords: new Map(
       Object.entries(round.playerWords).map(([nickname, words]) => [
-        GameState.getPlayer(nicknameToPlayer, nickname),
+        getPlayer(nicknameToPlayer, nickname),
         words.map(wordDtoToDomain),
       ])
     ),
     playerVotingWords: new Map(
       Object.entries(round.playerVotingWords).map(([nickname, word]) => [
-        GameState.getPlayer(nicknameToPlayer, nickname),
+        getPlayer(nicknameToPlayer, nickname),
         word,
       ])
     ),
@@ -194,7 +194,18 @@ const votingItemDtoToDomain = (
   return item === null
     ? null
     : {
-        player: GameState.getPlayer(nicknameToPlayer, item.playerNickname),
+        player: getPlayer(nicknameToPlayer, item.playerNickname),
         word: item.word,
       };
+};
+
+const getPlayer = (
+  nicknameToPlayer: Map<string, Player>,
+  nickname: string
+): Player => {
+  const player = nicknameToPlayer.get(nickname);
+  if (player === undefined) {
+    throw new Error(`Could not find the player '${nickname}'`);
+  }
+  return player;
 };

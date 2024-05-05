@@ -15,17 +15,17 @@ import { Player, Round, Word } from 'src/domain';
 import styles from './WordScores.module.scss';
 
 interface WordScores {
-  you: Player;
+  player: Player;
   round: Round;
   className?: string;
 }
 
-const WordScores = ({ you, round, className }: WordScores) => {
-  const words = round.getPlayerWords(you);
+const WordScores = ({ player, round, className }: WordScores) => {
+  const words = round.getPlayerWords(player);
 
   const currentlyVotingForMyWord = (votingWord: Word) => {
-    const { player, word } = round.getVotingItem();
-    return player === you && word === votingWord.value;
+    const votingItem = round.getVotingItem();
+    return votingItem.player === player && votingItem.word === votingWord.value;
   };
 
   const hasWordBeenUsed = (votingWord: Word) => {

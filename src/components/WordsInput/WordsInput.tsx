@@ -31,7 +31,7 @@ import ConfirmModal from './ConfirmModal';
 import styles from './WordsInput.module.scss';
 
 interface WordInputProps {
-  you: Player;
+  player: Player;
   round: Round;
   onSubmit: (words: string[]) => Promise<void>;
   className?: string;
@@ -41,12 +41,7 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordsInput = ({
-  you: player,
-  round,
-  onSubmit,
-  className,
-}: WordInputProps) => {
+const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,

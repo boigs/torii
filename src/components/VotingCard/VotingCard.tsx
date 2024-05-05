@@ -7,27 +7,27 @@ import { Player, Round, Word } from 'src/domain';
 import styles from './VotingCard.module.scss';
 
 interface VotingCardProps {
-  you: Player;
+  player: Player;
   round: Round;
   onWordClicked: (word: Word | null) => void;
   className?: string;
 }
 
 const VotingCard = ({
-  you,
+  player,
   round,
   onWordClicked,
   className,
 }: VotingCardProps) => {
   const votingItem = round.getVotingItem();
-  const words = round.getPlayerWords(you);
-  const votedWord = round.getPlayerVotingWord(you);
+  const words = round.getPlayerWords(player);
+  const votedWord = round.getPlayerVotingWord(player);
   const haveAllWordsBeenUsed = words.every((word) => word.isUsed);
-  const hasVoted = round.hasPlayerVoted(you);
+  const hasVoted = round.hasPlayerVoted(player);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
-      {votingItem.player === you ? (
+      {votingItem.player === player ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you

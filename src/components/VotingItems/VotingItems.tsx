@@ -16,12 +16,12 @@ import { Player, Round } from 'src/domain';
 import styles from './VotingItems.module.scss';
 
 interface ScoringProps {
-  you: Player;
+  player: Player;
   round: Round;
   className?: string;
 }
 
-const VotingItems = ({ round, you, className }: ScoringProps) => {
+const VotingItems = ({ round, player, className }: ScoringProps) => {
   const votingItem = round.getVotingItem();
   const words = round.getPlayerWords(votingItem.player);
   const votingWordIndex = words.findIndex(
@@ -42,7 +42,7 @@ const VotingItems = ({ round, you, className }: ScoringProps) => {
     >
       <VStack>
         <Text className={styles.instructions}>
-          {votingItem.player == you
+          {votingItem.player == player
             ? 'These are the words you submitted:'
             : `These are the words submitted by ${votingItem.player.nickname}:`}
         </Text>

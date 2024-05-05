@@ -17,7 +17,7 @@ import { Player, Round } from 'src/domain';
 import styles from './VotingSummary.module.scss';
 
 interface VotingSummaryProps {
-  you: Player;
+  player: Player;
   players: Player[];
   round: Round;
   onAcceptButtonClicked: () => void;
@@ -25,7 +25,7 @@ interface VotingSummaryProps {
 }
 
 const VotingSummary = ({
-  you,
+  player,
   players,
   round,
   onAcceptButtonClicked,
@@ -76,7 +76,7 @@ const VotingSummary = ({
           </ListItem>
         ))}
       </List>
-      {you.isHost && (
+      {player.isHost && (
         <Tooltip
           hasArrow
           label={
