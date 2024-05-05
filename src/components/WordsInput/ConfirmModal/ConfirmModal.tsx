@@ -1,16 +1,11 @@
+import { Button, Text } from '@chakra-ui/react';
+
 import {
-  Button,
-  Divider,
-  HStack,
   Modal,
   ModalBody,
-  ModalCloseButton,
-  ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-  Text,
-} from '@chakra-ui/react';
+} from 'src/components/Modal';
 
 export interface ConfirmModalProps {
   isOpen?: boolean;
@@ -27,34 +22,25 @@ const ConfirmModal = ({
 }: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen ?? false} onClose={() => onClose?.()}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Empty fields</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody paddingTop={0} paddingBottom={0}>
-          <Divider marginBottom='12px' />
+      <ModalHeader>Empty fields</ModalHeader>
+      <ModalBody>
+        <Text align='justify'>
+          You have left some fields blank. Are you sure you would like to submit
+          these as part of your entry?
+        </Text>
+      </ModalBody>
 
-          <Text align='justify'>
-            You have left some fields blank. Are you sure you would like to
-            submit these as part of your entry?
-          </Text>
-          <Divider marginTop='12px' />
-        </ModalBody>
-
-        <ModalFooter>
-          <HStack>
-            <Button onClick={() => onClose?.()}>Cancel</Button>
-            <Button
-              onClick={() => onSubmit?.()}
-              colorScheme='blue'
-              size='md'
-              isLoading={isSubmitting}
-            >
-              Submit
-            </Button>
-          </HStack>
-        </ModalFooter>
-      </ModalContent>
+      <ModalFooter>
+        <Button onClick={() => onClose?.()}>Cancel</Button>
+        <Button
+          onClick={() => onSubmit?.()}
+          colorScheme='blue'
+          size='md'
+          isLoading={isSubmitting}
+        >
+          Submit
+        </Button>
+      </ModalFooter>
     </Modal>
   );
 };
