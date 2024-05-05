@@ -50,7 +50,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   } = useDisclosure();
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
     labelNumber: number,
-    formName: `word${number.toString()}`,
+    formName: `word${number}`,
   }));
   const initialValues = wordsIndexes.reduce(
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
