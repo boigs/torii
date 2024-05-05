@@ -45,7 +45,11 @@ const VotingSummary = ({
         {playersExceptCurrentVotingItem.map((player) => (
           <ListItem key={player.nickname} className={styles.votingWord}>
             <Flex className={styles.votingWordLine}>
-              <PlayerComponent player={player} crownClassName={styles.crown} />
+              <PlayerComponent
+                player={player}
+                // The crown in this component does not look good as it makes it look like the spacing between items is inconsistent
+                crownClassName={styles.hiddenCrown}
+              />
               {!round.hasPlayerVoted(player) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
                   <Center>
