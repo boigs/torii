@@ -9,9 +9,10 @@ import styles from './Player.module.scss';
 
 interface PlayerProps {
   player: PlayerDomain;
+  crownClassName?: string;
 }
 
-const Player = ({ player }: PlayerProps) => {
+const Player = ({ player, crownClassName }: PlayerProps) => {
   const disconnected = !player.isConnected;
 
   return (
@@ -27,7 +28,7 @@ const Player = ({ player }: PlayerProps) => {
         )}
       >
         <>
-          <Avatar player={player} />
+          <Avatar player={player} crownClassName={crownClassName} />
           <Text className={styles.playerName}>{player.nickname}</Text>
         </>
       </Flex>
