@@ -42,7 +42,7 @@ const VotingItems = ({ round, player, className }: ScoringProps) => {
     >
       <VStack>
         <Text className={styles.instructions}>
-          {votingItem.player == player
+          {votingItem.player === player
             ? 'These are the words you submitted:'
             : `These are the words submitted by ${votingItem.player.nickname}:`}
         </Text>
