@@ -87,7 +87,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
           }
         }),
       },
-    })
+    }),
   );
   const [state, send, actorRef] = gameActor;
 
@@ -102,7 +102,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       },
       shouldReconnect: () => state.context.websocketShouldBeConnected,
     },
-    state.context.websocketShouldBeConnected
+    state.context.websocketShouldBeConnected,
   );
 
   const onWebsocketError: () => void = useCallback(() => {
@@ -156,7 +156,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         case WsTypeIn.GameState: {
           const gameState = gameStateDtoToDomain(
             messageDto,
-            state.context.nickname
+            state.context.nickname,
           );
 
           send({
@@ -196,7 +196,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         case WsTypeIn.ChatText: {
           const chatMessage = chatMessageDtoToDomain(
             messageDto,
-            gameRef.current.nicknameToPlayer
+            gameRef.current.nicknameToPlayer,
           );
 
           send({

@@ -29,7 +29,7 @@ class Round {
     const words = this.playerWords.get(player);
     if (words === undefined) {
       throw new Error(
-        `Could not find the words of player '${player.nickname}'`
+        `Could not find the words of player '${player.nickname}'`,
       );
     }
     return words;

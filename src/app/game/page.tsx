@@ -64,7 +64,7 @@ const Game = () => {
 
   const sendPlayerVotingWord = (word: Word | null) => {
     sendWebsocketMessage(
-      playerVotingWord({ word: word === null ? null : word.value })
+      playerVotingWord({ word: word === null ? null : word.value }),
     );
   };
 
@@ -98,7 +98,7 @@ const Game = () => {
               onSubmit={sendPlayerWords}
               className={classNames(
                 styles.wordsInput,
-                styles.wordsInputPlaying
+                styles.wordsInputPlaying,
               )}
             />
           )}
@@ -148,7 +148,7 @@ const Game = () => {
               [styles.joinedPlayersList],
               state.matches('playersSubmittingWords')
                 ? styles.joinedPlayersListPlaying
-                : null
+                : null,
             )}
           />
           <Chat
@@ -158,7 +158,7 @@ const Game = () => {
               [styles.chat],
               state.matches('playersSubmittingWords')
                 ? styles.chatPlaying
-                : null
+                : null,
             )}
           />
         </AnimatedParent>

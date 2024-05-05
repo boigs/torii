@@ -24,7 +24,7 @@ const Player = ({ player, crownClassName }: PlayerProps) => {
       <Flex
         className={classNames(
           [styles.player],
-          disconnected ? styles.disconnected : null
+          disconnected ? styles.disconnected : null,
         )}
       >
         <>

@@ -54,7 +54,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   }));
   const initialValues = wordsIndexes.reduce(
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
-    {}
+    {},
   );
   const haveSentWordsSuccessfuly =
     isDoneSubmitting && round.hasPlayerSentWords(player);
