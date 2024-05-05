@@ -110,7 +110,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [state.context.gameJoined, send, toast]);
 
-  // Using a ref here as the GameState contains class objects that are reacreated within the useEffect, using it directly and including it as a depedency causes an inifite loop
+  // Using a ref here as the GameState contains class objects that are recreated within the useEffect, using the object directly and including it as a useEffect depedency causes an infite loop
   const gameRef = useRef(state.context.game);
 
   useEffect(() => {
