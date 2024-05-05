@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import {
   Button,
   Divider,
@@ -25,8 +27,14 @@ const ConfirmModal = ({
   onSubmit,
   onClose,
 }: ConfirmModalProps) => {
+  const initialFocus = useRef(null);
+
   return (
-    <Modal isOpen={isOpen ?? false} onClose={() => onClose?.()}>
+    <Modal
+      isOpen={isOpen ?? false}
+      onClose={() => onClose?.()}
+      initialFocusRef={initialFocus}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Empty fields</ModalHeader>
@@ -38,7 +46,6 @@ const ConfirmModal = ({
             You have left some fields blank. Are you sure you would like to
             submit these as part of your entry?
           </Text>
-          <Divider marginTop='12px' />
         </ModalBody>
 
         <ModalFooter>
@@ -49,6 +56,7 @@ const ConfirmModal = ({
               colorScheme='blue'
               size='md'
               isLoading={isSubmitting}
+              ref={initialFocus}
             >
               Submit
             </Button>
