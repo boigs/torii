@@ -32,7 +32,7 @@ const VotingSummary = ({
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentVotingItem = players.filter(
-    (player) => player !== round.getVotingItem().player
+    (player) => player !== round.getVotingItem().player,
   );
   const haveAllPlayersVoted = round.haveAllPlayersVoted(players);
 

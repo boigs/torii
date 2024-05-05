@@ -53,15 +53,15 @@ const Modal = ({
   onClose,
 }: React.PropsWithChildren<ModalProps>) => {
   const header = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === ModalHeader
+    (child) => React.isValidElement(child) && child.type === ModalHeader,
   );
 
   const body = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === ModalBody
+    (child) => React.isValidElement(child) && child.type === ModalBody,
   );
 
   const footer = React.Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === ModalFooter
+    (child) => React.isValidElement(child) && child.type === ModalFooter,
   );
 
   return (

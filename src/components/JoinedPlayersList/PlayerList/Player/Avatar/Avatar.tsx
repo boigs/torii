@@ -28,7 +28,7 @@ const Avatar = ({ player, size, crownClassName }: AvatarProps) => {
         shapeRotation: [0],
         faceOffsetY: [-10, 15],
       }).toString(),
-    [player.nickname]
+    [player.nickname],
   );
 
   return (

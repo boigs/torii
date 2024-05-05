@@ -7,7 +7,7 @@ export interface StartGameOptions {
 }
 
 export const startGame: (options: StartGameOptions) => WsMessageOut = (
-  options
+  options,
 ) => ({
   kind: 'startGame',
   ...options,
@@ -18,7 +18,7 @@ export interface ChatMessageOptions {
 }
 
 export const chatMessage: (options: ChatMessageOptions) => WsMessageOut = (
-  options
+  options,
 ) => ({
   kind: 'chatMessage',
   ...options,
@@ -29,7 +29,7 @@ export interface PlayerWordsOptions {
 }
 
 export const playerWords: (options: PlayerWordsOptions) => WsMessageOut = (
-  options
+  options,
 ) => ({
   kind: 'playerWords',
   ...options,
@@ -40,7 +40,7 @@ export interface PlayerVotingWordOptions {
 }
 
 export const playerVotingWord: (
-  options: PlayerVotingWordOptions
+  options: PlayerVotingWordOptions,
 ) => WsMessageOut = (options) => ({
   kind: 'playerVotingWord',
   ...options,

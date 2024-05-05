@@ -1,6 +1,6 @@
 {
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "semi": true,
   "singleQuote": true,
   "jsxSingleQuote": true,

@@ -25,7 +25,7 @@ const VotingItems = ({ round, player, className }: ScoringProps) => {
   const votingItem = round.getVotingItem();
   const words = round.getPlayerWords(votingItem.player);
   const votingWordIndex = words.findIndex(
-    (word) => word.value === votingItem.word
+    (word) => word.value === votingItem.word,
   );
 
   return (

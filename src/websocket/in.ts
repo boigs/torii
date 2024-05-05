@@ -30,7 +30,7 @@ interface HeadcrabErrorDto {
 }
 
 export const headcrabErrorDtoToDomain = (
-  message: WsMessageIn
+  message: WsMessageIn,
 ): HeadcrabError => {
   const headcrabError = message as HeadcrabErrorDto;
   return {
@@ -49,20 +49,20 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (
   message: WsMessageIn,
-  nickname: string
+  nickname: string,
 ): GameState => {
   const gameState = message as GameStateDto;
   const nicknameToPlayer = new Map(
     gameState.players.map((player) => [
       player.nickname,
       playerDtoToDomain(player),
-    ])
+    ]),
   );
   return new GameState({
     player: getPlayer(nicknameToPlayer, nickname),
     nicknameToPlayer,
     rounds: gameState.rounds.map((round) =>
-      roundDtoToDomain(round, nicknameToPlayer)
+      roundDtoToDomain(round, nicknameToPlayer),
     ),
     state: headcrabStateToDomain(gameState.state),
     amountOfRounds: gameState.amountOfRounds,
@@ -76,7 +76,7 @@ interface ChatMessageDto {
 
 export const chatMessageDtoToDomain = (
   message: WsMessageIn,
-  nicknameToPlayer: Map<string, Player>
+  nicknameToPlayer: Map<string, Player>,
 ): ChatMessage => {
   const chatMessage = message as ChatMessageDto;
   return {
@@ -107,7 +107,7 @@ const headcrabErrorTypeDtoToDomain = (error: string): HeadcrabErrorType => {
       return HeadcrabErrorType.GameAlreadyInProgress;
     default:
       throw new Error(
-        `Could not deserialize the headcrab error type: ${error}`
+        `Could not deserialize the headcrab error type: ${error}`,
       );
   }
 };
@@ -152,7 +152,7 @@ interface RoundDto {
 
 const roundDtoToDomain = (
   round: RoundDto,
-  nicknameToPlayer: Map<string, Player>
+  nicknameToPlayer: Map<string, Player>,
 ): Round => {
   return new Round({
     word: round.word,
@@ -160,13 +160,13 @@ const roundDtoToDomain = (
       Object.entries(round.playerWords).map(([nickname, words]) => [
         getPlayer(nicknameToPlayer, nickname),
         words.map(wordDtoToDomain),
-      ])
+      ]),
     ),
     playerVotingWords: new Map(
       Object.entries(round.playerVotingWords).map(([nickname, word]) => [
         getPlayer(nicknameToPlayer, nickname),
         word,
-      ])
+      ]),
     ),
     votingItem: votingItemDtoToDomain(round.votingItem, nicknameToPlayer),
   });
@@ -189,7 +189,7 @@ interface VotingItemDto {
 
 const votingItemDtoToDomain = (
   item: VotingItemDto | null,
-  nicknameToPlayer: Map<string, Player>
+  nicknameToPlayer: Map<string, Player>,
 ): VotingItem | null => {
   return item === null
     ? null
@@ -201,7 +201,7 @@ const votingItemDtoToDomain = (
 
 const getPlayer = (
   nicknameToPlayer: Map<string, Player>,
-  nickname: string
+  nickname: string,
 ): Player => {
   const player = nicknameToPlayer.get(nickname);
   if (player === undefined) {
