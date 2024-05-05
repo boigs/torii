@@ -50,7 +50,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
   } = useDisclosure();
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
     labelNumber: number,
-    formName: `word${number}`,
+    formName: `word${number.toString()}`,
   }));
   const initialValues = wordsIndexes.reduce(
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
@@ -163,9 +163,9 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
               isSubmitting={props.isSubmitting}
               onClose={closeEmptyFieldsModal}
               onSubmit={() => {
-                onModalSubmit(props).catch((error) =>
-                  logger.error(error, 'ConfirmModal submit')
-                );
+                onModalSubmit(props).catch((error: unknown) => {
+                  logger.error(error, 'ConfirmModal submit');
+                });
               }}
             />
           </>

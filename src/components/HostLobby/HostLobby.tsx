@@ -77,9 +77,9 @@ const HostLobby = ({ onSubmit, className }: HostLobbyProps) => {
                       onChange={(val) => {
                         form
                           .setFieldValue(field.name, Number(val))
-                          .catch((error) =>
-                            logger.error(error, 'set amountOfRounds')
-                          );
+                          .catch((error: unknown) => {
+                            logger.error(error, 'set amountOfRounds');
+                          });
                       }}
                     >
                       <NumberInputField />

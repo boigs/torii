@@ -56,7 +56,9 @@ const VotingCard = ({
                   <Button
                     key={submittedWord.value}
                     isDisabled={submittedWord.isUsed}
-                    onClick={() => onWordClicked(submittedWord)}
+                    onClick={() => {
+                      onWordClicked(submittedWord);
+                    }}
                     isActive={
                       !submittedWord.isUsed && votedWord === submittedWord.value
                     }
@@ -69,7 +71,9 @@ const VotingCard = ({
               <Button
                 isActive={hasVoted && votedWord === null}
                 colorScheme='gray'
-                onClick={() => onWordClicked(null)}
+                onClick={() => {
+                  onWordClicked(null);
+                }}
               >
                 Skip
               </Button>
