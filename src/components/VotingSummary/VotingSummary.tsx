@@ -17,7 +17,7 @@ import { Player, Round } from 'src/domain';
 import styles from './VotingSummary.module.scss';
 
 interface VotingSummaryProps {
-  you: Player;
+  player: Player;
   players: Player[];
   round: Round;
   onAcceptButtonClicked: () => void;
@@ -25,18 +25,16 @@ interface VotingSummaryProps {
 }
 
 const VotingSummary = ({
-  you,
+  player,
   players,
   round,
   onAcceptButtonClicked,
   className,
 }: VotingSummaryProps) => {
   const playersExceptCurrentVotingItem = players.filter(
-    ({ nickname }) => nickname !== round.getVotingItem().nickname
+    (player) => player !== round.getVotingItem().player
   );
-  const haveAllPlayersVoted = players.every(({ nickname }) =>
-    round.hasPlayerVoted(nickname)
-  );
+  const haveAllPlayersVoted = round.haveAllPlayersVoted(players);
 
   return (
     <Card header={<Text>Voting Summary</Text>} className={className}>
@@ -54,13 +52,13 @@ const VotingSummary = ({
                   isHost: false,
                 }}
               />
-              {!round.hasPlayerVoted(player.nickname) ? (
+              {!round.hasPlayerVoted(player) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
                   <Center>
                     <Spinner size='md' />
                   </Center>
                 </Tooltip>
-              ) : round.getPlayerVotingWord(player.nickname) === null ? (
+              ) : round.getPlayerVotingWord(player) === null ? (
                 <Tooltip placement='left' hasArrow label='Skipped'>
                   <span className={styles.skippedCross}>
                     <Image
@@ -72,13 +70,13 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.getPlayerVotingWord(player.nickname)}</Text>
+                <Text>{round.getPlayerVotingWord(player)}</Text>
               )}
             </Flex>
           </ListItem>
         ))}
       </List>
-      {you.isHost && (
+      {player.isHost && (
         <Tooltip
           hasArrow
           label={

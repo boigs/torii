@@ -16,21 +16,15 @@ import {
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
-import { Player } from 'src/domain';
+import { ChatMessage } from 'src/domain';
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
 import Message from './Message';
 
 import styles from './Chat.module.scss';
 
-export interface Message {
-  sender: string;
-  content: string;
-}
-
 interface ChatProps {
-  messages: Message[];
-  players: Player[];
+  messages: ChatMessage[];
   onSubmit: (text: string) => Promise<void>;
   className?: string;
 }
@@ -39,7 +33,7 @@ interface FormValues {
   text: string;
 }
 
-const Chat = ({ messages, players, onSubmit, className }: ChatProps) => {
+const Chat = ({ messages, onSubmit, className }: ChatProps) => {
   const container = useRef<HTMLDivElement | null>(null);
 
   const scroll = () => {
@@ -69,18 +63,9 @@ const Chat = ({ messages, players, onSubmit, className }: ChatProps) => {
       </CardHeader>
       <CardBody className={styles.chatBody}>
         <VStack className={styles.messages} ref={container}>
-          {messages.map(({ sender, content }) => (
+          {messages.map((message) => (
             <Fragment key={_.uniqueId()}>
-              <Message
-                sender={
-                  players.find((player) => player.nickname === sender) ?? {
-                    nickname: sender,
-                    isHost: false,
-                    isConnected: true,
-                  }
-                }
-                content={content}
-              />
+              <Message message={message} />
               <Divider className={styles.messageDivider} />
             </Fragment>
           ))}

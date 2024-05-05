@@ -1,10 +1,11 @@
+import Player from './player';
 import VotingItem from './votingItem';
 import Word from './word';
 
 class Round {
   readonly word: string;
-  private readonly playerWords: Map<string, Word[]>;
-  private readonly playerVotingWords: Map<string, string | null>;
+  private readonly playerWords: Map<Player, Word[]>;
+  private readonly playerVotingWords: Map<Player, string | null>;
   private readonly votingItem: VotingItem | null;
 
   constructor({
@@ -14,8 +15,8 @@ class Round {
     votingItem,
   }: {
     word: string;
-    playerWords: Map<string, Word[]>;
-    playerVotingWords: Map<string, string | null>;
+    playerWords: Map<Player, Word[]>;
+    playerVotingWords: Map<Player, string | null>;
     votingItem: VotingItem | null;
   }) {
     this.word = word;
@@ -24,24 +25,30 @@ class Round {
     this.votingItem = votingItem;
   }
 
-  getPlayerWords(nickname: string): Word[] {
-    const words = this.playerWords.get(nickname);
+  getPlayerWords(player: Player): Word[] {
+    const words = this.playerWords.get(player);
     if (words === undefined) {
-      throw new Error(`Could not find the words of player '${nickname}'`);
+      throw new Error(
+        `Could not find the words of player '${player.nickname}'`
+      );
     }
     return words;
   }
 
-  hasPlayerSentWords(nickname: string): boolean {
-    return this.playerWords.has(nickname);
+  hasPlayerSentWords(player: Player): boolean {
+    return this.playerWords.has(player);
   }
 
-  getPlayerVotingWord(nickname: string): string | null {
-    return this.playerVotingWords.get(nickname) ?? null;
+  getPlayerVotingWord(player: Player): string | null {
+    return this.playerVotingWords.get(player) ?? null;
   }
 
-  hasPlayerVoted(nickname: string): boolean {
-    return this.playerVotingWords.has(nickname);
+  hasPlayerVoted(player: Player): boolean {
+    return this.playerVotingWords.has(player);
+  }
+
+  haveAllPlayersVoted(players: Player[]): boolean {
+    return players.every((player) => this.hasPlayerVoted(player));
   }
 
   getVotingItem(): VotingItem {

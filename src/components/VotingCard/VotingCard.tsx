@@ -7,30 +7,31 @@ import { Player, Round, Word } from 'src/domain';
 import styles from './VotingCard.module.scss';
 
 interface VotingCardProps {
-  round: Round;
   player: Player;
+  round: Round;
   onWordClicked: (word: Word | null) => void;
   className?: string;
 }
 
 const VotingCard = ({
-  round,
   player,
+  round,
   onWordClicked,
   className,
 }: VotingCardProps) => {
-  const submittedWords = round.getPlayerWords(player.nickname);
-  const votedWord = round.getPlayerVotingWord(player.nickname);
-  const haveAllWordsBeenUsed = submittedWords.every((word) => word.isUsed);
-  const hasVoted = round.hasPlayerVoted(player.nickname);
+  const votingItem = round.getVotingItem();
+  const words = round.getPlayerWords(player);
+  const votedWord = round.getPlayerVotingWord(player);
+  const haveAllWordsBeenUsed = words.every((word) => word.isUsed);
+  const hasVoted = round.hasPlayerVoted(player);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
-      {round.getVotingItem().nickname === player.nickname ? (
+      {votingItem.player === player ? (
         <VStack>
           <Text className={styles.hostInstructions}>
             Please wait while the players cast their votes for the words you
-            submitted (currently <i>{round.getVotingItem().word}</i>).
+            submitted (currently <i>{votingItem.word}</i>).
           </Text>
           <Spinner size='lg' />
         </VStack>
@@ -48,10 +49,10 @@ const VotingCard = ({
             <>
               <Text className={styles.votingInstructions}>
                 From the words you submitted, click the word you think matches
-                with: <i>{round.getVotingItem().word}.</i>
+                with: <i>{votingItem.word}.</i>
               </Text>
               <HStack className={styles.buttonsContainer}>
-                {submittedWords.map((submittedWord) => (
+                {words.map((submittedWord) => (
                   <Button
                     key={submittedWord.value}
                     isDisabled={submittedWord.isUsed}

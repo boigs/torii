@@ -3,26 +3,34 @@ import Player from './player';
 import Round from './round';
 
 class GameState {
-  readonly players: Player[];
+  readonly player: Player;
+  readonly nicknameToPlayer: Map<string, Player>;
   readonly rounds: Round[];
   readonly state: HeadcrabState;
   readonly amountOfRounds: number | null;
 
   constructor({
-    players,
+    player,
+    nicknameToPlayer,
     rounds,
     state,
     amountOfRounds,
   }: {
-    players: Player[];
+    player: Player;
+    nicknameToPlayer: Map<string, Player>;
     rounds: Round[];
     state: HeadcrabState;
     amountOfRounds: number | null;
   }) {
-    this.players = players;
+    this.player = player;
+    this.nicknameToPlayer = nicknameToPlayer;
     this.rounds = rounds;
     this.state = state;
     this.amountOfRounds = amountOfRounds;
+  }
+
+  get players(): Player[] {
+    return Array.from(this.nicknameToPlayer.values());
   }
 
   lastRound(): Round {

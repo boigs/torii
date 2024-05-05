@@ -33,8 +33,8 @@ const getConfig: () => Configuration = () => {
   const environment: Environment = getEnvironment();
   const headcrabBaseUrl: string = getHeadcrabBaseUrl();
 
-  const httpProtocol = environment == Environment.DEV ? 'http' : 'https';
-  const wsProtocol = environment == Environment.DEV ? 'ws' : 'wss';
+  const httpProtocol = environment === Environment.DEV ? 'http' : 'https';
+  const wsProtocol = environment === Environment.DEV ? 'ws' : 'wss';
 
   return {
     environment,

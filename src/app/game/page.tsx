@@ -34,9 +34,10 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, player, isInsideOfGame } =
+  const { gameActor, sendWebsocketMessage, isInsideOfGame } =
     useContext(Context);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
+  const player = state.context.game.player;
 
   useEffect(() => {
     if (state.matches('disconnected')) {
@@ -83,8 +84,8 @@ const Game = () => {
         <AnimatedParent className={styles.gameContainerGrid}>
           {state.matches('lobby') && (
             <>
-              {player?.isHost ? (
-                <HostLobby className={styles.lobby} onSubmit={sendGameStart} />
+              {player.isHost ? (
+                <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
               ) : (
                 <Lobby className={styles.lobby} />
               )}
@@ -92,40 +93,38 @@ const Game = () => {
           )}
           {state.matches('playersSubmittingWords') && (
             <WordsInput
+              player={player}
+              round={state.context.game.lastRound()}
+              onSubmit={sendPlayerWords}
               className={classNames(
                 styles.wordsInput,
                 styles.wordsInputPlaying
               )}
-              player={player!}
-              // as players submit their words, the round is updated
-              round={state.context.game.lastRound()}
-              onSubmit={sendPlayerWords}
             />
           )}
           {state.matches('playersSubmittingVotingWord') && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <VotingItems
-                className={classNames(styles.width100)} // TODO remove this style
+                player={player}
                 round={state.context.game.lastRound()}
-                you={player!}
-                players={state.context.game.players}
+                className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingCard
-                className={classNames(styles.width100)} // TODO remove this style
+                player={player}
                 round={state.context.game.lastRound()}
-                player={player!}
                 onWordClicked={sendPlayerVotingWord}
+                className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingSummary
-                className={classNames(styles.width100)} // TODO remove this style
-                round={state.context.game.lastRound()}
-                you={player!}
+                player={player}
                 players={state.context.game.players}
+                round={state.context.game.lastRound()}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
+                className={classNames(styles.width100)} // TODO remove this style
               />
               <WordScores
-                player={player!}
+                player={player}
                 round={state.context.game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
@@ -134,8 +133,8 @@ const Game = () => {
           {state.matches('endOfRound') && (
             <VStack spacing='24px'>
               <EndOfRound
+                player={player}
                 isLastRound={state.context.game.isLastRound()}
-                player={player!}
                 onContinueClicked={sendContinueToNextRound}
                 className={classNames(styles.width100)} // TODO remove this style
               />
@@ -143,25 +142,24 @@ const Game = () => {
           )}
           {state.matches('endOfGame') ? <Text>End of game</Text> : null}
           <JoinedPlayersList
+            gameId={state.context.gameId}
+            players={state.context.game.players}
             className={classNames(
               [styles.joinedPlayersList],
               state.matches('playersSubmittingWords')
                 ? styles.joinedPlayersListPlaying
                 : null
             )}
-            gameId={state.context.gameId}
-            players={state.context.game.players}
           />
           <Chat
+            messages={state.context.messages}
+            onSubmit={sendChatMessage}
             className={classNames(
               [styles.chat],
               state.matches('playersSubmittingWords')
                 ? styles.chatPlaying
                 : null
             )}
-            onSubmit={sendChatMessage}
-            messages={state.context.messages}
-            players={state.context.game.players}
           />
         </AnimatedParent>
       )}

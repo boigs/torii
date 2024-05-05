@@ -21,11 +21,11 @@ interface WordScores {
 }
 
 const WordScores = ({ player, round, className }: WordScores) => {
-  const words = round.getPlayerWords(player.nickname);
+  const words = round.getPlayerWords(player);
 
   const currentlyVotingForMyWord = (votingWord: Word) => {
-    const { nickname, word } = round.getVotingItem();
-    return player.nickname === nickname && word === votingWord.value;
+    const votingItem = round.getVotingItem();
+    return votingItem.player === player && votingItem.word === votingWord.value;
   };
 
   const hasWordBeenUsed = (votingWord: Word) => {
