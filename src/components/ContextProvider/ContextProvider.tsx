@@ -97,7 +97,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     {
       heartbeat: HEARTBEAT,
       reconnectInterval: 500,
-      onError: () => onWebsocketError(),
+      onError: () => {
+        onWebsocketError();
+      },
       shouldReconnect: () => state.context.websocketShouldBeConnected,
     },
     state.context.websocketShouldBeConnected
@@ -220,7 +222,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     <Context.Provider
       value={{
         gameActor: actorRef,
-        sendWebsocketMessage: (message) => sendMessage(JSON.stringify(message)),
+        sendWebsocketMessage: (message) => {
+          sendMessage(JSON.stringify(message));
+        },
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||

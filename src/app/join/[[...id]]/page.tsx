@@ -33,9 +33,9 @@ const Join = ({ params: { id } }: JoinQuery) => {
       <JoinForm
         gameId={realId}
         loading={!state.matches('disconnected')}
-        onSubmit={({ gameId, nickname }) =>
-          send({ type: 'JOIN_GAME', gameId, nickname })
-        }
+        onSubmit={({ gameId, nickname }) => {
+          send({ type: 'JOIN_GAME', gameId, nickname });
+        }}
       />
     </Center>
   );

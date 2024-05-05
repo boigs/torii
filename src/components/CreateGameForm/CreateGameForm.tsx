@@ -28,8 +28,9 @@ interface HostFormProps {
 }
 
 const CreateGameForm = ({ loading, onSubmit }: HostFormProps) => {
-  const onFormSubmit = (values: FormValues) =>
+  const onFormSubmit = (values: FormValues) => {
     onSubmit({ nickname: values.nickname });
+  };
 
   return (
     <Card size='sm' width='sm'>

@@ -34,7 +34,11 @@ class GameState {
   }
 
   lastRound(): Round {
-    return this.rounds.at(-1)!;
+    const lastRound = this.rounds.at(-1);
+    if (lastRound === undefined) {
+      throw new Error(`Could not find the last round`);
+    }
+    return lastRound;
   }
 
   isLastRound(): boolean {
