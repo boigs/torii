@@ -1,4 +1,5 @@
 import { Button, HStack, Text, VStack } from '@chakra-ui/react';
+import debounce from 'debounce';
 
 import Card from 'src/components/Card';
 import Spinner from 'src/components/Spinner';
@@ -24,6 +25,10 @@ const VotingCard = ({
   const votedWord = round.getPlayerVotingWord(player);
   const haveAllWordsBeenUsed = words.every((word) => word.isUsed);
   const hasVoted = round.hasPlayerVoted(player);
+
+  const onWordVoted = debounce((word: Word | null) => {
+    onWordClicked(word);
+  }, 100);
 
   return (
     <Card className={className} header={<Text>Voting Card</Text>}>
@@ -56,9 +61,7 @@ const VotingCard = ({
                   <Button
                     key={submittedWord.value}
                     isDisabled={submittedWord.isUsed}
-                    onClick={() => {
-                      onWordClicked(submittedWord);
-                    }}
+                    onClick={() => onWordVoted(submittedWord)}
                     isActive={
                       !submittedWord.isUsed && votedWord === submittedWord.value
                     }
@@ -71,9 +74,7 @@ const VotingCard = ({
               <Button
                 isActive={hasVoted && votedWord === null}
                 colorScheme='gray'
-                onClick={() => {
-                  onWordClicked(null);
-                }}
+                onClick={() => onWordVoted(null)}
               >
                 Skip
               </Button>
