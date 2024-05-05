@@ -1,4 +1,4 @@
-import { Button, HStack, Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 
 import {
   Modal,
@@ -31,17 +31,15 @@ const ConfirmModal = ({
       </ModalBody>
 
       <ModalFooter>
-        <HStack>
-          <Button onClick={() => onClose?.()}>Cancel</Button>
-          <Button
-            onClick={() => onSubmit?.()}
-            colorScheme='blue'
-            size='md'
-            isLoading={isSubmitting}
-          >
-            Submit
-          </Button>
-        </HStack>
+        <Button onClick={() => onClose?.()}>Cancel</Button>
+        <Button
+          onClick={() => onSubmit?.()}
+          colorScheme='blue'
+          size='md'
+          isLoading={isSubmitting}
+        >
+          Submit
+        </Button>
       </ModalFooter>
     </Modal>
   );

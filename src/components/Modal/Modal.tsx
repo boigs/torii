@@ -6,6 +6,7 @@ import {
   ModalFooter as ChakraModalFooter,
   ModalHeader as ChakraModalHeader,
   Divider,
+  HStack,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
@@ -42,7 +43,7 @@ const ModalFooter = ({
   children,
   className,
 }: React.PropsWithChildren<ModalSectionProps>) => (
-  <div className={className}>{children}</div>
+  <HStack className={className}>{children}</HStack>
 );
 
 const Modal = ({
