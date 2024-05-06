@@ -3,22 +3,26 @@ import VotingItem from './votingItem';
 import Word from './word';
 
 class Round {
+  readonly roundIndex: number;
   readonly word: string;
   private readonly playerWords: Map<Player, Word[]>;
   private readonly playerVotingWords: Map<Player, string | null>;
   private readonly votingItem: VotingItem | null;
 
   constructor({
+    roundIndex,
     word,
     playerWords,
     playerVotingWords,
     votingItem,
   }: {
+    roundIndex: number;
     word: string;
     playerWords: Map<Player, Word[]>;
     playerVotingWords: Map<Player, string | null>;
     votingItem: VotingItem | null;
   }) {
+    this.roundIndex = roundIndex;
     this.word = word;
     this.playerWords = playerWords;
     this.playerVotingWords = playerVotingWords;

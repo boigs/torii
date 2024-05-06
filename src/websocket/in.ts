@@ -151,10 +151,12 @@ interface RoundDto {
 }
 
 const roundDtoToDomain = (
+  gameState: GameStateDto,
   round: RoundDto,
   nicknameToPlayer: Map<string, Player>,
 ): Round => {
   return new Round({
+    roundIndex: gameState.rounds.findIndex((r) => r === round),
     word: round.word,
     playerWords: new Map(
       Object.entries(round.playerWords).map(([nickname, words]) => [
