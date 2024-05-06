@@ -1,1 +1,1 @@
-export { default } from './WordScores';
+export { WordScoresModal, WordScoresCard } from './WordScores';
