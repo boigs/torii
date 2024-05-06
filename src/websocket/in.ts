@@ -61,8 +61,8 @@ export const gameStateDtoToDomain = (
   return new GameState({
     player: getPlayer(nicknameToPlayer, nickname),
     nicknameToPlayer,
-    rounds: gameState.rounds.map((round) =>
-      roundDtoToDomain(round, nicknameToPlayer),
+    rounds: gameState.rounds.map((round, index) =>
+      roundDtoToDomain(index, round, nicknameToPlayer),
     ),
     state: headcrabStateToDomain(gameState.state),
     amountOfRounds: gameState.amountOfRounds,
@@ -151,12 +151,12 @@ interface RoundDto {
 }
 
 const roundDtoToDomain = (
-  gameState: GameStateDto,
+  index: number,
   round: RoundDto,
   nicknameToPlayer: Map<string, Player>,
 ): Round => {
   return new Round({
-    roundIndex: gameState.rounds.findIndex((r) => r === round),
+    index,
     word: round.word,
     playerWords: new Map(
       Object.entries(round.playerWords).map(([nickname, words]) => [
