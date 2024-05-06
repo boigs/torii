@@ -8,6 +8,7 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
+import classNames from 'classnames';
 
 import Card from 'src/components/Card';
 import { Modal, ModalBody, ModalHeader } from 'src/components/Modal';
@@ -26,14 +27,12 @@ interface WordScoresModalProps extends Omit<WordScoresProps, 'className'> {
   onClose: () => void;
 }
 
-const MINIMUM_WORD_SCORE = 1;
-
 const WordScores = ({ player, round }: WordScoresProps) => {
   const words = round.getPlayerWords(player);
 
   const hasWordBeenUsed = (word: Word) => {
-    // if score is 0, it means its score has not been calculated yet
-    return word.isUsed && word.score >= MINIMUM_WORD_SCORE;
+    // TODO also return false for the current voting item without throwing an NPE
+    return word.isUsed;
   };
 
   return (
@@ -66,7 +65,9 @@ const WordScoresCard = ({ player, round, className }: WordScoresProps) => {
     <Card header='Score' className={className}>
       {round.getPlayerWords(player).length > 0 ? (
         <>
-          <Text className={styles.description}>
+          <Text
+            className={classNames(styles.description, styles.cardDescription)}
+          >
             These are the words you submitted and their current score on the
             right.
           </Text>
