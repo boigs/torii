@@ -68,8 +68,14 @@ const Modal = ({
     <ChakraModal isOpen={isOpen ?? false} onClose={() => onClose?.()}>
       <ModalOverlay />
       <ModalContent>
-        {header && <ChakraModalHeader>{header}</ChakraModalHeader>}
-        {showCloseButton ? <ModalCloseButton /> : null}
+        {header && (
+          <ChakraModalHeader className={styles.modalHeader}>
+            {header}
+            {showCloseButton ? (
+              <ModalCloseButton className={styles.closeButton} />
+            ) : null}
+          </ChakraModalHeader>
+        )}
 
         {body && (
           <ChakraModalBody className={styles.modalBody}>
@@ -78,7 +84,11 @@ const Modal = ({
           </ChakraModalBody>
         )}
 
-        {body && <ChakraModalFooter>{footer}</ChakraModalFooter>}
+        {footer && (
+          <ChakraModalFooter className={styles.modalFooter}>
+            {footer}
+          </ChakraModalFooter>
+        )}
       </ModalContent>
     </ChakraModal>
   );
