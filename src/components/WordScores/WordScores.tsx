@@ -31,8 +31,9 @@ const MINIMUM_WORD_SCORE = 1;
 const WordScores = ({ player, round }: WordScoresProps) => {
   const words = round.getPlayerWords(player);
 
-  const hasWordBeenUsed = (votingWord: Word) => {
-    return votingWord.score >= MINIMUM_WORD_SCORE;
+  const hasWordBeenUsed = (word: Word) => {
+    // if score is 0, it means its score has not been calculated yet
+    return word.isUsed && word.score >= MINIMUM_WORD_SCORE;
   };
 
   return (
