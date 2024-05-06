@@ -17,7 +17,7 @@ import Lobby from 'src/components/Lobby';
 import VotingCard from 'src/components/VotingCard';
 import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
-import WordScores from 'src/components/WordScores';
+import { WordScoresCard } from 'src/components/WordScores';
 import WordsInput from 'src/components/WordsInput';
 import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
@@ -123,7 +123,7 @@ const Game = () => {
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
                 className={classNames(styles.width100)} // TODO remove this style
               />
-              <WordScores
+              <WordScoresCard
                 player={player}
                 round={state.context.game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
