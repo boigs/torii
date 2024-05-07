@@ -87,24 +87,43 @@ export const chatMessageDtoToDomain = (
 
 const headcrabErrorTypeDtoToDomain = (error: string): HeadcrabErrorType => {
   switch (error) {
-    case 'INTERNAL_SERVER':
-      return HeadcrabErrorType.Internal;
-    case 'WEBSOCKET_CLOSED':
-      return HeadcrabErrorType.WebsocketClosed;
-    case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
-      return HeadcrabErrorType.UnprocessableMessage;
-    case 'COMMAND_NOT_ALLOWED':
-      return HeadcrabErrorType.CommandNotAllowed;
-    case 'NOT_ENOUGH_PLAYERS':
-      return HeadcrabErrorType.NotEnoughPlayers;
-    case 'GAME_DOES_NOT_EXIST':
-      return HeadcrabErrorType.GameDoesNotExist;
-    case 'PLAYER_ALREADY_EXISTS':
-      return HeadcrabErrorType.PlayerAlreadyExists;
-    case 'REPEATED_WORDS':
-      return HeadcrabErrorType.RepeatedWords;
+    // Domain
     case 'GAME_ALREADY_IN_PROGRESS':
       return HeadcrabErrorType.GameAlreadyInProgress;
+    case 'GAME_DOES_NOT_EXIST':
+      return HeadcrabErrorType.GameDoesNotExist;
+    case 'INVALID_STATE_FOR_WORDS_SUBMISSION':
+      return HeadcrabErrorType.InvalidStateForWordsSubmission;
+    case 'INVALID_STATE_FOR_VOTING_WORD_SUBMISSION':
+      return HeadcrabErrorType.InvalidStateForVotingWordSubmission;
+    case 'NOT_ENOUGH_PLAYERS':
+      return HeadcrabErrorType.NotEnoughPlayers;
+    case 'NOT_ENOUGH_ROUNDS':
+      return HeadcrabErrorType.NotEnoughRounds;
+    case 'NON_HOST_PLAYER_CANNOT_CONTINUE_TO_NEXT_ROUND':
+      return HeadcrabErrorType.NonHostPlayerCannotContinueToNextRound;
+    case 'NON_HOST_PLAYER_CANNOT_CONTINUE_TO_NEXT_VOTING_ITEM':
+      return HeadcrabErrorType.NonHostPlayerCannotContinueToNextVotingItem;
+    case 'NON_HOST_PLAYER_CANNOT_START_GAME':
+      return HeadcrabErrorType.NonHostPlayerCannotStartGame;
+    case 'PLAYER_ALREADY_EXISTS':
+      return HeadcrabErrorType.PlayerAlreadyExists;
+    case 'PLAYER_CANNOT_SUBMIT_NON_EXISTING_OR_USED_WORD':
+      return HeadcrabErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord;
+    case 'PLAYER_CANNOT_SUBMIT_VOTING_WORD_WHEN_VOTING_ITEM_IS_NONE':
+      return HeadcrabErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone;
+    case 'REPEATED_WORDS':
+      return HeadcrabErrorType.RepeatedWords;
+    case 'VOTING_ITEM_PLAYER_CANNOT_SUBMIT_VOTING_WORD':
+      return HeadcrabErrorType.VotingItemPlayerCannotSubmitVotingWord;
+    // External
+    case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
+      return HeadcrabErrorType.UnprocessableWebsocketMessage;
+    case 'WEBSOCKET_CLOSED':
+      return HeadcrabErrorType.WebsocketClosed;
+    // Internal
+    case 'INTERNAL':
+      return HeadcrabErrorType.Internal;
     default:
       throw new Error(
         `Could not deserialize the headcrab error type: ${error}`,
