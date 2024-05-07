@@ -3,59 +3,42 @@ import { HeadcrabError, HeadcrabErrorType } from 'src/domain';
 export const headcrabErrorToString = (error: HeadcrabError): string => {
   switch (error.type) {
     // Domain
-    case HeadcrabErrorType.GameAlreadyInProgress: {
+    case HeadcrabErrorType.GameAlreadyInProgress:
       return 'You cannot join because the game is already in progress.';
-    }
-    case HeadcrabErrorType.GameDoesNotExist: {
+    case HeadcrabErrorType.GameDoesNotExist:
       return 'The game you are trying to join does not seem to exist.';
-    }
-    case HeadcrabErrorType.InvalidStateForWordsSubmission: {
+    case HeadcrabErrorType.InvalidStateForWordsSubmission:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.InvalidStateForVotingWordSubmission: {
+    case HeadcrabErrorType.InvalidStateForVotingWordSubmission:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.NotEnoughPlayers: {
+    case HeadcrabErrorType.NotEnoughPlayers:
       return 'Not enough players to start the game, at least 3 are needed.';
-    }
-    case HeadcrabErrorType.NotEnoughRounds: {
+    case HeadcrabErrorType.NotEnoughRounds:
       return 'Not enough rounds to starth the game, at least 1 round is needed.';
-    }
-    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextRound: {
+    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextRound:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextVotingItem: {
+    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextVotingItem:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.NonHostPlayerCannotStartGame: {
+    case HeadcrabErrorType.NonHostPlayerCannotStartGame:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.PlayerAlreadyExists: {
+    case HeadcrabErrorType.PlayerAlreadyExists:
       return 'There is another player with that nickname already.';
-    }
-    case HeadcrabErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord: {
+    case HeadcrabErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone: {
+    case HeadcrabErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone:
       return 'You cannot perform that action.';
-    }
-    case HeadcrabErrorType.RepeatedWords: {
+    case HeadcrabErrorType.RepeatedWords:
       return `You cannot submit the same word more than once. Repeated words: ${error.detail}`;
-    }
-    case HeadcrabErrorType.VotingItemPlayerCannotSubmitVotingWord: {
+    case HeadcrabErrorType.VotingItemPlayerCannotSubmitVotingWord:
       return 'You cannot perform that action.';
-    }
     // External
-    case HeadcrabErrorType.UnprocessableWebsocketMessage: {
+    case HeadcrabErrorType.UnprocessableWebsocketMessage:
       return 'This action cannot be processed at this moment.';
-    }
-    case HeadcrabErrorType.WebsocketClosed: {
+    case HeadcrabErrorType.WebsocketClosed:
       return 'Unknown error. Please contact support.';
-    }
     // Internal
-    case HeadcrabErrorType.Internal: {
+    case HeadcrabErrorType.Internal:
       return 'Unknown error. Please contact support.';
-    }
   }
 };
 
