@@ -31,7 +31,6 @@ const WordScores = ({ player, round }: WordScoresProps) => {
   const words = round.getPlayerWords(player);
 
   const hasWordBeenUsed = (word: Word) => {
-    // TODO also return false for the current voting item without throwing an NPE
     return word.isUsed;
   };
 
