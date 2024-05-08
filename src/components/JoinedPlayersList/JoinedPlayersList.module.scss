@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 12px;
 
     .playerList {
       height: 0px; // any fixed value will do
@@ -18,15 +18,18 @@
     }
   }
 
-  .footerContainer {
-    width: 100%;
+  .joinUrlContainer {
+    display: flex;
+    padding-top: 0;
 
     .joinUrlInput {
+      width: 0;
+      flex-grow: 1;
       user-select: auto;
     }
 
     .copyButton {
-      width: 92px;
+      width: 76px;
       padding-left: 16px;
       padding-right: 16px;
     }
