@@ -225,6 +225,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         sendWebsocketMessage: (message) => {
           sendMessage(JSON.stringify(message));
         },
+        // TODO add the other states
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import {
   Button,
   Card,
@@ -7,7 +5,6 @@ import {
   CardFooter,
   CardHeader,
   Divider,
-  Flex,
   Heading,
   Input,
   VStack,
@@ -23,20 +20,18 @@ import styles from './JoinedPlayersList.module.scss';
 interface WaitingLobbyProps {
   gameId: string;
   players: Player[];
+  hideJoinUrl?: boolean;
   className?: string;
 }
 
 const JoinedPlayersList = ({
   gameId,
   players,
+  hideJoinUrl,
   className,
 }: WaitingLobbyProps) => {
-  const [joinUrl, setJoinUrl] = useState<string>('');
+  const joinUrl = `${window.location.origin}/join/${gameId}`;
   const { onCopy, hasCopied } = useClipboard(joinUrl);
-
-  useEffect(() => {
-    setJoinUrl(`${window.location.origin}/join/${gameId}`);
-  }, [gameId]);
 
   return (
     <Card
@@ -54,8 +49,8 @@ const JoinedPlayersList = ({
           <PlayerList players={players} />
         </VStack>
       </CardBody>
-      <CardFooter>
-        <Flex className={styles.footerContainer}>
+      {!hideJoinUrl && (
+        <CardFooter className={classNames(styles.joinUrlContainer)}>
           <Input
             className={styles.joinUrlInput}
             defaultValue={joinUrl.replace(/https?:\/\/(www.)?/g, '')}
@@ -69,8 +64,8 @@ const JoinedPlayersList = ({
           >
             {hasCopied ? 'Copied!' : 'Copy'}
           </Button>
-        </Flex>
-      </CardFooter>
+        </CardFooter>
+      )}
     </Card>
   );
 };

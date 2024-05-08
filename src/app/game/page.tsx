@@ -144,6 +144,7 @@ const Game = () => {
           <JoinedPlayersList
             gameId={state.context.gameId}
             players={state.context.game.players}
+            hideJoinUrl={!state.matches('lobby')}
             className={classNames(
               [styles.joinedPlayersList],
               state.matches('playersSubmittingWords')
