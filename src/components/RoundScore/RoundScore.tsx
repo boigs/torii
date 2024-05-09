@@ -30,15 +30,15 @@ const calculateScore = (player: Player, round: Round) => {
 };
 
 const RoundScore = ({ players, round }: RoundScoreProps) => {
-  const [modalsOpened, setModalsOpened] = useState<Record<Nickname, boolean>>(
+  const [openedModals, setOpenedModals] = useState<Record<Nickname, boolean>>(
     {},
   );
 
   const setOpened = (player: Player, isOpen: boolean) => {
-    setModalsOpened({ ...modalsOpened, [player.nickname]: isOpen });
+    setOpenedModals({ ...openedModals, [player.nickname]: isOpen });
   };
 
-  const isOpen = (player: Player) => modalsOpened[player.nickname];
+  const isOpen = (player: Player) => openedModals[player.nickname];
 
   return (
     <>
