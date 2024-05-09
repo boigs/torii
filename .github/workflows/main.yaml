@@ -47,18 +47,25 @@ jobs:
           dockerfile-path: ./Dockerfile
           image-name: ${{ env.SERVICE_IMAGE_NAME }}
           build-args: NODE_VERSION=${{ needs.test-solution.outputs.node-version }}
-          is-main-branch: ${{ github.ref_name == 'main' }}
 
   deploy-service:
-    name: Service -> Deploy ${{ github.ref_name != 'main' && '(Plan Only)' || '' }}
+    name: Service -> Deploy
     needs: [publish-service-image]
     runs-on: self-hosted
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Set the Service Docker image to deploy in k8s.yaml
+        shell: bash
+        run: sed -i -E "s#torii_image#${{ needs.publish-service-image.outputs.image-sha-tag }}#g" k8s.yaml
+
+      - name: Infrastructure -> Test
+        uses: ./.github/actions/test-infra
+        with:
+          kubernetes-file: k8s.yaml
+
       - name: Service -> Deploy
         uses: ./.github/actions/deploy-service
         with:
-          image-name: ${{ needs.publish-service-image.outputs.image-sha-tag }}
-          deploy: ${{ github.ref_name == 'main' }}
+          kubernetes-file: k8s.yaml
