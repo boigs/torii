@@ -26,7 +26,7 @@ interface RoundScoreModalProps extends Omit<RoundScoreProps, 'className'> {
 const calculateScore = (player: Player, round: Round) => {
   return round
     .getPlayerWords(player)
-    .reduce((sum, word) => sum + word.score, 0);
+    .reduce((score, word) => score + word.score, 0);
 };
 
 const RoundScore = ({ players, round }: RoundScoreProps) => {
