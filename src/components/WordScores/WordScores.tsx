@@ -93,7 +93,7 @@ const WordScoresModal = ({
       <ModalHeader>
         {player.nickname}&apos;s Words on Round {round.index + 1}
       </ModalHeader>
-      <ModalBody className={styles.modalBody}>
+      <ModalBody>
         {round.getPlayerWords(player).length > 0 ? (
           <WordScores player={player} round={round} />
         ) : (

@@ -11,6 +11,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/react';
+import classNames from 'classnames';
 
 import styles from './Modal.module.scss';
 
@@ -78,7 +79,12 @@ const Modal = ({
         )}
 
         {body && (
-          <ChakraModalBody className={styles.modalBody}>
+          <ChakraModalBody
+            className={classNames(
+              styles.modalBody,
+              !footer ? styles.modalBodyPadding : null,
+            )}
+          >
             <Divider marginBottom='12px' />
             {body}
           </ChakraModalBody>
