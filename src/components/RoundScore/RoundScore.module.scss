@@ -1,0 +1,22 @@
+.scoreDescription {
+  text-align: center;
+}
+
+.scoresList {
+  .scoreRow {
+    margin-bottom: 12px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .scoreContainer {
+      justify-content: space-between;
+      align-items: center;
+
+      .hiddenCrown {
+        display: none;
+      }
+    }
+  }
+}
