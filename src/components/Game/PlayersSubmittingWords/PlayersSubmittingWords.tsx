@@ -1,13 +1,14 @@
 import { Center } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import WordsInput from 'src/components/GamePage/PlayersSubmittingWords/WordsInput';
 import AnimatedParent from 'src/components/Shared/AnimatedParent';
 import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
 import { WsMessageOut, playerWords } from 'src/websocket/out';
+
+import WordsInput from './WordsInput';
 
 import styles from './PlayersSubmittingWords.module.scss';
 

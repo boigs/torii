@@ -1,9 +1,6 @@
 import { Center, VStack } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import VotingCard from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingCard';
-import VotingItems from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingItems';
-import VotingSummary from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingSummary';
 import AnimatedParent from 'src/components/Shared/AnimatedParent';
 import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
@@ -14,6 +11,10 @@ import {
   acceptPlayersVotingWords,
   playerVotingWord,
 } from 'src/websocket/out';
+
+import VotingCard from './VotingCard';
+import VotingItems from './VotingItems';
+import VotingSummary from './VotingSummary';
 
 import styles from './PlayersSubmittingVotingWord.module.scss';
 
