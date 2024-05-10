@@ -18,6 +18,8 @@ import _ from 'lodash';
 
 import { ChatMessage } from 'src/domain';
 import { validateNonEmpty } from 'src/helpers/formValidators';
+import { artificialSleep } from 'src/helpers/sleep';
+import { WsMessageOut, chatMessage } from 'src/websocket/out';
 
 import Message from './Message';
 
@@ -25,7 +27,7 @@ import styles from './Chat.module.scss';
 
 interface ChatProps {
   messages: ChatMessage[];
-  onSubmit: (text: string) => Promise<void>;
+  sendWebsocketMessage: (message: WsMessageOut) => void;
   className?: string;
 }
 
@@ -33,7 +35,7 @@ interface FormValues {
   text: string;
 }
 
-const Chat = ({ messages, onSubmit, className }: ChatProps) => {
+const Chat = ({ messages, sendWebsocketMessage, className }: ChatProps) => {
   const container = useRef<HTMLDivElement | null>(null);
 
   const scroll = () => {
@@ -47,10 +49,12 @@ const Chat = ({ messages, onSubmit, className }: ChatProps) => {
     scroll();
   }, [messages]);
 
-  const onFormSubmit = async (values: FormValues) => {
+  const sendChatMessage = async (values: FormValues) => {
     const { text } = values;
     values.text = '';
-    await onSubmit(text);
+
+    await artificialSleep(100);
+    sendWebsocketMessage(chatMessage({ content: text }));
   };
 
   return (
@@ -77,7 +81,7 @@ const Chat = ({ messages, onSubmit, className }: ChatProps) => {
           initialValues={{
             text: '',
           }}
-          onSubmit={onFormSubmit}
+          onSubmit={sendChatMessage}
         >
           {(props: FormikProps<FormValues>) => (
             <Form className={styles.chatForm}>

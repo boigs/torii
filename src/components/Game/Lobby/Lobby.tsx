@@ -6,8 +6,7 @@ import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import NonHostLobby from 'src/components/NonHostLobby';
 import { ChatMessage, GameState } from 'src/domain';
-import { artificialSleep } from 'src/helpers/sleep';
-import { WsMessageOut, chatMessage, startGame } from 'src/websocket/out';
+import { WsMessageOut, startGame } from 'src/websocket/out';
 
 import styles from './Lobby.module.scss';
 
@@ -18,11 +17,6 @@ interface LobbyProps {
 }
 
 const Lobby = ({ game, messages, sendWebsocketMessage }: LobbyProps) => {
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
-  };
-
   const sendGameStart = (values: HostLobbyValues) => {
     sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
   };
@@ -43,7 +37,7 @@ const Lobby = ({ game, messages, sendWebsocketMessage }: LobbyProps) => {
         />
         <Chat
           messages={messages}
-          onSubmit={sendChatMessage}
+          sendWebsocketMessage={sendWebsocketMessage}
           className={styles.chat}
         />
       </AnimatedParent>

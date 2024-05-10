@@ -4,8 +4,7 @@ import AnimatedParent from 'src/components/AnimatedParent';
 import Chat from 'src/components/Chat';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
-import { artificialSleep } from 'src/helpers/sleep';
-import { WsMessageOut, chatMessage } from 'src/websocket/out';
+import { WsMessageOut } from 'src/websocket/out';
 
 import styles from './EndOfGame.module.scss';
 
@@ -20,11 +19,6 @@ const EndOfGame = ({
   messages,
   sendWebsocketMessage,
 }: EndOfRoundProps) => {
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
-  };
-
   return (
     <Center>
       <AnimatedParent className={styles.gameContainerGrid}>
@@ -37,7 +31,7 @@ const EndOfGame = ({
         />
         <Chat
           messages={messages}
-          onSubmit={sendChatMessage}
+          sendWebsocketMessage={sendWebsocketMessage}
           className={styles.chat}
         />
       </AnimatedParent>

@@ -7,7 +7,7 @@ import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import WordsInput from 'src/components/WordsInput';
 import { ChatMessage, GameState } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
-import { WsMessageOut, chatMessage, playerWords } from 'src/websocket/out';
+import { WsMessageOut, playerWords } from 'src/websocket/out';
 
 import styles from './PlayersSubmittingWords.module.scss';
 
@@ -22,11 +22,6 @@ const PlayersSubmittingWords = ({
   messages,
   sendWebsocketMessage,
 }: PlayersSubmittingWordsProps) => {
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
-  };
-
   const sendPlayerWords = async (words: string[]) => {
     sendWebsocketMessage(playerWords({ words }));
     await artificialSleep(350);
@@ -52,7 +47,7 @@ const PlayersSubmittingWords = ({
         />
         <Chat
           messages={messages}
-          onSubmit={sendChatMessage}
+          sendWebsocketMessage={sendWebsocketMessage}
           className={classNames(styles.chat, styles.chatPlaying)}
         />
       </AnimatedParent>

@@ -9,11 +9,9 @@ import VotingItems from 'src/components/VotingItems';
 import VotingSummary from 'src/components/VotingSummary';
 import { WordScoresCard } from 'src/components/WordScores';
 import { ChatMessage, GameState, Word } from 'src/domain';
-import { artificialSleep } from 'src/helpers/sleep';
 import {
   WsMessageOut,
   acceptPlayersVotingWords,
-  chatMessage,
   playerVotingWord,
 } from 'src/websocket/out';
 
@@ -30,11 +28,6 @@ const PlayersSubmittingVotingWord = ({
   messages,
   sendWebsocketMessage,
 }: PlayersSubmittingVotingWordProps) => {
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
-  };
-
   const sendPlayerVotingWord = (word: Word | null) => {
     sendWebsocketMessage(
       playerVotingWord({ word: word === null ? null : word.value }),
@@ -82,7 +75,7 @@ const PlayersSubmittingVotingWord = ({
         />
         <Chat
           messages={messages}
-          onSubmit={sendChatMessage}
+          sendWebsocketMessage={sendWebsocketMessage}
           className={styles.chat}
         />
       </AnimatedParent>

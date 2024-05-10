@@ -5,12 +5,7 @@ import Card from 'src/components/Card';
 import Chat from 'src/components/Chat';
 import JoinedPlayersList from 'src/components/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
-import { artificialSleep } from 'src/helpers/sleep';
-import {
-  WsMessageOut,
-  chatMessage,
-  continueToNextRound,
-} from 'src/websocket/out';
+import { WsMessageOut, continueToNextRound } from 'src/websocket/out';
 
 import styles from './EndOfRound.module.scss';
 
@@ -49,11 +44,6 @@ const EndOfRound = ({
 }: EndOfRoundProps) => {
   const labels = game.isLastRound() ? gameOverLabels : roundOverLabels;
 
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
-  };
-
   const sendContinueToNextRound = () => {
     sendWebsocketMessage(continueToNextRound());
   };
@@ -91,7 +81,7 @@ const EndOfRound = ({
         />
         <Chat
           messages={messages}
-          onSubmit={sendChatMessage}
+          sendWebsocketMessage={sendWebsocketMessage}
           className={styles.chat}
         />
       </AnimatedParent>
