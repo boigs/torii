@@ -1,0 +1,43 @@
+.gameContainerGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: minmax(165px, auto) repeat(2, 80px); // 3 rows
+  gap: 24px;
+
+  .chat {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+  }
+
+  .joinedPlayersList {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 4;
+  }
+}
+
+@media (max-width: 600px) {
+  .gameContainerGrid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto repeat(8, 70px);
+    gap: 24px;
+
+    .chat {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 6;
+      grid-row-end: 10;
+    }
+
+    .joinedPlayersList {
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 6;
+    }
+  }
+}

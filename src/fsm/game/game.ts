@@ -80,10 +80,11 @@ const defaultContext: Context = {
   gameId: '',
   nickname: '',
   game: new GameState({
+    id: '',
+    state: HeadcrabState.Undefined,
     player: { nickname: 'unset', isHost: false, isConnected: false },
     nicknameToPlayer: new Map(),
     rounds: [],
-    state: HeadcrabState.Undefined,
     amountOfRounds: null,
   }),
   websocketShouldBeConnected: false,

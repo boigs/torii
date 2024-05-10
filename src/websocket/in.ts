@@ -49,6 +49,7 @@ interface GameStateDto {
 
 export const gameStateDtoToDomain = (
   message: WsMessageIn,
+  id: string,
   nickname: string,
 ): GameState => {
   const gameState = message as GameStateDto;
@@ -59,12 +60,13 @@ export const gameStateDtoToDomain = (
     ]),
   );
   return new GameState({
+    id,
+    state: headcrabStateToDomain(gameState.state),
     player: getPlayer(nicknameToPlayer, nickname),
     nicknameToPlayer,
     rounds: gameState.rounds.map((round, roundIndex) =>
       roundDtoToDomain(roundIndex, round, nicknameToPlayer),
     ),
-    state: headcrabStateToDomain(gameState.state),
     amountOfRounds: gameState.amountOfRounds,
   });
 };

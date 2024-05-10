@@ -156,6 +156,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
         case WsTypeIn.GameState: {
           const gameState = gameStateDtoToDomain(
             messageDto,
+            state.context.gameId,
             state.context.nickname,
           );
 
@@ -213,6 +214,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [
     lastMessage,
     send,
+    state.context.gameId,
     state.context.nickname,
     state.context.websocketShouldBeConnected,
     toast,

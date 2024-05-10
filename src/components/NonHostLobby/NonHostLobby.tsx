@@ -10,13 +10,13 @@ import {
 
 import Spinner from 'src/components/Spinner';
 
-import styles from './Lobby.module.scss';
+import styles from './NonHostLobby.module.scss';
 
-interface LobbyProps {
+interface NonHostLobbyProps {
   className?: string;
 }
 
-const Lobby = ({ className }: LobbyProps) => (
+const NonHostLobby = ({ className }: NonHostLobbyProps) => (
   <Card size='sm' className={className}>
     <CardHeader>
       <Heading as='h3' textAlign='center' size='md'>
@@ -35,4 +35,4 @@ const Lobby = ({ className }: LobbyProps) => (
   </Card>
 );
 
-export default Lobby;
+export default NonHostLobby;
