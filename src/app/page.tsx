@@ -6,7 +6,7 @@ import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';
-import CreateGameForm from 'src/components/CreateGameForm';
+import CreateGameForm from 'src/components/CreateGame/CreateGameForm';
 
 const Home = () => {
   const router = useRouter();

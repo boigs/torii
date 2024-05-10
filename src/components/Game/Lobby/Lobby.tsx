@@ -1,12 +1,13 @@
 import { Center } from '@chakra-ui/react';
 
-import AnimatedParent from 'src/components/AnimatedParent';
-import Chat from 'src/components/Chat';
-import HostLobby, { HostLobbyValues } from 'src/components/HostLobby';
-import JoinedPlayersList from 'src/components/JoinedPlayersList';
-import NonHostLobby from 'src/components/NonHostLobby';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import Chat from 'src/components/Shared/Chat';
+import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
 import { WsMessageOut, startGame } from 'src/websocket/out';
+
+import HostLobby, { HostLobbyValues } from './HostLobby';
+import NonHostLobby from './NonHostLobby';
 
 import styles from './Lobby.module.scss';
 

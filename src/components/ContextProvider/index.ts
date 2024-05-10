@@ -1,4 +1,1 @@
-import ContextProvider, { Context } from './ContextProvider';
-
-export { Context };
-export default ContextProvider;
+export { default, Context } from './ContextProvider';

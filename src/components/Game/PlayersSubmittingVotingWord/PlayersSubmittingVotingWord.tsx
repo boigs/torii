@@ -1,13 +1,13 @@
 import { Center, VStack } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import AnimatedParent from 'src/components/AnimatedParent';
-import Chat from 'src/components/Chat';
-import JoinedPlayersList from 'src/components/JoinedPlayersList';
-import VotingCard from 'src/components/VotingCard';
-import VotingItems from 'src/components/VotingItems';
-import VotingSummary from 'src/components/VotingSummary';
-import { WordScoresCard } from 'src/components/WordScores';
+import VotingCard from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingCard';
+import VotingItems from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingItems';
+import VotingSummary from 'src/components/GamePage/PlayersSubmittingVotingWord/VotingSummary';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import Chat from 'src/components/Shared/Chat';
+import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
+import { WordScoresCard } from 'src/components/Shared/WordScores';
 import { ChatMessage, GameState, Word } from 'src/domain';
 import {
   WsMessageOut,

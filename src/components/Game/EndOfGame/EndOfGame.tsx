@@ -1,8 +1,8 @@
 import { Center, Text } from '@chakra-ui/react';
 
-import AnimatedParent from 'src/components/AnimatedParent';
-import Chat from 'src/components/Chat';
-import JoinedPlayersList from 'src/components/JoinedPlayersList';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import Chat from 'src/components/Shared/Chat';
+import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
 import { WsMessageOut } from 'src/websocket/out';
 

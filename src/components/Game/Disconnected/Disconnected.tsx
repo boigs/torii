@@ -1,7 +1,7 @@
 import { Center } from '@chakra-ui/react';
 
-import AnimatedParent from 'src/components/AnimatedParent';
-import LoadingCard from 'src/components/LoadingCard';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import LoadingCard from 'src/components/Shared/LoadingCard';
 
 import styles from './Disconnected.module.scss';
 

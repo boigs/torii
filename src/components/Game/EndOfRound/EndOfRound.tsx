@@ -1,9 +1,9 @@
 import { Button, Center, Spinner, Text, VStack } from '@chakra-ui/react';
 
-import AnimatedParent from 'src/components/AnimatedParent';
-import Card from 'src/components/Card';
-import Chat from 'src/components/Chat';
-import JoinedPlayersList from 'src/components/JoinedPlayersList';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import Card from 'src/components/Shared/Card';
+import Chat from 'src/components/Shared/Chat';
+import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import { ChatMessage, GameState } from 'src/domain';
 import { WsMessageOut, continueToNextRound } from 'src/websocket/out';
 
