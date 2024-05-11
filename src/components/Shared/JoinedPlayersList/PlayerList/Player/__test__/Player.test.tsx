@@ -1,23 +1,23 @@
 import { render } from '@testing-library/react';
 
-import { Player as PlayerDomain } from 'src/domain';
+import Player from 'src/domain/player';
 
-import Player from '../Player';
+import PlayerComponent from '../Player';
 
 describe('Player component...', () => {
-  const player = {
+  const player: Player = {
     nickname: 'any-nickname',
     isHost: false,
     isConnected: true,
-  } as PlayerDomain;
-  const disconnectedPlayer = {
+  };
+  const disconnectedPlayer: Player = {
     nickname: 'any-nickname',
     isHost: false,
     isConnected: false,
-  } as PlayerDomain;
+  };
 
   it("should render the player's nickname", () => {
-    const { container } = render(<Player player={player} />);
+    const { container } = render(<PlayerComponent player={player} />);
 
     const nicknameParagraph = container.querySelector('p');
 
@@ -25,7 +25,9 @@ describe('Player component...', () => {
   });
 
   it('should apply disconnected class when the player is disconnected', () => {
-    const { container } = render(<Player player={disconnectedPlayer} />);
+    const { container } = render(
+      <PlayerComponent player={disconnectedPlayer} />,
+    );
 
     const playerDiv = container.querySelector('div');
 

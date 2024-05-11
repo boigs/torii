@@ -12,7 +12,8 @@ import Image from 'next/image';
 import Card from 'src/components/Shared/Card';
 import PlayerComponent from 'src/components/Shared/JoinedPlayersList/PlayerList/Player';
 import Spinner from 'src/components/Shared/Spinner';
-import { Player, Round } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 
 import styles from './VotingSummary.module.scss';
 

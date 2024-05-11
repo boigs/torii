@@ -6,7 +6,8 @@ import Card from 'src/components/Shared/Card';
 import PlayerComponent from 'src/components/Shared/JoinedPlayersList/PlayerList/Player';
 import { Modal, ModalBody, ModalHeader } from 'src/components/Shared/Modal';
 import { WordScoresModal } from 'src/components/Shared/WordScores';
-import { Player, Round } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 
 import styles from './RoundScore.module.scss';
 
