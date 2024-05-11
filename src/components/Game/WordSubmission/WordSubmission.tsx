@@ -10,19 +10,19 @@ import { WsMessageOut, playerWords } from 'src/websocket/out';
 
 import WordsInput from './WordsInput';
 
-import styles from './PlayersSubmittingWords.module.scss';
+import styles from './WordSubmission.module.scss';
 
-interface PlayersSubmittingWordsProps {
+interface WordSubmissionProps {
   game: GameState;
   messages: ChatMessage[];
   sendWebsocketMessage: (message: WsMessageOut) => void;
 }
 
-const PlayersSubmittingWords = ({
+const WordSubmission = ({
   game,
   messages,
   sendWebsocketMessage,
-}: PlayersSubmittingWordsProps) => {
+}: WordSubmissionProps) => {
   const sendPlayerWords = async (words: string[]) => {
     sendWebsocketMessage(playerWords({ words }));
     await artificialSleep(350);
@@ -56,4 +56,4 @@ const PlayersSubmittingWords = ({
   );
 };
 
-export default PlayersSubmittingWords;
+export default WordSubmission;

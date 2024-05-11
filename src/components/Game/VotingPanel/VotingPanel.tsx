@@ -16,19 +16,19 @@ import VotingCard from './VotingCard';
 import VotingItems from './VotingItems';
 import VotingSummary from './VotingSummary';
 
-import styles from './PlayersSubmittingVotingWord.module.scss';
+import styles from './VotingPanel.module.scss';
 
-interface PlayersSubmittingVotingWordProps {
+interface VotingPanelProps {
   game: GameState;
   messages: ChatMessage[];
   sendWebsocketMessage: (message: WsMessageOut) => void;
 }
 
-const PlayersSubmittingVotingWord = ({
+const VotingPanel = ({
   game,
   messages,
   sendWebsocketMessage,
-}: PlayersSubmittingVotingWordProps) => {
+}: VotingPanelProps) => {
   const sendPlayerVotingWord = (word: Word | null) => {
     sendWebsocketMessage(
       playerVotingWord({ word: word === null ? null : word.value }),
@@ -84,4 +84,4 @@ const PlayersSubmittingVotingWord = ({
   );
 };
 
-export default PlayersSubmittingVotingWord;
+export default VotingPanel;

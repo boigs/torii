@@ -9,8 +9,8 @@ import Disconnected from 'src/components/Game/Disconnected';
 import EndOfGame from 'src/components/Game/EndOfGame';
 import EndOfRound from 'src/components/Game/EndOfRound';
 import Lobby from 'src/components/Game/Lobby';
-import PlayersSubmittingVotingWord from 'src/components/Game/PlayersSubmittingVotingWord';
-import PlayersSubmittingWords from 'src/components/Game/PlayersSubmittingWords';
+import VotingPanel from 'src/components/Game/VotingPanel';
+import WordSubmission from 'src/components/Game/WordSubmission';
 
 const Game = () => {
   const router = useRouter();
@@ -40,7 +40,7 @@ const Game = () => {
       );
     case 'playersSubmittingWords':
       return (
-        <PlayersSubmittingWords
+        <WordSubmission
           game={state.context.game}
           messages={state.context.messages}
           sendWebsocketMessage={sendWebsocketMessage}
@@ -48,7 +48,7 @@ const Game = () => {
       );
     case 'playersSubmittingVotingWord':
       return (
-        <PlayersSubmittingVotingWord
+        <VotingPanel
           game={state.context.game}
           messages={state.context.messages}
           sendWebsocketMessage={sendWebsocketMessage}
