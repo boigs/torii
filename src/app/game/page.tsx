@@ -35,8 +35,7 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, useChat, isInsideOfGame } =
-    useGameContext(Context);
+  const { gameActor, sendWebsocketMessage, isInsideOfGame } = useGameContext();
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
   const player = state.context.game.player;
 
@@ -149,7 +148,6 @@ const Game = () => {
             )}
           />
           <Chat
-            useChat={useChat}
             className={classNames(
               [styles.chat],
               state.matches('playersSubmittingWords')

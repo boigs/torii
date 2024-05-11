@@ -17,14 +17,13 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
-import { ChatHook } from 'src/hooks/chatHook';
+import { useChat } from 'src/hooks/chatHook';
 
 import Message from './Message';
 
 import styles from './Chat.module.scss';
 
 interface ChatProps {
-  useChat: () => ChatHook;
   className?: string;
 }
 
@@ -32,7 +31,7 @@ interface FormValues {
   text: string;
 }
 
-const Chat = ({ useChat, className }: ChatProps) => {
+const Chat = ({ className }: ChatProps) => {
   const { chatMessages, sendChatMessage } = useChat();
   const container = useRef<HTMLDivElement | null>(null);
 
