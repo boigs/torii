@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import { ReactNode, createContext, useContext, useEffect, useRef } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -81,27 +74,24 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   );
   const [state, send, actorRef] = gameActor;
 
-  const onWebsocketError: () => void = useCallback(() => {
-    if (!state.context.gameJoined) {
-      send({ type: 'WEBSOCKET_CONNECT_ERROR' });
-      toast(UNKNOWN_WS_ERROR);
-    }
-  }, [state.context.gameJoined, send, toast]);
-
   // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
   // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
   // causing an infinite loop
   const nicknameToPlayerRef = useRef(state.context.game.nicknameToPlayer);
 
-  const { lastGameState, lastChatMessage, lastError, sendWebsocketMessage } =
-    useWebsocket({
-      connect: state.context.websocketShouldBeConnected,
-      headcrabWsBaseUrl: config.headcrabWsBaseUrl,
-      gameId: state.context.gameId,
-      nickname: state.context.nickname,
-      nicknameToPlayerRef,
-      onWebsocketError,
-    });
+  const {
+    lastGameState,
+    lastChatMessage,
+    lastError,
+    lastWebsocketError,
+    sendWebsocketMessage,
+  } = useWebsocket({
+    connect: state.context.websocketShouldBeConnected,
+    headcrabWsBaseUrl: config.headcrabWsBaseUrl,
+    gameId: state.context.gameId,
+    nickname: state.context.nickname,
+    nicknameToPlayerRef,
+  });
 
   useEffect(() => {
     logger.debug({ state }, 'state');
@@ -161,6 +151,15 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   }, [lastError, send, toast]);
+
+  useEffect(() => {
+    if (lastWebsocketError) {
+      if (!state.context.gameJoined) {
+        send({ type: 'WEBSOCKET_CONNECT_ERROR' });
+        toast(UNKNOWN_WS_ERROR);
+      }
+    }
+  }, [lastError, lastWebsocketError, send, state.context.gameJoined, toast]);
 
   return (
     <GameContext.Provider

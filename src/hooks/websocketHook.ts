@@ -29,13 +29,13 @@ export interface WebsocketHookIn {
   gameId: string;
   nickname: string;
   nicknameToPlayerRef: MutableRefObject<Map<string, Player>>;
-  onWebsocketError: () => void;
 }
 
 export interface WebsocketHook {
   lastGameState: GameState | null;
   lastChatMessage: ChatMessage | null;
   lastError: HeadcrabError | null;
+  lastWebsocketError: string | null;
   sendWebsocketMessage: (message: WsMessageOut) => void;
 }
 
@@ -45,7 +45,6 @@ export const useWebsocket = ({
   gameId,
   nickname,
   nicknameToPlayerRef,
-  onWebsocketError,
 }: WebsocketHookIn): WebsocketHook => {
   const websocketUrl = `${headcrabWsBaseUrl}/game/${gameId}/player/${nickname}/ws`;
   const { sendMessage, lastMessage } = useWebSocket(
@@ -53,8 +52,8 @@ export const useWebsocket = ({
     {
       heartbeat: HEARTBEAT,
       reconnectInterval: 500,
-      onError: () => {
-        onWebsocketError();
+      onError: (event: Event) => {
+        setLastWebsocketError(event.type);
       },
       shouldReconnect: () => connect,
     },
@@ -65,6 +64,9 @@ export const useWebsocket = ({
     null,
   );
   const [lastError, setLastError] = useState<HeadcrabError | null>(null);
+  const [lastWebsocketError, setLastWebsocketError] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     if (connect && lastMessage) {
@@ -100,6 +102,7 @@ export const useWebsocket = ({
     lastGameState,
     lastChatMessage,
     lastError,
+    lastWebsocketError,
     sendWebsocketMessage: (message: WsMessageOut) =>
       sendMessage(JSON.stringify(message)),
   };
