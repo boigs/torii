@@ -15,7 +15,7 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import { HeadcrabState } from 'src/domain';
-import gameFsm from 'src/fsm/game';
+import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
   shouldEndGameAfterError,
