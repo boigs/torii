@@ -1,3 +1,1 @@
-import AnimatedParent from './AnimatedParent';
-
-export default AnimatedParent;
+export { default } from './AnimatedParent';

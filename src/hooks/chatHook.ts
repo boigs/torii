@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useGameContext } from 'src/components/GameContextProvider';
-import { ChatMessage } from 'src/domain';
+import ChatMessage from 'src/domain/chatMessage';
 import { artificialSleep } from 'src/helpers/sleep';
 import { chatMessage } from 'src/websocket/out';
 

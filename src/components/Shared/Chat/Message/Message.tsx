@@ -1,6 +1,6 @@
 import { HStack, Text } from '@chakra-ui/react';
 
-import { ChatMessage } from 'src/domain';
+import ChatMessage from 'src/domain/chatMessage';
 
 import Avatar from '../../JoinedPlayersList/PlayerList/Player/Avatar';
 

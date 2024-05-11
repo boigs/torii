@@ -21,7 +21,7 @@ import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import LoadingCard from 'src/components/Shared/LoadingCard';
 import { WordScoresCard } from 'src/components/Shared/WordScores';
-import { Word } from 'src/domain';
+import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
   acceptPlayersVotingWords,

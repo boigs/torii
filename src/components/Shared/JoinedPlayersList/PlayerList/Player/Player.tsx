@@ -1,7 +1,7 @@
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import { Player as PlayerDomain } from 'src/domain';
+import PlayerDomain from 'src/domain/player';
 
 import Avatar from './Avatar';
 

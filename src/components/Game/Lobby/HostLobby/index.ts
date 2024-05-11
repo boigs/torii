@@ -1,4 +1,2 @@
-import HostLobby, { HostLobbyValues } from './HostLobby';
-
-export default HostLobby;
-export type { HostLobbyValues };
+export { default } from './HostLobby';
+export type { HostLobbyValues } from './HostLobby';

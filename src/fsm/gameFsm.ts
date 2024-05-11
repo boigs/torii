@@ -2,7 +2,9 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import { GameState, HeadcrabError, HeadcrabState } from 'src/domain';
+import GameState from 'src/domain/gameState';
+import HeadcrabError from 'src/domain/headcrabError';
+import HeadcrabState from 'src/domain/headcrabState';
 
 interface CreateGameEvent {
   type: 'CREATE_GAME';

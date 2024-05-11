@@ -11,7 +11,8 @@ import {
 
 import Card from 'src/components/Shared/Card';
 import Avatar from 'src/components/Shared/JoinedPlayersList/PlayerList/Player/Avatar';
-import { Player, Round } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 
 import styles from './VotingItems.module.scss';
 

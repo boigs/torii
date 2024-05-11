@@ -16,7 +16,8 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
-import { ChatMessage, HeadcrabState } from 'src/domain';
+import ChatMessage from 'src/domain/chatMessage';
+import HeadcrabState from 'src/domain/headcrabState';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,

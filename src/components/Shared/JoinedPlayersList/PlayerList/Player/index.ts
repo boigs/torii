@@ -1,4 +1,2 @@
-import Player, { PlayerProps } from './Player';
-
-export default Player;
-export type { PlayerProps };
+export { default } from './Player';
+export type { PlayerProps } from './Player';

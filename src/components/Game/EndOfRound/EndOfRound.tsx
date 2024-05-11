@@ -2,7 +2,7 @@ import { Button, Text, VStack } from '@chakra-ui/react';
 
 import Card from 'src/components/Shared/Card';
 import Spinner from 'src/components/Shared/Spinner';
-import { Player } from 'src/domain';
+import Player from 'src/domain/player';
 
 import styles from './EndOfRound.module.scss';
 

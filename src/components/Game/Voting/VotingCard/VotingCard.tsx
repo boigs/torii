@@ -3,7 +3,9 @@ import debounce from 'debounce';
 
 import Card from 'src/components/Shared/Card';
 import Spinner from 'src/components/Shared/Spinner';
-import { Player, Round, Word } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
+import Word from 'src/domain/word';
 
 import styles from './VotingCard.module.scss';
 

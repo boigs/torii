@@ -1,6 +1,6 @@
 import { List, ListItem } from '@chakra-ui/react';
 
-import { Player } from 'src/domain';
+import Player from 'src/domain/player';
 
 import PlayerComponent from './Player';
 

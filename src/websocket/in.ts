@@ -1,14 +1,12 @@
-import {
-  ChatMessage,
-  GameState,
-  HeadcrabError,
-  HeadcrabErrorType,
-  HeadcrabState,
-  Player,
-  Round,
-  VotingItem,
-  Word,
-} from 'src/domain';
+import ChatMessage from 'src/domain/chatMessage';
+import GameState from 'src/domain/gameState';
+import HeadcrabError from 'src/domain/headcrabError';
+import HeadcrabErrorType from 'src/domain/headcrabErrorType';
+import HeadcrabState from 'src/domain/headcrabState';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
+import VotingItem from 'src/domain/votingItem';
+import Word from 'src/domain/word';
 
 export enum WsTypeIn {
   Error = 'error',

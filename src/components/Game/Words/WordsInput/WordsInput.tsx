@@ -23,7 +23,8 @@ import Image from 'next/image';
 
 import CustomCard from 'src/components/Shared/Card';
 import Spinner from 'src/components/Shared/Spinner';
-import { Player, Round } from 'src/domain';
+import Player from 'src/domain/player';
+import Round from 'src/domain/round';
 import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
