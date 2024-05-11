@@ -15,7 +15,7 @@ import {
   shouldEndGameAfterError,
   shouldShowErrorToast,
 } from 'src/helpers/errorHelpers';
-import { useWebsocket } from 'src/hooks/websocketHook';
+import { useWebsocket } from 'src/hooks/useWebsocket';
 import logger from 'src/logger';
 import { WsMessageOut } from 'src/websocket/out';
 

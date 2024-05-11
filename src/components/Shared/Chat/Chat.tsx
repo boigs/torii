@@ -17,7 +17,7 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
-import { useChat } from 'src/hooks/chatHook';
+import { useChat } from 'src/hooks/useChat';
 
 import Message from './Message';
 
