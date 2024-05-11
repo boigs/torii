@@ -239,5 +239,4 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useGameContext: () => GameContextType = () =>
-  useContext(GameContext);
+export const useGameContext = (): GameContextType => useContext(GameContext);
