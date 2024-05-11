@@ -5,7 +5,7 @@ import { useContext, useEffect } from 'react';
 import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-import { Context } from 'src/components/ContextProvider';
+import { GameContext } from 'src/components/GameContextProvider';
 import JoinGameForm from 'src/components/JoinGame/JoinForm';
 
 interface JoinQuery {
@@ -16,7 +16,7 @@ interface JoinQuery {
 
 const Join = ({ params: { id } }: JoinQuery) => {
   const router = useRouter();
-  const { gameActor, isInsideOfGame } = useContext(Context);
+  const { gameActor, isInsideOfGame } = useContext(GameContext);
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
   const realId = id?.[0];
 
