@@ -32,13 +32,13 @@ import {
 } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
-interface ContextType {
+interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
   isInsideOfGame: boolean;
 }
 
-const GameContext = createContext<ContextType>({
+const GameContext = createContext<GameContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
@@ -239,4 +239,5 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useGameContext: () => ContextType = () => useContext(GameContext);
+export const useGameContext: () => GameContextType = () =>
+  useContext(GameContext);
