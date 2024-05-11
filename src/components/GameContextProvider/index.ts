@@ -1,4 +1,1 @@
-import GameContextProvider, { GameContext } from './GameContextProvider';
-
-export { GameContext };
-export default GameContextProvider;
+export { GameContextProvider, useGameContext } from './GameContextProvider';

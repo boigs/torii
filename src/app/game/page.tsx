@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Center, Text, VStack } from '@chakra-ui/react';
 import classNames from 'classnames';
@@ -15,7 +15,7 @@ import VotingCard from 'src/components/Game/Voting/VotingCard';
 import VotingItems from 'src/components/Game/Voting/VotingItems';
 import VotingSummary from 'src/components/Game/Voting/VotingSummary';
 import WordsInput from 'src/components/Game/Words/WordsInput';
-import { GameContext } from 'src/components/GameContextProvider';
+import { useGameContext } from 'src/components/GameContextProvider';
 import AnimatedParent from 'src/components/Shared/AnimatedParent';
 import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
@@ -36,8 +36,7 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, isInsideOfGame } =
-    useContext(GameContext);
+  const { gameActor, sendWebsocketMessage, isInsideOfGame } = useGameContext();
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
   const player = state.context.game.player;
 
