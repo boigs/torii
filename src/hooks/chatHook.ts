@@ -20,7 +20,7 @@ export const useChat = (): ChatHook => {
   };
 
   useEffect(() => {
-    if (lastChatMessage !== null) {
+    if (lastChatMessage) {
       setChatMessages((previousChatMessages) => [
         ...previousChatMessages,
         lastChatMessage,
