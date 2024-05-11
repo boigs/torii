@@ -2,12 +2,7 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import {
-  ChatMessage,
-  GameState,
-  HeadcrabError,
-  HeadcrabState,
-} from 'src/domain';
+import { GameState, HeadcrabError, HeadcrabState } from 'src/domain';
 
 interface CreateGameEvent {
   type: 'CREATE_GAME';
@@ -27,11 +22,6 @@ interface GameJoinedEvent {
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
   headcrabError: HeadcrabError;
-}
-
-interface ChatMessageEvent {
-  type: 'CHAT_MESSAGE';
-  chatMessage: ChatMessage;
 }
 
 interface GameStateMessageEvent {
@@ -73,7 +63,6 @@ interface Context {
   game: GameState;
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
-  messages: ChatMessage[];
 }
 
 const defaultContext: Context = {
@@ -88,7 +77,6 @@ const defaultContext: Context = {
   }),
   websocketShouldBeConnected: false,
   gameJoined: false,
-  messages: [],
 };
 
 const gameFsm = setup({
@@ -102,7 +90,6 @@ const gameFsm = setup({
       | WebsocketConnectErrorEvent
       | ErrorMessageEvent
       | GameStateMessageEvent
-      | ChatMessageEvent
       | ChangedToLobby
       | ChangedToPlayersSubmittingWords
       | ChangedToPlayersSubmittingVotingWord
@@ -141,12 +128,6 @@ const gameFsm = setup({
       gameJoined: true,
     })),
     resetContext: assign(() => defaultContext),
-    addChatMessage: assign(({ context, event }) => {
-      assertEvent(event, 'CHAT_MESSAGE');
-      return {
-        messages: [...context.messages, event.chatMessage],
-      };
-    }),
   },
   guards: {},
   actors: {
@@ -164,19 +145,12 @@ const gameFsm = setup({
     ERROR_MESSAGE: {
       target: '.disconnected',
     },
-
     RESET: {
       target: '.disconnected',
     },
-
-    CHAT_MESSAGE: {
-      actions: 'addChatMessage',
-    },
-
     GAME_STATE_MESSAGE: {
       actions: 'assignGameState',
     },
-
     GAME_JOINED: {
       actions: 'setGameJoinedToTrue',
     },

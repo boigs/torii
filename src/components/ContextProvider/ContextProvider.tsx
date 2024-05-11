@@ -21,6 +21,7 @@ import {
   shouldEndGameAfterError,
   shouldShowErrorToast,
 } from 'src/helpers/errorHelpers';
+import { ChatHook, useWebsocketChat } from 'src/hooks/chatHook';
 import logger from 'src/logger';
 import {
   WsMessageIn,
@@ -34,12 +35,16 @@ import { WsMessageOut } from 'src/websocket/out';
 interface ContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
+  useChat: () => ChatHook;
   isInsideOfGame: boolean;
 }
 
 export const Context = createContext<ContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
   sendWebsocketMessage: () => {
+    throw new Error('Not implemented');
+  },
+  useChat: () => {
     throw new Error('Not implemented');
   },
   isInsideOfGame: false,
@@ -111,6 +116,12 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       toast(UNKNOWN_WS_ERROR);
     }
   }, [state.context.gameJoined, send, toast]);
+
+  const sendWebsocketMessage = (message: WsMessageOut) => {
+    sendMessage(JSON.stringify(message));
+  };
+
+  const { useChat, setChatMessages } = useWebsocketChat(sendWebsocketMessage);
 
   // Using a ref here as the GameState contains class objects that are recreated within the useEffect, using the object directly and including it as a useEffect depedency causes an infite loop
   const gameRef = useRef(state.context.game);
@@ -199,10 +210,10 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
             gameRef.current.nicknameToPlayer,
           );
 
-          send({
-            type: 'CHAT_MESSAGE',
+          setChatMessages((previousChatMessages) => [
+            ...previousChatMessages,
             chatMessage,
-          });
+          ]);
 
           break;
         }
@@ -213,6 +224,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [
     lastMessage,
     send,
+    setChatMessages,
     state.context.nickname,
     state.context.websocketShouldBeConnected,
     toast,
@@ -222,9 +234,8 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     <Context.Provider
       value={{
         gameActor: actorRef,
-        sendWebsocketMessage: (message) => {
-          sendMessage(JSON.stringify(message));
-        },
+        sendWebsocketMessage,
+        useChat,
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||
