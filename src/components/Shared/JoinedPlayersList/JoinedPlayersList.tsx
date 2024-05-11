@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import { Player } from 'src/domain';
+import Player from 'src/domain/player';
 
 import PlayerList from './PlayerList';
 
