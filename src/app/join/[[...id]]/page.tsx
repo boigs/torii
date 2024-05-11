@@ -6,7 +6,7 @@ import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { Context } from 'src/components/ContextProvider';
-import JoinForm from 'src/components/JoinForm/JoinForm';
+import JoinGameForm from 'src/components/JoinGame/JoinForm';
 
 interface JoinQuery {
   params: {
@@ -30,7 +30,7 @@ const Join = ({ params: { id } }: JoinQuery) => {
 
   return (
     <Center>
-      <JoinForm
+      <JoinGameForm
         gameId={realId}
         loading={!state.matches('disconnected')}
         onSubmit={({ gameId, nickname }) => {
