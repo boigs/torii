@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import AnimatedParent from 'src/components/AnimatedParent';
 import ContextProvider from 'src/components/ContextProvider';
+import AnimatedParent from 'src/components/Shared/AnimatedParent';
 
 import { Providers } from './providers';
 
