@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
@@ -15,7 +16,7 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
-import { HeadcrabState } from 'src/domain';
+import { ChatMessage, HeadcrabState } from 'src/domain';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
@@ -35,6 +36,7 @@ import { WsMessageOut } from 'src/websocket/out';
 interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
+  lastChatMessage: ChatMessage | null;
   isInsideOfGame: boolean;
 }
 
@@ -43,6 +45,7 @@ const GameContext = createContext<GameContextType>({
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
+  lastChatMessage: null,
   isInsideOfGame: false,
 });
 
@@ -112,6 +115,14 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       toast(UNKNOWN_WS_ERROR);
     }
   }, [state.context.gameJoined, send, toast]);
+
+  const sendWebsocketMessage = (message: WsMessageOut) => {
+    sendMessage(JSON.stringify(message));
+  };
+
+  const [lastChatMessage, setLastChatMessage] = useState<ChatMessage | null>(
+    null,
+  );
 
   // Using a ref here as the GameState contains class objects that are recreated within the useEffect, using the object directly and including it as a useEffect depedency causes an infite loop
   const gameRef = useRef(state.context.game);
@@ -200,10 +211,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
             gameRef.current.nicknameToPlayer,
           );
 
-          send({
-            type: 'CHAT_MESSAGE',
-            chatMessage,
-          });
+          setLastChatMessage(chatMessage);
 
           break;
         }
@@ -223,9 +231,8 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     <GameContext.Provider
       value={{
         gameActor: actorRef,
-        sendWebsocketMessage: (message) => {
-          sendMessage(JSON.stringify(message));
-        },
+        sendWebsocketMessage,
+        lastChatMessage,
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||

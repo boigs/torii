@@ -25,7 +25,6 @@ import { Word } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
   acceptPlayersVotingWords,
-  chatMessage,
   continueToNextRound,
   playerVotingWord,
   playerWords,
@@ -51,11 +50,6 @@ const Game = () => {
 
   const sendGameStart = (values: HostLobbyValues) => {
     sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
-  };
-
-  const sendChatMessage = async (content: string) => {
-    await artificialSleep(100);
-    sendWebsocketMessage(chatMessage({ content }));
   };
 
   const sendPlayerWords = async (words: string[]) => {
@@ -154,8 +148,6 @@ const Game = () => {
             )}
           />
           <Chat
-            messages={state.context.messages}
-            onSubmit={sendChatMessage}
             className={classNames(
               [styles.chat],
               state.matches('playersSubmittingWords')

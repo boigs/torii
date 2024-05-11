@@ -16,16 +16,14 @@ import {
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
-import { ChatMessage } from 'src/domain';
 import { validateNonEmpty } from 'src/helpers/formValidators';
+import { useChat } from 'src/hooks/chatHook';
 
 import Message from './Message';
 
 import styles from './Chat.module.scss';
 
 interface ChatProps {
-  messages: ChatMessage[];
-  onSubmit: (text: string) => Promise<void>;
   className?: string;
 }
 
@@ -33,7 +31,8 @@ interface FormValues {
   text: string;
 }
 
-const Chat = ({ messages, onSubmit, className }: ChatProps) => {
+const Chat = ({ className }: ChatProps) => {
+  const { chatMessages, sendChatMessage } = useChat();
   const container = useRef<HTMLDivElement | null>(null);
 
   const scroll = () => {
@@ -45,12 +44,12 @@ const Chat = ({ messages, onSubmit, className }: ChatProps) => {
 
   useEffect(() => {
     scroll();
-  }, [messages]);
+  }, [chatMessages]);
 
   const onFormSubmit = async (values: FormValues) => {
     const { text } = values;
     values.text = '';
-    await onSubmit(text);
+    await sendChatMessage(text);
   };
 
   return (
@@ -63,9 +62,9 @@ const Chat = ({ messages, onSubmit, className }: ChatProps) => {
       </CardHeader>
       <CardBody className={styles.chatBody}>
         <VStack className={styles.messages} ref={container}>
-          {messages.map((message) => (
+          {chatMessages.map((chatMessage) => (
             <Fragment key={_.uniqueId()}>
-              <Message message={message} />
+              <Message message={chatMessage} />
               <Divider className={styles.messageDivider} />
             </Fragment>
           ))}
