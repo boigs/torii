@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import ContextProvider from 'src/components/ContextProvider';
+import { GameContextProvider } from 'src/components/GameContextProvider';
 import AnimatedParent from 'src/components/Shared/AnimatedParent';
 
 import { Providers } from './providers';
@@ -44,9 +44,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
     </head>
     <body className={classNames(inter.className, styles.body)}>
       <Providers>
-        <ContextProvider>
+        <GameContextProvider>
           <AnimatedParent className={styles.root}>{children}</AnimatedParent>
-        </ContextProvider>
+        </GameContextProvider>
       </Providers>
     </body>
   </html>

@@ -1,22 +1,17 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useGameContext } from 'src/components/GameContextProvider';
 import { ChatMessage } from 'src/domain';
 import { artificialSleep } from 'src/helpers/sleep';
-import { WsMessageOut, chatMessage } from 'src/websocket/out';
+import { chatMessage } from 'src/websocket/out';
 
 export interface ChatHook {
   chatMessages: ChatMessage[];
   sendChatMessage: (text: string) => Promise<void>;
 }
 
-export interface WebsocketChatHook {
-  useChat: () => ChatHook;
-  setChatMessages: Dispatch<SetStateAction<ChatMessage[]>>;
-}
-
-export const useWebsocketChat = (
-  sendWebsocketMessage: (message: WsMessageOut) => void,
-): WebsocketChatHook => {
+export const useChat = (): ChatHook => {
+  const { sendWebsocketMessage, lastChatMessage } = useGameContext();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
   const sendChatMessage = async (text: string) => {
@@ -24,10 +19,14 @@ export const useWebsocketChat = (
     sendWebsocketMessage(chatMessage({ content: text }));
   };
 
-  return {
-    useChat: () => {
-      return { chatMessages, sendChatMessage };
-    },
-    setChatMessages,
-  };
+  useEffect(() => {
+    if (lastChatMessage !== null) {
+      setChatMessages((previousChatMessages) => [
+        ...previousChatMessages,
+        lastChatMessage,
+      ]);
+    }
+  }, [lastChatMessage]);
+
+  return { chatMessages, sendChatMessage };
 };

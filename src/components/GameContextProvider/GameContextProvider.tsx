@@ -4,8 +4,10 @@ import {
   ReactNode,
   createContext,
   useCallback,
+  useContext,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
@@ -14,14 +16,13 @@ import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
-import { HeadcrabState } from 'src/domain';
+import { ChatMessage, HeadcrabState } from 'src/domain';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
   shouldEndGameAfterError,
   shouldShowErrorToast,
 } from 'src/helpers/errorHelpers';
-import { ChatHook, useWebsocketChat } from 'src/hooks/chatHook';
 import logger from 'src/logger';
 import {
   WsMessageIn,
@@ -32,21 +33,19 @@ import {
 } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
-interface ContextType {
+interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   sendWebsocketMessage: (message: WsMessageOut) => void;
-  useChat: () => ChatHook;
+  lastChatMessage: ChatMessage | null;
   isInsideOfGame: boolean;
 }
 
-export const Context = createContext<ContextType>({
+const GameContext = createContext<GameContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
-  useChat: () => {
-    throw new Error('Not implemented');
-  },
+  lastChatMessage: null,
   isInsideOfGame: false,
 });
 
@@ -78,7 +77,7 @@ const createGame: () => Promise<string> = () =>
     .then((response) => response.json())
     .then((response) => (response as { id: string }).id);
 
-const ContextProvider = ({ children }: { children: ReactNode }) => {
+export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
   const gameActor = useActor(
     gameFsm.provide({
@@ -121,7 +120,9 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
     sendMessage(JSON.stringify(message));
   };
 
-  const { useChat, setChatMessages } = useWebsocketChat(sendWebsocketMessage);
+  const [lastChatMessage, setLastChatMessage] = useState<ChatMessage | null>(
+    null,
+  );
 
   // Using a ref here as the GameState contains class objects that are recreated within the useEffect, using the object directly and including it as a useEffect depedency causes an infite loop
   const gameRef = useRef(state.context.game);
@@ -210,10 +211,7 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
             gameRef.current.nicknameToPlayer,
           );
 
-          setChatMessages((previousChatMessages) => [
-            ...previousChatMessages,
-            chatMessage,
-          ]);
+          setLastChatMessage(chatMessage);
 
           break;
         }
@@ -224,18 +222,17 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
   }, [
     lastMessage,
     send,
-    setChatMessages,
     state.context.nickname,
     state.context.websocketShouldBeConnected,
     toast,
   ]);
 
   return (
-    <Context.Provider
+    <GameContext.Provider
       value={{
         gameActor: actorRef,
         sendWebsocketMessage,
-        useChat,
+        lastChatMessage,
         isInsideOfGame:
           actorRef.getSnapshot().matches('lobby') ||
           actorRef.getSnapshot().matches('playersSubmittingWords') ||
@@ -245,8 +242,8 @@ const ContextProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </Context.Provider>
+    </GameContext.Provider>
   );
 };
 
-export default ContextProvider;
+export const useGameContext = (): GameContextType => useContext(GameContext);
