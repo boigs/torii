@@ -1,18 +1,9 @@
 'use client';
 
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, createContext, useContext, useEffect, useRef } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
-import useWebSocket from 'react-use-websocket';
 import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
@@ -24,14 +15,8 @@ import {
   shouldEndGameAfterError,
   shouldShowErrorToast,
 } from 'src/helpers/errorHelpers';
+import { useWebsocket } from 'src/hooks/websocketHook';
 import logger from 'src/logger';
-import {
-  WsMessageIn,
-  WsTypeIn,
-  chatMessageDtoToDomain,
-  gameStateDtoToDomain,
-  headcrabErrorDtoToDomain,
-} from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
 interface GameContextType {
@@ -66,13 +51,6 @@ const CANNOT_CREATE_GAME_ERROR: UseToastOptions = {
   position: 'top',
 };
 
-const HEARTBEAT = {
-  message: 'ping',
-  returnMessage: 'pong',
-  timeout: 3000, // 3 seconds, if no response is received, the connection will be closed
-  interval: 1000, // every 1 second, a ping message will be sent
-};
-
 const createGame: () => Promise<string> = () =>
   fetch(`${config.headcrabHttpBaseUrl}/game`, { method: 'POST' })
     .then((response) => response.json())
@@ -96,137 +74,92 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   );
   const [state, send, actorRef] = gameActor;
 
-  const websocketUrl = `${config.headcrabWsBaseUrl}/game/${state.context.gameId}/player/${state.context.nickname}/ws`;
-  const { sendMessage, lastMessage } = useWebSocket(
-    websocketUrl,
-    {
-      heartbeat: HEARTBEAT,
-      reconnectInterval: 500,
-      onError: () => {
-        onWebsocketError();
-      },
-      shouldReconnect: () => state.context.websocketShouldBeConnected,
-    },
-    state.context.websocketShouldBeConnected,
-  );
+  // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
+  // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
+  // causing an infinite loop
+  const nicknameToPlayerRef = useRef(state.context.game.nicknameToPlayer);
 
-  const onWebsocketError: () => void = useCallback(() => {
-    if (!state.context.gameJoined) {
-      send({ type: 'WEBSOCKET_CONNECT_ERROR' });
-      toast(UNKNOWN_WS_ERROR);
-    }
-  }, [state.context.gameJoined, send, toast]);
-
-  const sendWebsocketMessage = (message: WsMessageOut) => {
-    sendMessage(JSON.stringify(message));
-  };
-
-  const [lastChatMessage, setLastChatMessage] = useState<ChatMessage | null>(
-    null,
-  );
-
-  // Using a ref here as the GameState contains class objects that are recreated within the useEffect, using the object directly and including it as a useEffect depedency causes an infite loop
-  const gameRef = useRef(state.context.game);
+  const {
+    lastGameState,
+    lastChatMessage,
+    lastError,
+    lastWebsocketError,
+    sendWebsocketMessage,
+  } = useWebsocket({
+    connect: state.context.websocketShouldBeConnected,
+    headcrabWsBaseUrl: config.headcrabWsBaseUrl,
+    gameId: state.context.gameId,
+    nickname: state.context.nickname,
+    nicknameToPlayerRef,
+  });
 
   useEffect(() => {
     logger.debug({ state }, 'state');
   }, [state]);
 
   useEffect(() => {
-    if (state.context.websocketShouldBeConnected && lastMessage) {
-      const message = lastMessage.data as string;
+    if (lastGameState) {
+      send({
+        type: 'GAME_STATE_MESSAGE',
+        gameState: lastGameState,
+      });
 
-      // Ignore the heartbeat pong responses
-      if (message === 'pong') {
-        return;
-      }
-
-      const messageDto = JSON.parse(message) as WsMessageIn;
-      switch (messageDto.kind) {
-        case WsTypeIn.Error: {
-          const headcrabError = headcrabErrorDtoToDomain(messageDto);
-
-          if (shouldShowErrorToast(headcrabError.type)) {
-            toast({
-              status: 'error',
-              isClosable: true,
-              duration: 5000,
-              description: headcrabErrorToString(headcrabError),
-              position: 'top',
-            });
-          }
-
-          if (shouldEndGameAfterError(headcrabError.type)) {
-            send({
-              type: 'ERROR_MESSAGE',
-              headcrabError,
-            });
-          }
-
-          break;
-        }
-
-        case WsTypeIn.GameState: {
-          const gameState = gameStateDtoToDomain(
-            messageDto,
-            state.context.nickname,
-          );
-
-          send({
-            type: 'GAME_STATE_MESSAGE',
-            gameState,
-          });
-
-          if (gameRef.current.state !== gameState.state) {
-            switch (gameState.state) {
-              case HeadcrabState.Lobby:
-                send({ type: 'CHANGED_TO_LOBBY' });
-                break;
-              case HeadcrabState.PlayersSubmittingWords:
-                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
-                break;
-              case HeadcrabState.PlayersSubmittingVotingWord:
-                send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
-                break;
-              case HeadcrabState.EndOfRound:
-                send({ type: 'CHANGED_TO_END_OF_ROUND' });
-                break;
-              case HeadcrabState.EndOfGame:
-                send({ type: 'CHANGED_TO_END_OF_GAME' });
-                break;
-              case HeadcrabState.Undefined:
-                break;
-            }
-          }
-
-          // The GameState is not used for rendering in the useEffect of this component, so it should be safe to update it
-          // Just make sure it is updated at the end of this case block so the previous value is not overwritten before used
-          gameRef.current = gameState;
-
-          break;
-        }
-
-        case WsTypeIn.ChatText: {
-          const chatMessage = chatMessageDtoToDomain(
-            messageDto,
-            gameRef.current.nicknameToPlayer,
-          );
-
-          setLastChatMessage(chatMessage);
-
-          break;
+      if (lastGameState.state !== state.context.game.state) {
+        switch (lastGameState.state) {
+          case HeadcrabState.Lobby:
+            send({ type: 'CHANGED_TO_LOBBY' });
+            break;
+          case HeadcrabState.PlayersSubmittingWords:
+            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
+            break;
+          case HeadcrabState.PlayersSubmittingVotingWord:
+            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
+            break;
+          case HeadcrabState.EndOfRound:
+            send({ type: 'CHANGED_TO_END_OF_ROUND' });
+            break;
+          case HeadcrabState.EndOfGame:
+            send({ type: 'CHANGED_TO_END_OF_GAME' });
+            break;
+          case HeadcrabState.Undefined:
+            break;
         }
       }
 
-      logger.debug({ lastMessage }, 'last message');
+      // A ref object keeps the initialized value unless it is manually updated
+      nicknameToPlayerRef.current = lastGameState.nicknameToPlayer;
     }
-  }, [
-    lastMessage,
-    send,
-    state.context.nickname,
-    state.context.websocketShouldBeConnected,
-    toast,
-  ]);
+  }, [lastGameState, send, state.context.game.state]);
+
+  useEffect(() => {
+    if (lastError) {
+      if (shouldShowErrorToast(lastError.type)) {
+        toast({
+          status: 'error',
+          isClosable: true,
+          duration: 5000,
+          description: headcrabErrorToString(lastError),
+          position: 'top',
+        });
+      }
+
+      if (shouldEndGameAfterError(lastError.type)) {
+        send({
+          type: 'ERROR_MESSAGE',
+          headcrabError: lastError,
+        });
+      }
+    }
+  }, [lastError, send, toast]);
+
+  useEffect(() => {
+    if (lastWebsocketError) {
+      if (!state.context.gameJoined) {
+        send({ type: 'WEBSOCKET_CONNECT_ERROR' });
+        toast(UNKNOWN_WS_ERROR);
+      }
+    }
+  }, [lastError, lastWebsocketError, send, state.context.gameJoined, toast]);
 
   return (
     <GameContext.Provider
