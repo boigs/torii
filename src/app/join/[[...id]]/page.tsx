@@ -16,17 +16,17 @@ interface JoinQuery {
 
 const Join = ({ params: { id } }: JoinQuery) => {
   const router = useRouter();
-  const { gameConnectionActor, isInsideOfGame } = useGameContext();
+  const { gameConnectionActor } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
   const realId = id?.[0];
 
   useEffect(() => {
     if (gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'RESET' });
-    } else if (isInsideOfGame) {
+    } else if (gameConnection.matches('game')) {
       router.push('/game');
     }
-  }, [gameConnection, router, isInsideOfGame, gameConnectionActor]);
+  }, [gameConnection, router, gameConnectionActor]);
 
   return (
     <Center>

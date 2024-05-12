@@ -10,15 +10,6 @@ class Game {
   readonly state: GameState;
   readonly amountOfRounds: number | null;
 
-  static default: Game = new Game({
-    id: '',
-    player: { nickname: '', isHost: false, isConnected: false },
-    nicknameToPlayer: new Map(),
-    rounds: [],
-    state: GameState.Undefined,
-    amountOfRounds: null,
-  });
-
   constructor({
     id,
     player,
@@ -41,6 +32,15 @@ class Game {
     this.state = state;
     this.amountOfRounds = amountOfRounds;
   }
+
+  static default: Game = new Game({
+    id: '',
+    player: { nickname: '', isHost: false, isConnected: false },
+    nicknameToPlayer: new Map(),
+    rounds: [],
+    state: GameState.Undefined,
+    amountOfRounds: null,
+  });
 
   get players(): Player[] {
     return Array.from(this.nicknameToPlayer.values());

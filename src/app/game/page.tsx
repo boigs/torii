@@ -36,18 +36,17 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameConnectionActor, game, sendWebsocketMessage, isInsideOfGame } =
-    useGameContext();
+  const { gameConnectionActor, game, sendWebsocketMessage } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
   useEffect(() => {
     if (gameConnection.matches('disconnected')) {
       router.replace('/join');
     }
-    if (isInsideOfGame && !gameConnection.context.gameJoined) {
+    if (gameConnection.matches('game') && !gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'GAME_JOINED' });
     }
-  }, [gameConnection, router, isInsideOfGame, gameConnectionActor]);
+  }, [gameConnection, router, gameConnectionActor]);
 
   const sendGameStart = (values: HostLobbyValues) => {
     sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));

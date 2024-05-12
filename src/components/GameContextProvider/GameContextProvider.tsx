@@ -31,7 +31,6 @@ interface GameContextType {
   game: Game;
   sendWebsocketMessage: (message: WsMessageOut) => void;
   lastChatMessage: ChatMessage | null;
-  isInsideOfGame: boolean;
 }
 
 const GameContext = createContext<GameContextType>({
@@ -41,7 +40,6 @@ const GameContext = createContext<GameContextType>({
     throw new Error('Not implemented');
   },
   lastChatMessage: null,
-  isInsideOfGame: false,
 });
 
 const UNKNOWN_WS_ERROR: UseToastOptions = {
@@ -166,7 +164,6 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
         game,
         sendWebsocketMessage,
         lastChatMessage,
-        isInsideOfGame: gameConnection.matches('game'),
       }}
     >
       {children}
