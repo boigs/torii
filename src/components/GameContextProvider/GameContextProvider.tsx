@@ -15,10 +15,10 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import ChatMessage from 'src/domain/chatMessage';
-import GameState from 'src/domain/gameState';
-import gameFsm from 'src/fsm';
+import Game from 'src/domain/game';
+import gameConnectionFsm from 'src/fsm';
 import {
-  headcrabErrorToString,
+  gameErrorToString,
   shouldEndGameAfterError,
   shouldShowErrorToast,
 } from 'src/helpers/errorHelpers';
@@ -27,16 +27,16 @@ import logger from 'src/logger';
 import { WsMessageOut } from 'src/websocket/out';
 
 interface GameContextType {
-  gameActor: ActorRefFrom<typeof gameFsm>;
-  game: GameState;
+  gameConnectionActor: ActorRefFrom<typeof gameConnectionFsm>;
+  game: Game;
   sendWebsocketMessage: (message: WsMessageOut) => void;
   lastChatMessage: ChatMessage | null;
   isInsideOfGame: boolean;
 }
 
 const GameContext = createContext<GameContextType>({
-  gameActor: {} as ActorRefFrom<typeof gameFsm>,
-  game: GameState.default,
+  gameConnectionActor: {} as ActorRefFrom<typeof gameConnectionFsm>,
+  game: Game.default,
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
@@ -68,8 +68,8 @@ const createGame: () => Promise<string> = () =>
 export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
-  const [state, send, actorRef] = useActor(
-    gameFsm.provide({
+  const [gameConnection, , gameConnectionActor] = useActor(
+    gameConnectionFsm.provide({
       actors: {
         createGame: fromPromise<string>(async () => {
           try {
@@ -83,41 +83,48 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     }),
   );
 
-  const [gameState, setGameState] = useState(GameState.default);
+  const [game, setGame] = useState(Game.default);
   // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
   // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
   // causing an infinite loop
   // A ref object keeps the initialized value unless it is manually updated
-  const nicknameToPlayerRef = useRef(gameState.nicknameToPlayer);
-  nicknameToPlayerRef.current = gameState.nicknameToPlayer;
+  const nicknameToPlayerRef = useRef(game.nicknameToPlayer);
+  nicknameToPlayerRef.current = game.nicknameToPlayer;
 
   const {
     lastGameState,
     lastChatMessage,
-    lastError,
+    lastGameError: lastError,
     lastWebsocketError,
     sendWebsocketMessage,
   } = useWebsocket({
-    connect: state.context.websocketShouldBeConnected,
+    connect: gameConnection.context.connect,
     headcrabWsBaseUrl: config.headcrabWsBaseUrl,
-    gameId: state.context.gameId,
-    nickname: state.context.nickname,
+    gameId: gameConnection.context.gameId,
+    nickname: gameConnection.context.nickname,
     nicknameToPlayerRef,
   });
 
   useEffect(() => {
-    logger.debug({ state }, 'state');
-  }, [state]);
+    logger.debug({ gameConnection }, 'gameConnection');
+  }, [gameConnection]);
 
   useEffect(() => {
     if (lastGameState) {
-      send({
-        type: 'GAME_STATE_MESSAGE',
-      });
+      if (gameConnection.matches('joiningGame')) {
+        gameConnectionActor.send({
+          type: 'JOIN_GAME_SUCCESS',
+        });
+      }
 
-      setGameState(lastGameState);
+      setGame(lastGameState);
     }
-  }, [lastGameState, send]);
+  }, [
+    gameConnection,
+    gameConnection.context.gameJoined,
+    gameConnectionActor,
+    lastGameState,
+  ]);
 
   useEffect(() => {
     if (lastError) {
@@ -126,36 +133,41 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
           status: 'error',
           isClosable: true,
           duration: 5000,
-          description: headcrabErrorToString(lastError),
+          description: gameErrorToString(lastError),
           position: 'top',
         });
       }
 
       if (shouldEndGameAfterError(lastError.type)) {
-        send({
-          type: 'ERROR_MESSAGE',
+        gameConnectionActor.send({
+          type: 'RESET',
         });
       }
     }
-  }, [lastError, send, toast]);
+  }, [gameConnectionActor, lastError, toast]);
 
   useEffect(() => {
     if (lastWebsocketError) {
-      if (!state.context.gameJoined) {
-        send({ type: 'WEBSOCKET_CONNECT_ERROR' });
+      if (!gameConnection.context.gameJoined) {
+        gameConnectionActor.send({ type: 'GAME_CONNECTION_ERROR' });
         toast(UNKNOWN_WS_ERROR);
       }
     }
-  }, [lastError, lastWebsocketError, send, state.context.gameJoined, toast]);
+  }, [
+    gameConnection.context.gameJoined,
+    gameConnectionActor,
+    lastWebsocketError,
+    toast,
+  ]);
 
   return (
     <GameContext.Provider
       value={{
-        gameActor: actorRef,
-        game: gameState,
+        gameConnectionActor,
+        game,
         sendWebsocketMessage,
         lastChatMessage,
-        isInsideOfGame: actorRef.getSnapshot().matches('game'),
+        isInsideOfGame: gameConnection.matches('game'),
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-export enum HeadcrabErrorType {
+export enum GameErrorType {
   // Domain
   GameAlreadyInProgress = 'GameAlreadyInProgress',
   GameDoesNotExist = 'GameDoesNotExist',
@@ -21,4 +21,4 @@ export enum HeadcrabErrorType {
   Internal = 'Internal',
 }
 
-export default HeadcrabErrorType;
+export default GameErrorType;

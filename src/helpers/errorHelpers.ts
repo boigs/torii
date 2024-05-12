@@ -1,66 +1,66 @@
-import HeadcrabError from 'src/domain/headcrabError';
-import HeadcrabErrorType from 'src/domain/headcrabErrorType';
+import GameError from 'src/domain/gameError';
+import GameErrorType from 'src/domain/gameErrorType';
 
-export const headcrabErrorToString = (error: HeadcrabError): string => {
+export const gameErrorToString = (error: GameError): string => {
   switch (error.type) {
     // Domain
-    case HeadcrabErrorType.GameAlreadyInProgress:
+    case GameErrorType.GameAlreadyInProgress:
       return 'You cannot join because the game is already in progress.';
-    case HeadcrabErrorType.GameDoesNotExist:
+    case GameErrorType.GameDoesNotExist:
       return 'The game you are trying to join does not seem to exist.';
-    case HeadcrabErrorType.InvalidStateForWordsSubmission:
+    case GameErrorType.InvalidStateForWordsSubmission:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.InvalidStateForVotingWordSubmission:
+    case GameErrorType.InvalidStateForVotingWordSubmission:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.NotEnoughPlayers:
+    case GameErrorType.NotEnoughPlayers:
       return 'Not enough players to start the game, at least 3 are needed.';
-    case HeadcrabErrorType.NotEnoughRounds:
+    case GameErrorType.NotEnoughRounds:
       return 'Not enough rounds to starth the game, at least 1 round is needed.';
-    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextRound:
+    case GameErrorType.NonHostPlayerCannotContinueToNextRound:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.NonHostPlayerCannotContinueToNextVotingItem:
+    case GameErrorType.NonHostPlayerCannotContinueToNextVotingItem:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.NonHostPlayerCannotStartGame:
+    case GameErrorType.NonHostPlayerCannotStartGame:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.PlayerAlreadyExists:
+    case GameErrorType.PlayerAlreadyExists:
       return 'There is another player with that nickname already.';
-    case HeadcrabErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord:
+    case GameErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone:
+    case GameErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone:
       return 'You cannot perform that action.';
-    case HeadcrabErrorType.RepeatedWords:
+    case GameErrorType.RepeatedWords:
       return `You cannot submit the same word more than once. Repeated words: ${error.detail}`;
-    case HeadcrabErrorType.VotingItemPlayerCannotSubmitVotingWord:
+    case GameErrorType.VotingItemPlayerCannotSubmitVotingWord:
       return 'You cannot perform that action.';
     // External
-    case HeadcrabErrorType.UnprocessableWebsocketMessage:
+    case GameErrorType.UnprocessableWebsocketMessage:
       return 'This action cannot be processed at this moment.';
-    case HeadcrabErrorType.WebsocketClosed:
+    case GameErrorType.WebsocketClosed:
       return 'Unknown error. Please contact support.';
     // Internal
-    case HeadcrabErrorType.Internal:
+    case GameErrorType.Internal:
       return 'Unknown error. Please contact support.';
   }
 };
 
-export const shouldEndGameAfterError = (error: HeadcrabErrorType): boolean => {
+export const shouldEndGameAfterError = (error: GameErrorType): boolean => {
   switch (error) {
-    case HeadcrabErrorType.GameAlreadyInProgress:
+    case GameErrorType.GameAlreadyInProgress:
       return true;
-    case HeadcrabErrorType.GameDoesNotExist:
+    case GameErrorType.GameDoesNotExist:
       return true;
-    case HeadcrabErrorType.PlayerAlreadyExists:
+    case GameErrorType.PlayerAlreadyExists:
       return true;
-    case HeadcrabErrorType.Internal:
+    case GameErrorType.Internal:
       return true;
     default:
       return false;
   }
 };
 
-export const shouldShowErrorToast = (error: HeadcrabErrorType): boolean => {
+export const shouldShowErrorToast = (error: GameErrorType): boolean => {
   switch (error) {
-    case HeadcrabErrorType.WebsocketClosed:
+    case GameErrorType.WebsocketClosed:
       return false;
     default:
       return true;

@@ -10,23 +10,23 @@ import { useGameContext } from 'src/components/GameContextProvider';
 
 const Home = () => {
   const router = useRouter();
-  const { gameActor } = useGameContext();
-  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
+  const { gameConnectionActor } = useGameContext();
+  const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
   useEffect(() => {
-    if (state.context.gameJoined) {
-      send({ type: 'RESET' });
-    } else if (state.matches('game')) {
+    if (gameConnection.context.gameJoined) {
+      gameConnectionActor.send({ type: 'RESET' });
+    } else if (gameConnection.matches('game')) {
       router.push('/game');
     }
-  }, [state, send, router]);
+  }, [gameConnection, router, gameConnectionActor]);
 
   return (
     <Center>
       <CreateGameForm
-        loading={!state.matches('disconnected')}
+        loading={!gameConnection.matches('disconnected')}
         onSubmit={({ nickname }) => {
-          send({ type: 'CREATE_GAME', nickname });
+          gameConnectionActor.send({ type: 'CREATE_GAME', nickname });
         }}
       />
     </Center>

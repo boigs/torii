@@ -1,8 +1,8 @@
 import ChatMessage from 'src/domain/chatMessage';
+import Game from 'src/domain/game';
+import GameError from 'src/domain/gameError';
+import GameErrorType from 'src/domain/gameErrorType';
 import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
-import HeadcrabErrorType from 'src/domain/headcrabErrorType';
-import HeadcrabState from 'src/domain/headcrabState';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 import VotingItem from 'src/domain/votingItem';
@@ -19,22 +19,20 @@ export interface MessageTypeIn {
 }
 
 export type WsMessageIn = MessageTypeIn &
-  (GameStateDto | HeadcrabErrorDto | ChatMessageDto);
+  (GameStateDto | ChatMessageDto | GameErrorDto);
 
-interface HeadcrabErrorDto {
+interface GameErrorDto {
   type: string;
   title: string;
   detail: string;
 }
 
-export const headcrabErrorDtoToDomain = (
-  message: WsMessageIn,
-): HeadcrabError => {
-  const headcrabError = message as HeadcrabErrorDto;
+export const gameErrorDtoToDomain = (message: WsMessageIn): GameError => {
+  const gameError = message as GameErrorDto;
   return {
-    type: headcrabErrorTypeDtoToDomain(headcrabError.type),
-    title: headcrabError.title,
-    detail: headcrabError.detail,
+    type: gameErrorTypeDtoToDomain(gameError.type),
+    title: gameError.title,
+    detail: gameError.detail,
   };
 };
 
@@ -45,10 +43,11 @@ interface GameStateDto {
   amountOfRounds: number | null;
 }
 
-export const gameStateDtoToDomain = (
+export const gameDtoToDomain = (
   message: WsMessageIn,
+  gameId: string,
   nickname: string,
-): GameState => {
+): Game => {
   const gameState = message as GameStateDto;
   const nicknameToPlayer = new Map(
     gameState.players.map((player) => [
@@ -56,13 +55,14 @@ export const gameStateDtoToDomain = (
       playerDtoToDomain(player),
     ]),
   );
-  return new GameState({
+  return new Game({
+    id: gameId,
     player: getPlayer(nicknameToPlayer, nickname),
     nicknameToPlayer,
     rounds: gameState.rounds.map((round, roundIndex) =>
       roundDtoToDomain(roundIndex, round, nicknameToPlayer),
     ),
-    state: headcrabStateToDomain(gameState.state),
+    state: gameStateToDomain(gameState.state),
     amountOfRounds: gameState.amountOfRounds,
   });
 };
@@ -83,66 +83,64 @@ export const chatMessageDtoToDomain = (
   };
 };
 
-const headcrabErrorTypeDtoToDomain = (error: string): HeadcrabErrorType => {
+const gameErrorTypeDtoToDomain = (error: string): GameErrorType => {
   switch (error) {
     // Domain
     case 'GAME_ALREADY_IN_PROGRESS':
-      return HeadcrabErrorType.GameAlreadyInProgress;
+      return GameErrorType.GameAlreadyInProgress;
     case 'GAME_DOES_NOT_EXIST':
-      return HeadcrabErrorType.GameDoesNotExist;
+      return GameErrorType.GameDoesNotExist;
     case 'INVALID_STATE_FOR_WORDS_SUBMISSION':
-      return HeadcrabErrorType.InvalidStateForWordsSubmission;
+      return GameErrorType.InvalidStateForWordsSubmission;
     case 'INVALID_STATE_FOR_VOTING_WORD_SUBMISSION':
-      return HeadcrabErrorType.InvalidStateForVotingWordSubmission;
+      return GameErrorType.InvalidStateForVotingWordSubmission;
     case 'NOT_ENOUGH_PLAYERS':
-      return HeadcrabErrorType.NotEnoughPlayers;
+      return GameErrorType.NotEnoughPlayers;
     case 'NOT_ENOUGH_ROUNDS':
-      return HeadcrabErrorType.NotEnoughRounds;
+      return GameErrorType.NotEnoughRounds;
     case 'NON_HOST_PLAYER_CANNOT_CONTINUE_TO_NEXT_ROUND':
-      return HeadcrabErrorType.NonHostPlayerCannotContinueToNextRound;
+      return GameErrorType.NonHostPlayerCannotContinueToNextRound;
     case 'NON_HOST_PLAYER_CANNOT_CONTINUE_TO_NEXT_VOTING_ITEM':
-      return HeadcrabErrorType.NonHostPlayerCannotContinueToNextVotingItem;
+      return GameErrorType.NonHostPlayerCannotContinueToNextVotingItem;
     case 'NON_HOST_PLAYER_CANNOT_START_GAME':
-      return HeadcrabErrorType.NonHostPlayerCannotStartGame;
+      return GameErrorType.NonHostPlayerCannotStartGame;
     case 'PLAYER_ALREADY_EXISTS':
-      return HeadcrabErrorType.PlayerAlreadyExists;
+      return GameErrorType.PlayerAlreadyExists;
     case 'PLAYER_CANNOT_SUBMIT_NON_EXISTING_OR_USED_WORD':
-      return HeadcrabErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord;
+      return GameErrorType.PlayerCannotSubmitNonExistingOrUsedVotingWord;
     case 'PLAYER_CANNOT_SUBMIT_VOTING_WORD_WHEN_VOTING_ITEM_IS_NONE':
-      return HeadcrabErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone;
+      return GameErrorType.PlayerCannotSubmitVotingWordWhenVotingItemIsNone;
     case 'REPEATED_WORDS':
-      return HeadcrabErrorType.RepeatedWords;
+      return GameErrorType.RepeatedWords;
     case 'VOTING_ITEM_PLAYER_CANNOT_SUBMIT_VOTING_WORD':
-      return HeadcrabErrorType.VotingItemPlayerCannotSubmitVotingWord;
+      return GameErrorType.VotingItemPlayerCannotSubmitVotingWord;
     // External
     case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
-      return HeadcrabErrorType.UnprocessableWebsocketMessage;
+      return GameErrorType.UnprocessableWebsocketMessage;
     case 'WEBSOCKET_CLOSED':
-      return HeadcrabErrorType.WebsocketClosed;
+      return GameErrorType.WebsocketClosed;
     // Internal
     case 'INTERNAL':
-      return HeadcrabErrorType.Internal;
+      return GameErrorType.Internal;
     default:
-      throw new Error(
-        `Could not deserialize the headcrab error type: ${error}`,
-      );
+      throw new Error(`Could not deserialize the game error type: ${error}`);
   }
 };
 
-const headcrabStateToDomain = (state: string): HeadcrabState => {
+const gameStateToDomain = (state: string): GameState => {
   switch (state) {
     case 'Lobby':
-      return HeadcrabState.Lobby;
+      return GameState.Lobby;
     case 'PlayersSubmittingWords':
-      return HeadcrabState.PlayersSubmittingWords;
+      return GameState.PlayersSubmittingWords;
     case 'PlayersSubmittingVotingWord':
-      return HeadcrabState.PlayersSubmittingVotingWord;
+      return GameState.PlayersSubmittingVotingWord;
     case 'EndOfRound':
-      return HeadcrabState.EndOfRound;
+      return GameState.EndOfRound;
     case 'EndOfGame':
-      return HeadcrabState.EndOfGame;
+      return GameState.EndOfGame;
     default:
-      throw new Error(`Could not deserialize the headcrab state: ${state}`);
+      throw new Error(`Could not deserialize the game state: ${state}`);
   }
 };
 
