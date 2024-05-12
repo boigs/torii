@@ -8,7 +8,6 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import ChatMessage from 'src/domain/chatMessage';
-import HeadcrabState from 'src/domain/headcrabState';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
@@ -104,28 +103,6 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
         gameState: lastGameState,
       });
 
-      if (lastGameState.state !== state.context.game.state) {
-        switch (lastGameState.state) {
-          case HeadcrabState.Lobby:
-            send({ type: 'CHANGED_TO_LOBBY' });
-            break;
-          case HeadcrabState.PlayersSubmittingWords:
-            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
-            break;
-          case HeadcrabState.PlayersSubmittingVotingWord:
-            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
-            break;
-          case HeadcrabState.EndOfRound:
-            send({ type: 'CHANGED_TO_END_OF_ROUND' });
-            break;
-          case HeadcrabState.EndOfGame:
-            send({ type: 'CHANGED_TO_END_OF_GAME' });
-            break;
-          case HeadcrabState.Undefined:
-            break;
-        }
-      }
-
       // A ref object keeps the initialized value unless it is manually updated
       nicknameToPlayerRef.current = lastGameState.nicknameToPlayer;
     }
@@ -167,12 +144,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
         gameActor: actorRef,
         sendWebsocketMessage,
         lastChatMessage,
-        isInsideOfGame:
-          actorRef.getSnapshot().matches('lobby') ||
-          actorRef.getSnapshot().matches('playersSubmittingWords') ||
-          actorRef.getSnapshot().matches('playersSubmittingVotingWord') ||
-          actorRef.getSnapshot().matches('endOfRound') ||
-          actorRef.getSnapshot().matches('endOfGame'),
+        isInsideOfGame: actorRef.getSnapshot().matches('game'),
       }}
     >
       {children}

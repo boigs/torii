@@ -21,6 +21,7 @@ import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import LoadingCard from 'src/components/Shared/LoadingCard';
 import { WordScoresCard } from 'src/components/Shared/WordScores';
+import HeadcrabState from 'src/domain/headcrabState';
 import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
@@ -38,6 +39,7 @@ const Game = () => {
   const { gameActor, sendWebsocketMessage, isInsideOfGame } = useGameContext();
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
   const player = state.context.game.player;
+  const headcrabState = state.context.game.state;
 
   useEffect(() => {
     if (state.matches('disconnected')) {
@@ -77,7 +79,7 @@ const Game = () => {
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          {state.matches('lobby') && (
+          {headcrabState === HeadcrabState.Lobby && (
             <>
               {player.isHost ? (
                 <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
@@ -86,7 +88,7 @@ const Game = () => {
               )}
             </>
           )}
-          {state.matches('playersSubmittingWords') && (
+          {headcrabState === HeadcrabState.PlayersSubmittingWords && (
             <WordsInput
               player={player}
               round={state.context.game.lastRound()}
@@ -97,7 +99,7 @@ const Game = () => {
               )}
             />
           )}
-          {state.matches('playersSubmittingVotingWord') && (
+          {headcrabState === HeadcrabState.PlayersSubmittingVotingWord && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <VotingItems
@@ -125,7 +127,7 @@ const Game = () => {
               />
             </VStack>
           )}
-          {state.matches('endOfRound') && (
+          {headcrabState === HeadcrabState.EndOfRound && (
             <VStack spacing='24px'>
               <EndOfRound
                 player={player}
@@ -135,14 +137,16 @@ const Game = () => {
               />
             </VStack>
           )}
-          {state.matches('endOfGame') ? <Text>End of game</Text> : null}
+          {headcrabState === HeadcrabState.EndOfGame ? (
+            <Text>End of game</Text>
+          ) : null}
           <JoinedPlayersList
             gameId={state.context.gameId}
             players={state.context.game.players}
-            hideJoinUrl={!state.matches('lobby')}
+            hideJoinUrl={headcrabState !== HeadcrabState.Lobby}
             className={classNames(
               [styles.joinedPlayersList],
-              state.matches('playersSubmittingWords')
+              headcrabState === HeadcrabState.PlayersSubmittingWords
                 ? styles.joinedPlayersListPlaying
                 : null,
             )}
@@ -150,7 +154,7 @@ const Game = () => {
           <Chat
             className={classNames(
               [styles.chat],
-              state.matches('playersSubmittingWords')
+              headcrabState === HeadcrabState.PlayersSubmittingWords
                 ? styles.chatPlaying
                 : null,
             )}
