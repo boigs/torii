@@ -26,7 +26,7 @@ import { useWebsocket } from 'src/hooks/useWebsocket';
 import logger from 'src/logger';
 import { WsMessageOut } from 'src/websocket/out';
 
-interface GameContextType {
+export interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
   game: GameState;
   sendWebsocketMessage: (message: WsMessageOut) => void;
