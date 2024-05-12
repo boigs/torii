@@ -133,7 +133,7 @@ const gameConnectionFsm = setup({
       entry: 'setConnectToGameToTrue',
       on: {
         JOIN_GAME_SUCCESS: 'game',
-        JOIN_GAME_ERROR: 'disconnected',
+        GAME_CONNECTION_ERROR: 'disconnected',
       },
     },
     game: {},
