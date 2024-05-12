@@ -4,9 +4,9 @@ import { ActorRefFrom } from 'xstate';
 
 import { useGameContext } from 'src/components/GameContextProvider';
 import { GameContextType } from 'src/components/GameContextProvider/GameContextProvider';
-import GameState from 'src/domain/gameState';
+import Game from 'src/domain/game';
 import Player from 'src/domain/player';
-import gameFsm from 'src/fsm';
+import gameConnectionFsm from 'src/fsm';
 import { chatMessage } from 'src/websocket/out';
 
 import { useChat } from '../useChat';
@@ -18,10 +18,9 @@ describe('useChat...', () => {
 
   const mockedBaseGameContext: GameContextType = {
     sendWebsocketMessage: vi.fn(),
-    gameActor: {} as Mocked<ActorRefFrom<typeof gameFsm>>,
-    game: {} as Mocked<GameState>,
+    gameConnectionActor: {} as Mocked<ActorRefFrom<typeof gameConnectionFsm>>,
+    game: {} as Mocked<Game>,
     lastChatMessage: null,
-    isInsideOfGame: false,
   };
 
   it('should send a websocket message when sending a chat message', async () => {
