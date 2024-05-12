@@ -1,3 +1,1 @@
-import gameFsm from './gameFsm';
-
-export default gameFsm;
+export { default } from './gameConnectionFsm';

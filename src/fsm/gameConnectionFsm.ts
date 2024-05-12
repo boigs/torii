@@ -13,51 +13,46 @@ interface JoinGameEvent {
   nickname: string;
 }
 
-interface GameJoinedEvent {
-  type: 'GAME_JOINED';
+interface JoinGameSuccessEvent {
+  type: 'JOIN_GAME_SUCCESS';
 }
 
-interface ErrorMessageEvent {
-  type: 'ERROR_MESSAGE';
-}
-
-interface GameStateMessageEvent {
-  type: 'GAME_STATE_MESSAGE';
-}
-
-interface WebsocketConnectErrorEvent {
-  type: 'WEBSOCKET_CONNECT_ERROR';
+interface GameConnectionErrorEvent {
+  type: 'GAME_CONNECTION_ERROR';
 }
 
 interface ResetEvent {
   type: 'RESET';
 }
 
+interface GameJoinedEvent {
+  type: 'GAME_JOINED';
+}
+
 interface Context {
   gameId: string;
   nickname: string;
-  websocketShouldBeConnected: boolean;
+  connect: boolean;
   gameJoined: boolean;
 }
 
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  websocketShouldBeConnected: false,
+  connect: false,
   gameJoined: false,
 };
 
-const gameFsm = setup({
+const gameConnectionFsm = setup({
   types: {} as {
     context: Context;
     events:
       | CreateGameEvent
       | JoinGameEvent
+      | JoinGameSuccessEvent
+      | GameConnectionErrorEvent
       | GameJoinedEvent
-      | ResetEvent
-      | WebsocketConnectErrorEvent
-      | ErrorMessageEvent
-      | GameStateMessageEvent;
+      | ResetEvent;
   },
   actions: {
     assignNickname: assign(({ event }) => {
@@ -79,27 +74,24 @@ const gameFsm = setup({
       };
     }),
     setConnectToGameToTrue: assign(() => ({
-      websocketShouldBeConnected: true,
+      connect: true,
     })),
     setGameJoinedToTrue: assign(() => ({
       gameJoined: true,
     })),
     resetContext: assign(() => defaultContext),
   },
-  guards: {},
   actors: {
     createGame: fromPromise<string>(() => {
       throw new Error('Not implemented');
     }),
   },
+  guards: {},
 }).createMachine({
   /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIONiY6AClqAEkAOTIAEWD5cKkZOVCY831VY1Mk6wBmU11lK10rAfjEJImjXmVbcytTXl5dAeVdXJBPAp8jCFxYTFlCTElIEgBhPzYAsjoSpibQlsj20BjuqyMrVQHzOt7MoARt9FMEBtjFZAf9hk5bDl3Dt8t5iAcjid8GcLhASJVao9SjwBM1xK0oh1EN9fv9AQNgaCFhD9PpUpZks4BqokoCrLxXMjdmiiEZMAAnMDoaT4KAcdCoMAkCCyMBGAgAN1EAGs1RKpRd5YqXiJye9oohzLxzKlTAzTCDzOYBvyHRDxkk5oDAas2bonOZtsLCqL9dKCHKFUqwOLxaJxUZhAAbaUAM3jqDFkulYCNYBNYTNbQtsRdaVU+gZ1l4lYGughDP0RgdPWWYz6G1UQdRIaMACtRAQI3mSAB1MgAIWY1CuAGlAnQrtQanUrgE6JQaBQC29i1TEtbbfbHc7XcoIZZUqzeMszGMnbpTIK8l5ewOh7KR08HswAncHkwrCcCSISmhEe6gAkHpzE+lgWGyyjOKYmidH0uhGNyCystkPJPt2r77FAUbFMSdC-v+jAsOwXA7kWlKfHoApGM6ui8iMDbWkYqiAroIyPkkZh4ds+CiBAcDyMGPhkuB9GKIgAC0+hJBCSSeiMMIjAsTh9EiL57OihzHKcYDnJA0kUh8ckIAYnrOPyTpPtyDgaNolqqKocwDPoEzJKovE8fh+mhtmMqRoq5nmvufnmBhah2gMvIck67pWKkSFwV0iFIYFIr9oO+DDlGEUQVZzpWnMiLKDMAwbFYMIpZ6ArpPBWVCXpuVEeFrx0ZZMS8BCCwxRyKR2jyfKBm4LhAA */
   context: defaultContext,
   initial: 'disconnected',
   on: {
-    ERROR_MESSAGE: {
-      target: '.disconnected',
-    },
     RESET: {
       target: '.disconnected',
     },
@@ -140,12 +132,12 @@ const gameFsm = setup({
     joiningGame: {
       entry: 'setConnectToGameToTrue',
       on: {
-        WEBSOCKET_CONNECT_ERROR: 'disconnected',
-        GAME_STATE_MESSAGE: 'game',
+        JOIN_GAME_SUCCESS: 'game',
+        GAME_CONNECTION_ERROR: 'disconnected',
       },
     },
     game: {},
   },
 });
 
-export default gameFsm;
+export default gameConnectionFsm;

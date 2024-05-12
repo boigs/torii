@@ -16,25 +16,25 @@ interface JoinQuery {
 
 const Join = ({ params: { id } }: JoinQuery) => {
   const router = useRouter();
-  const { gameActor, isInsideOfGame } = useGameContext();
-  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
+  const { gameConnectionActor } = useGameContext();
+  const [gameConnection] = [gameConnectionActor.getSnapshot()];
   const realId = id?.[0];
 
   useEffect(() => {
-    if (state.context.gameJoined) {
-      send({ type: 'RESET' });
-    } else if (isInsideOfGame) {
+    if (gameConnection.context.gameJoined) {
+      gameConnectionActor.send({ type: 'RESET' });
+    } else if (gameConnection.matches('game')) {
       router.push('/game');
     }
-  }, [state, send, router, isInsideOfGame]);
+  }, [gameConnection, router, gameConnectionActor]);
 
   return (
     <Center>
       <JoinGameForm
         gameId={realId}
-        loading={!state.matches('disconnected')}
+        loading={!gameConnection.matches('disconnected')}
         onSubmit={({ gameId, nickname }) => {
-          send({ type: 'JOIN_GAME', gameId, nickname });
+          gameConnectionActor.send({ type: 'JOIN_GAME', gameId, nickname });
         }}
       />
     </Center>
