@@ -3,16 +3,16 @@ import { MutableRefObject, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 
 import ChatMessage from 'src/domain/chatMessage';
-import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
+import Game from 'src/domain/game';
+import GameError from 'src/domain/gameError';
 import Player from 'src/domain/player';
 import logger from 'src/logger';
 import {
   WsMessageIn,
   WsTypeIn,
   chatMessageDtoToDomain,
-  gameStateDtoToDomain,
-  headcrabErrorDtoToDomain,
+  gameDtoToDomain,
+  gameErrorDtoToDomain,
 } from 'src/websocket/in';
 import { WsMessageOut } from 'src/websocket/out';
 
@@ -32,9 +32,9 @@ export interface WebsocketHookIn {
 }
 
 export interface WebsocketHook {
-  lastGameState: GameState | null;
+  lastGameState: Game | null;
   lastChatMessage: ChatMessage | null;
-  lastError: HeadcrabError | null;
+  lastGameError: GameError | null;
   lastWebsocketError: string | null;
   sendWebsocketMessage: (message: WsMessageOut) => void;
 }
@@ -59,11 +59,11 @@ export const useWebsocket = ({
     },
     connect,
   );
-  const [lastGameState, setLastGameState] = useState<GameState | null>(null);
+  const [lastGameState, setLastGameState] = useState<Game | null>(null);
   const [lastChatMessage, setLastChatMessage] = useState<ChatMessage | null>(
     null,
   );
-  const [lastError, setLastError] = useState<HeadcrabError | null>(null);
+  const [lastGameError, setLastGameError] = useState<GameError | null>(null);
   const [lastWebsocketError, setLastWebsocketError] = useState<string | null>(
     null,
   );
@@ -80,7 +80,7 @@ export const useWebsocket = ({
       const messageDto = JSON.parse(message) as WsMessageIn;
       switch (messageDto.kind) {
         case WsTypeIn.GameState:
-          setLastGameState(gameStateDtoToDomain(messageDto, nickname));
+          setLastGameState(gameDtoToDomain(messageDto, gameId, nickname));
           break;
 
         case WsTypeIn.ChatText:
@@ -90,18 +90,18 @@ export const useWebsocket = ({
           break;
 
         case WsTypeIn.Error:
-          setLastError(headcrabErrorDtoToDomain(messageDto));
+          setLastGameError(gameErrorDtoToDomain(messageDto));
           break;
       }
 
       logger.debug({ lastMessage }, 'last message');
     }
-  }, [connect, lastMessage, nickname, nicknameToPlayerRef]);
+  }, [connect, gameId, lastMessage, nickname, nicknameToPlayerRef]);
 
   return {
     lastGameState,
     lastChatMessage,
-    lastError,
+    lastGameError,
     lastWebsocketError,
     sendWebsocketMessage: (message: WsMessageOut) =>
       sendMessage(JSON.stringify(message)),

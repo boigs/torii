@@ -21,7 +21,7 @@ import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import LoadingCard from 'src/components/Shared/LoadingCard';
 import { WordScoresCard } from 'src/components/Shared/WordScores';
-import HeadcrabState from 'src/domain/headcrabState';
+import GameState from 'src/domain/gameState';
 import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
@@ -36,18 +36,17 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, game, sendWebsocketMessage, isInsideOfGame } =
-    useGameContext();
-  const [state, send] = [gameActor.getSnapshot(), gameActor.send];
+  const { gameConnectionActor, game, sendWebsocketMessage } = useGameContext();
+  const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
   useEffect(() => {
-    if (state.matches('disconnected')) {
+    if (gameConnection.matches('disconnected')) {
       router.replace('/join');
     }
-    if (isInsideOfGame && !state.context.gameJoined) {
-      send({ type: 'GAME_JOINED' });
+    if (gameConnection.matches('game') && !gameConnection.context.gameJoined) {
+      gameConnectionActor.send({ type: 'GAME_JOINED' });
     }
-  }, [state, send, router, isInsideOfGame]);
+  }, [gameConnection, router, gameConnectionActor]);
 
   const sendGameStart = (values: HostLobbyValues) => {
     sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
@@ -74,11 +73,11 @@ const Game = () => {
 
   return (
     <Center>
-      {state.matches('disconnected') ? (
+      {gameConnection.matches('disconnected') ? (
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          {game.state === HeadcrabState.Lobby && (
+          {game.state === GameState.Lobby && (
             <>
               {game.player.isHost ? (
                 <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
@@ -87,7 +86,7 @@ const Game = () => {
               )}
             </>
           )}
-          {game.state === HeadcrabState.PlayersSubmittingWords && (
+          {game.state === GameState.PlayersSubmittingWords && (
             <WordsInput
               player={game.player}
               round={game.lastRound()}
@@ -98,7 +97,7 @@ const Game = () => {
               )}
             />
           )}
-          {game.state === HeadcrabState.PlayersSubmittingVotingWord && (
+          {game.state === GameState.PlayersSubmittingVotingWord && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <VotingItems
@@ -126,7 +125,7 @@ const Game = () => {
               />
             </VStack>
           )}
-          {game.state === HeadcrabState.EndOfRound && (
+          {game.state === GameState.EndOfRound && (
             <VStack spacing='24px'>
               <EndOfRound
                 player={game.player}
@@ -136,16 +135,14 @@ const Game = () => {
               />
             </VStack>
           )}
-          {game.state === HeadcrabState.EndOfGame ? (
-            <Text>End of game</Text>
-          ) : null}
+          {game.state === GameState.EndOfGame ? <Text>End of game</Text> : null}
           <JoinedPlayersList
-            gameId={state.context.gameId}
+            gameId={game.id}
             players={game.players}
-            hideJoinUrl={game.state !== HeadcrabState.Lobby}
+            hideJoinUrl={game.state !== GameState.Lobby}
             className={classNames(
               [styles.joinedPlayersList],
-              game.state === HeadcrabState.PlayersSubmittingWords
+              game.state === GameState.PlayersSubmittingWords
                 ? styles.joinedPlayersListPlaying
                 : null,
             )}
@@ -153,7 +150,7 @@ const Game = () => {
           <Chat
             className={classNames(
               [styles.chat],
-              game.state === HeadcrabState.PlayersSubmittingWords
+              game.state === GameState.PlayersSubmittingWords
                 ? styles.chatPlaying
                 : null,
             )}
