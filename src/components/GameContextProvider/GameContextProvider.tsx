@@ -146,11 +146,16 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (lastWebsocketError) {
-      logger.error(lastWebsocketError);
-      gameConnectionActor.send({ type: 'GAME_CONNECTION_ERROR' });
-      toast(UNKNOWN_WS_ERROR);
+      // This hides the errors when in the middle of a game and Headcrab dies,
+      // but prevents an error from showing when a mobile browser goes into pause state and later reconnects and rejoins the game
+      if (!gameConnection.matches('game')) {
+        logger.error(lastWebsocketError);
+        gameConnectionActor.send({ type: 'GAME_CONNECTION_ERROR' });
+        toast(UNKNOWN_WS_ERROR);
+      }
     }
   }, [
+    gameConnection,
     gameConnection.context.gameJoined,
     gameConnectionActor,
     lastWebsocketError,
