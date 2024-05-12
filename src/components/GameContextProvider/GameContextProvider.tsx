@@ -67,7 +67,8 @@ const createGame: () => Promise<string> = () =>
 
 export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
-  const gameActor = useActor(
+
+  const [state, send, actorRef] = useActor(
     gameFsm.provide({
       actors: {
         createGame: fromPromise<string>(async () => {
@@ -81,13 +82,14 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       },
     }),
   );
-  const [state, send, actorRef] = gameActor;
-  const [gameState, setGameState] = useState(GameState.default);
 
+  const [gameState, setGameState] = useState(GameState.default);
   // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
   // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
   // causing an infinite loop
+  // A ref object keeps the initialized value unless it is manually updated
   const nicknameToPlayerRef = useRef(gameState.nicknameToPlayer);
+  nicknameToPlayerRef.current = gameState.nicknameToPlayer;
 
   const {
     lastGameState,
@@ -112,8 +114,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       send({
         type: 'GAME_STATE_MESSAGE',
       });
-      // A ref object keeps the initialized value unless it is manually updated
-      nicknameToPlayerRef.current = lastGameState.nicknameToPlayer;
+
       setGameState(lastGameState);
     }
   }, [lastGameState, send]);
