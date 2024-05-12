@@ -43,7 +43,7 @@ class Game {
   });
 
   get players(): Player[] {
-    return Array.from(this.nicknameToPlayer.values());
+    return [...this.nicknameToPlayer.values()];
   }
 
   lastRound(): Round {
