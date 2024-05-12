@@ -1,6 +1,13 @@
 'use client';
 
-import { ReactNode, createContext, useContext, useEffect, useRef } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -8,6 +15,7 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import ChatMessage from 'src/domain/chatMessage';
+import GameState from 'src/domain/gameState';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
@@ -20,6 +28,7 @@ import { WsMessageOut } from 'src/websocket/out';
 
 interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
+  game: GameState;
   sendWebsocketMessage: (message: WsMessageOut) => void;
   lastChatMessage: ChatMessage | null;
   isInsideOfGame: boolean;
@@ -27,6 +36,7 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
+  game: GameState.default,
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
@@ -72,11 +82,12 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     }),
   );
   const [state, send, actorRef] = gameActor;
+  const [gameState, setGameState] = useState(GameState.default);
 
   // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
   // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
   // causing an infinite loop
-  const nicknameToPlayerRef = useRef(state.context.game.nicknameToPlayer);
+  const nicknameToPlayerRef = useRef(gameState.nicknameToPlayer);
 
   const {
     lastGameState,
@@ -100,13 +111,12 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     if (lastGameState) {
       send({
         type: 'GAME_STATE_MESSAGE',
-        gameState: lastGameState,
       });
-
       // A ref object keeps the initialized value unless it is manually updated
       nicknameToPlayerRef.current = lastGameState.nicknameToPlayer;
+      setGameState(lastGameState);
     }
-  }, [lastGameState, send, state.context.game.state]);
+  }, [lastGameState, send]);
 
   useEffect(() => {
     if (lastError) {
@@ -123,7 +133,6 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       if (shouldEndGameAfterError(lastError.type)) {
         send({
           type: 'ERROR_MESSAGE',
-          headcrabError: lastError,
         });
       }
     }
@@ -142,6 +151,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     <GameContext.Provider
       value={{
         gameActor: actorRef,
+        game: gameState,
         sendWebsocketMessage,
         lastChatMessage,
         isInsideOfGame: actorRef.getSnapshot().matches('game'),

@@ -36,10 +36,9 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, isInsideOfGame } = useGameContext();
+  const { gameActor, game, sendWebsocketMessage, isInsideOfGame } =
+    useGameContext();
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
-  const player = state.context.game.player;
-  const headcrabState = state.context.game.state;
 
   useEffect(() => {
     if (state.matches('disconnected')) {
@@ -79,19 +78,19 @@ const Game = () => {
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          {headcrabState === HeadcrabState.Lobby && (
+          {game.state === HeadcrabState.Lobby && (
             <>
-              {player.isHost ? (
+              {game.player.isHost ? (
                 <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
               ) : (
                 <Lobby className={styles.lobby} />
               )}
             </>
           )}
-          {headcrabState === HeadcrabState.PlayersSubmittingWords && (
+          {game.state === HeadcrabState.PlayersSubmittingWords && (
             <WordsInput
-              player={player}
-              round={state.context.game.lastRound()}
+              player={game.player}
+              round={game.lastRound()}
               onSubmit={sendPlayerWords}
               className={classNames(
                 styles.wordsInput,
@@ -99,54 +98,54 @@ const Game = () => {
               )}
             />
           )}
-          {headcrabState === HeadcrabState.PlayersSubmittingVotingWord && (
+          {game.state === HeadcrabState.PlayersSubmittingVotingWord && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <VotingItems
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingCard
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 onWordClicked={sendPlayerVotingWord}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingSummary
-                player={player}
-                players={state.context.game.players}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                players={game.players}
+                round={game.lastRound()}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <WordScoresCard
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
           )}
-          {headcrabState === HeadcrabState.EndOfRound && (
+          {game.state === HeadcrabState.EndOfRound && (
             <VStack spacing='24px'>
               <EndOfRound
-                player={player}
-                isLastRound={state.context.game.isLastRound()}
+                player={game.player}
+                isLastRound={game.isLastRound()}
                 onContinueClicked={sendContinueToNextRound}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
           )}
-          {headcrabState === HeadcrabState.EndOfGame ? (
+          {game.state === HeadcrabState.EndOfGame ? (
             <Text>End of game</Text>
           ) : null}
           <JoinedPlayersList
             gameId={state.context.gameId}
-            players={state.context.game.players}
-            hideJoinUrl={headcrabState !== HeadcrabState.Lobby}
+            players={game.players}
+            hideJoinUrl={game.state !== HeadcrabState.Lobby}
             className={classNames(
               [styles.joinedPlayersList],
-              headcrabState === HeadcrabState.PlayersSubmittingWords
+              game.state === HeadcrabState.PlayersSubmittingWords
                 ? styles.joinedPlayersListPlaying
                 : null,
             )}
@@ -154,7 +153,7 @@ const Game = () => {
           <Chat
             className={classNames(
               [styles.chat],
-              headcrabState === HeadcrabState.PlayersSubmittingWords
+              game.state === HeadcrabState.PlayersSubmittingWords
                 ? styles.chatPlaying
                 : null,
             )}

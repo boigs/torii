@@ -9,6 +9,14 @@ class GameState {
   readonly state: HeadcrabState;
   readonly amountOfRounds: number | null;
 
+  static default: GameState = new GameState({
+    player: { nickname: 'unset', isHost: false, isConnected: false },
+    nicknameToPlayer: new Map(),
+    rounds: [],
+    state: HeadcrabState.Undefined,
+    amountOfRounds: null,
+  });
+
   constructor({
     player,
     nicknameToPlayer,

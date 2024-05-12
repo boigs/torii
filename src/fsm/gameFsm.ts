@@ -2,10 +2,6 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
-import HeadcrabState from 'src/domain/headcrabState';
-
 interface CreateGameEvent {
   type: 'CREATE_GAME';
   nickname: string;
@@ -23,12 +19,10 @@ interface GameJoinedEvent {
 
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
-  headcrabError: HeadcrabError;
 }
 
 interface GameStateMessageEvent {
   type: 'GAME_STATE_MESSAGE';
-  gameState: GameState;
 }
 
 interface WebsocketConnectErrorEvent {
@@ -42,7 +36,6 @@ interface ResetEvent {
 interface Context {
   gameId: string;
   nickname: string;
-  game: GameState;
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
 }
@@ -50,13 +43,6 @@ interface Context {
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  game: new GameState({
-    player: { nickname: 'unset', isHost: false, isConnected: false },
-    nicknameToPlayer: new Map(),
-    rounds: [],
-    state: HeadcrabState.Undefined,
-    amountOfRounds: null,
-  }),
   websocketShouldBeConnected: false,
   gameJoined: false,
 };
@@ -90,12 +76,6 @@ const gameFsm = setup({
       return {
         gameId: event.gameId,
         nickname: event.nickname,
-      };
-    }),
-    assignGameState: assign(({ event }) => {
-      assertEvent(event, 'GAME_STATE_MESSAGE');
-      return {
-        game: event.gameState,
       };
     }),
     setConnectToGameToTrue: assign(() => ({
@@ -161,19 +141,10 @@ const gameFsm = setup({
       entry: 'setConnectToGameToTrue',
       on: {
         WEBSOCKET_CONNECT_ERROR: 'disconnected',
-        GAME_STATE_MESSAGE: {
-          actions: 'assignGameState',
-          target: 'game',
-        },
+        GAME_STATE_MESSAGE: 'game',
       },
     },
-    game: {
-      on: {
-        GAME_STATE_MESSAGE: {
-          actions: 'assignGameState',
-        },
-      },
-    },
+    game: {},
   },
 });
 
