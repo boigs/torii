@@ -94,7 +94,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const {
     lastGameState,
     lastChatMessage,
-    lastGameError: lastError,
+    lastGameError,
     lastWebsocketError,
     sendWebsocketMessage,
   } = useWebsocket({
@@ -127,31 +127,30 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   useEffect(() => {
-    if (lastError) {
-      if (shouldShowErrorToast(lastError.type)) {
+    if (lastGameError) {
+      if (shouldShowErrorToast(lastGameError.type)) {
         toast({
           status: 'error',
           isClosable: true,
           duration: 5000,
-          description: gameErrorToString(lastError),
+          description: gameErrorToString(lastGameError),
           position: 'top',
         });
       }
 
-      if (shouldEndGameAfterError(lastError.type)) {
+      if (shouldEndGameAfterError(lastGameError.type)) {
         gameConnectionActor.send({
           type: 'RESET',
         });
       }
     }
-  }, [gameConnectionActor, lastError, toast]);
+  }, [gameConnectionActor, lastGameError, toast]);
 
   useEffect(() => {
     if (lastWebsocketError) {
-      if (!gameConnection.context.gameJoined) {
-        gameConnectionActor.send({ type: 'GAME_CONNECTION_ERROR' });
-        toast(UNKNOWN_WS_ERROR);
-      }
+      logger.error(lastWebsocketError);
+      gameConnectionActor.send({ type: 'GAME_CONNECTION_ERROR' });
+      toast(UNKNOWN_WS_ERROR);
     }
   }, [
     gameConnection.context.gameJoined,
