@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     if (state.context.gameJoined) {
       send({ type: 'RESET' });
-    } else if (state.matches('lobby')) {
+    } else if (state.matches('game')) {
       router.push('/game');
     }
   }, [state, send, router]);

@@ -21,6 +21,7 @@ import Chat from 'src/components/Shared/Chat';
 import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
 import LoadingCard from 'src/components/Shared/LoadingCard';
 import { WordScoresCard } from 'src/components/Shared/WordScores';
+import HeadcrabState from 'src/domain/headcrabState';
 import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';
 import {
@@ -35,9 +36,9 @@ import styles from './page.module.scss';
 
 const Game = () => {
   const router = useRouter();
-  const { gameActor, sendWebsocketMessage, isInsideOfGame } = useGameContext();
+  const { gameActor, game, sendWebsocketMessage, isInsideOfGame } =
+    useGameContext();
   const [state, send] = [gameActor.getSnapshot(), gameActor.send];
-  const player = state.context.game.player;
 
   useEffect(() => {
     if (state.matches('disconnected')) {
@@ -77,19 +78,19 @@ const Game = () => {
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          {state.matches('lobby') && (
+          {game.state === HeadcrabState.Lobby && (
             <>
-              {player.isHost ? (
+              {game.player.isHost ? (
                 <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
               ) : (
                 <Lobby className={styles.lobby} />
               )}
             </>
           )}
-          {state.matches('playersSubmittingWords') && (
+          {game.state === HeadcrabState.PlayersSubmittingWords && (
             <WordsInput
-              player={player}
-              round={state.context.game.lastRound()}
+              player={game.player}
+              round={game.lastRound()}
               onSubmit={sendPlayerWords}
               className={classNames(
                 styles.wordsInput,
@@ -97,52 +98,54 @@ const Game = () => {
               )}
             />
           )}
-          {state.matches('playersSubmittingVotingWord') && (
+          {game.state === HeadcrabState.PlayersSubmittingVotingWord && (
             // TODO remove this VStack container
             <VStack spacing='24px'>
               <VotingItems
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingCard
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 onWordClicked={sendPlayerVotingWord}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <VotingSummary
-                player={player}
-                players={state.context.game.players}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                players={game.players}
+                round={game.lastRound()}
                 onAcceptButtonClicked={sendAcceptPlayersVotingWords}
                 className={classNames(styles.width100)} // TODO remove this style
               />
               <WordScoresCard
-                player={player}
-                round={state.context.game.lastRound()}
+                player={game.player}
+                round={game.lastRound()}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
           )}
-          {state.matches('endOfRound') && (
+          {game.state === HeadcrabState.EndOfRound && (
             <VStack spacing='24px'>
               <EndOfRound
-                player={player}
-                isLastRound={state.context.game.isLastRound()}
+                player={game.player}
+                isLastRound={game.isLastRound()}
                 onContinueClicked={sendContinueToNextRound}
                 className={classNames(styles.width100)} // TODO remove this style
               />
             </VStack>
           )}
-          {state.matches('endOfGame') ? <Text>End of game</Text> : null}
+          {game.state === HeadcrabState.EndOfGame ? (
+            <Text>End of game</Text>
+          ) : null}
           <JoinedPlayersList
             gameId={state.context.gameId}
-            players={state.context.game.players}
-            hideJoinUrl={!state.matches('lobby')}
+            players={game.players}
+            hideJoinUrl={game.state !== HeadcrabState.Lobby}
             className={classNames(
               [styles.joinedPlayersList],
-              state.matches('playersSubmittingWords')
+              game.state === HeadcrabState.PlayersSubmittingWords
                 ? styles.joinedPlayersListPlaying
                 : null,
             )}
@@ -150,7 +153,7 @@ const Game = () => {
           <Chat
             className={classNames(
               [styles.chat],
-              state.matches('playersSubmittingWords')
+              game.state === HeadcrabState.PlayersSubmittingWords
                 ? styles.chatPlaying
                 : null,
             )}

@@ -1,6 +1,13 @@
 'use client';
 
-import { ReactNode, createContext, useContext, useEffect, useRef } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -8,7 +15,7 @@ import { ActorRefFrom, fromPromise } from 'xstate';
 
 import config from 'src/config';
 import ChatMessage from 'src/domain/chatMessage';
-import HeadcrabState from 'src/domain/headcrabState';
+import GameState from 'src/domain/gameState';
 import gameFsm from 'src/fsm';
 import {
   headcrabErrorToString,
@@ -21,6 +28,7 @@ import { WsMessageOut } from 'src/websocket/out';
 
 interface GameContextType {
   gameActor: ActorRefFrom<typeof gameFsm>;
+  game: GameState;
   sendWebsocketMessage: (message: WsMessageOut) => void;
   lastChatMessage: ChatMessage | null;
   isInsideOfGame: boolean;
@@ -28,6 +36,7 @@ interface GameContextType {
 
 const GameContext = createContext<GameContextType>({
   gameActor: {} as ActorRefFrom<typeof gameFsm>,
+  game: GameState.default,
   sendWebsocketMessage: () => {
     throw new Error('Not implemented');
   },
@@ -58,7 +67,8 @@ const createGame: () => Promise<string> = () =>
 
 export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
-  const gameActor = useActor(
+
+  const [state, send, actorRef] = useActor(
     gameFsm.provide({
       actors: {
         createGame: fromPromise<string>(async () => {
@@ -72,12 +82,14 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       },
     }),
   );
-  const [state, send, actorRef] = gameActor;
 
+  const [gameState, setGameState] = useState(GameState.default);
   // Using a ref here as the nicknameToPlayer is a Map and gets reconstructed every time we get a new GameState message
   // which would cause the useWebsocket hook to be reacreated, causing the same GameState message to trigger a new lastGameState message
   // causing an infinite loop
-  const nicknameToPlayerRef = useRef(state.context.game.nicknameToPlayer);
+  // A ref object keeps the initialized value unless it is manually updated
+  const nicknameToPlayerRef = useRef(gameState.nicknameToPlayer);
+  nicknameToPlayerRef.current = gameState.nicknameToPlayer;
 
   const {
     lastGameState,
@@ -101,35 +113,11 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     if (lastGameState) {
       send({
         type: 'GAME_STATE_MESSAGE',
-        gameState: lastGameState,
       });
 
-      if (lastGameState.state !== state.context.game.state) {
-        switch (lastGameState.state) {
-          case HeadcrabState.Lobby:
-            send({ type: 'CHANGED_TO_LOBBY' });
-            break;
-          case HeadcrabState.PlayersSubmittingWords:
-            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS' });
-            break;
-          case HeadcrabState.PlayersSubmittingVotingWord:
-            send({ type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD' });
-            break;
-          case HeadcrabState.EndOfRound:
-            send({ type: 'CHANGED_TO_END_OF_ROUND' });
-            break;
-          case HeadcrabState.EndOfGame:
-            send({ type: 'CHANGED_TO_END_OF_GAME' });
-            break;
-          case HeadcrabState.Undefined:
-            break;
-        }
-      }
-
-      // A ref object keeps the initialized value unless it is manually updated
-      nicknameToPlayerRef.current = lastGameState.nicknameToPlayer;
+      setGameState(lastGameState);
     }
-  }, [lastGameState, send, state.context.game.state]);
+  }, [lastGameState, send]);
 
   useEffect(() => {
     if (lastError) {
@@ -146,7 +134,6 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
       if (shouldEndGameAfterError(lastError.type)) {
         send({
           type: 'ERROR_MESSAGE',
-          headcrabError: lastError,
         });
       }
     }
@@ -165,14 +152,10 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     <GameContext.Provider
       value={{
         gameActor: actorRef,
+        game: gameState,
         sendWebsocketMessage,
         lastChatMessage,
-        isInsideOfGame:
-          actorRef.getSnapshot().matches('lobby') ||
-          actorRef.getSnapshot().matches('playersSubmittingWords') ||
-          actorRef.getSnapshot().matches('playersSubmittingVotingWord') ||
-          actorRef.getSnapshot().matches('endOfRound') ||
-          actorRef.getSnapshot().matches('endOfGame'),
+        isInsideOfGame: actorRef.getSnapshot().matches('game'),
       }}
     >
       {children}

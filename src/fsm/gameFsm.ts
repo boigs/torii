@@ -2,10 +2,6 @@
 
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
-import GameState from 'src/domain/gameState';
-import HeadcrabError from 'src/domain/headcrabError';
-import HeadcrabState from 'src/domain/headcrabState';
-
 interface CreateGameEvent {
   type: 'CREATE_GAME';
   nickname: string;
@@ -23,12 +19,10 @@ interface GameJoinedEvent {
 
 interface ErrorMessageEvent {
   type: 'ERROR_MESSAGE';
-  headcrabError: HeadcrabError;
 }
 
 interface GameStateMessageEvent {
   type: 'GAME_STATE_MESSAGE';
-  gameState: GameState;
 }
 
 interface WebsocketConnectErrorEvent {
@@ -39,30 +33,9 @@ interface ResetEvent {
   type: 'RESET';
 }
 
-interface ChangedToLobby {
-  type: 'CHANGED_TO_LOBBY';
-}
-
-interface ChangedToPlayersSubmittingWords {
-  type: 'CHANGED_TO_PLAYERS_SUBMITTING_WORDS';
-}
-
-interface ChangedToPlayersSubmittingVotingWord {
-  type: 'CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD';
-}
-
-interface ChangedToEndOfRound {
-  type: 'CHANGED_TO_END_OF_ROUND';
-}
-
-interface ChangedToGame {
-  type: 'CHANGED_TO_END_OF_GAME';
-}
-
 interface Context {
   gameId: string;
   nickname: string;
-  game: GameState;
   websocketShouldBeConnected: boolean;
   gameJoined: boolean;
 }
@@ -70,13 +43,6 @@ interface Context {
 const defaultContext: Context = {
   gameId: '',
   nickname: '',
-  game: new GameState({
-    player: { nickname: 'unset', isHost: false, isConnected: false },
-    nicknameToPlayer: new Map(),
-    rounds: [],
-    state: HeadcrabState.Undefined,
-    amountOfRounds: null,
-  }),
   websocketShouldBeConnected: false,
   gameJoined: false,
 };
@@ -91,12 +57,7 @@ const gameFsm = setup({
       | ResetEvent
       | WebsocketConnectErrorEvent
       | ErrorMessageEvent
-      | GameStateMessageEvent
-      | ChangedToLobby
-      | ChangedToPlayersSubmittingWords
-      | ChangedToPlayersSubmittingVotingWord
-      | ChangedToEndOfRound
-      | ChangedToGame;
+      | GameStateMessageEvent;
   },
   actions: {
     assignNickname: assign(({ event }) => {
@@ -117,12 +78,6 @@ const gameFsm = setup({
         nickname: event.nickname,
       };
     }),
-    assignGameState: assign(({ event }) => {
-      assertEvent(event, 'GAME_STATE_MESSAGE');
-      return {
-        game: event.gameState,
-      };
-    }),
     setConnectToGameToTrue: assign(() => ({
       websocketShouldBeConnected: true,
     })),
@@ -138,11 +93,9 @@ const gameFsm = setup({
     }),
   },
 }).createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIAYQAJNgDGFnYuYPlwqRk5UJirOyMk3STeXiTzU15TK1V9eMQkq2NeXRsAZhHlXjVdc1yQTwKfEg42JjpmAIqyKtZOHgF68UaolsRzc2UrIwX+voNB-VmxhAmko11TLNlN0Hsp9OYVmsNt4ijs9gApagASQAcmQACJ1UINSLNUAxcz6VTmIy8cGzJIOVTU+6mb4TWZGRazKxJIm6Wb9B5Q-IwohGCC4WCYWSETCSSAlPxHOhw84hERXXHRRBEp7DTkc+zKTlA0baRBA4xWCGqWamXROWw5dzrXmFfmC4WisDiyWI1Gy3byy4RJoqhBqowaiGzbW6sHffT6VKWZLOeZvSauW3Qh1GTAAJzA6Gk+CgHHQqDAJAgsjARgIADdRABrCtZnMSwvFrGKv03fF3XgPIyAwY6+4sgffGZ-HsrOxk5SW5SrVP2nwZ7O5ggFoslsCZzOiTNGYQAG1zADNd6hl02wC2wG2wkr-bdYiy0iMw9YybNZrpvmH9H21LwVhDACSRAqoPJeOmABWogEGu14kAA6mQABCzDUMUADSgR0MU1AomixSVJQNAULeOIPl2iQ9qk-amIO5jDvR3yWKk0aAaYZhtPcAIpnkkFLjBcH5ghZRsCiXDonQATUHQAAy1AoShACa5H3p2ih3I8TxqBS9zKDOPasj+KxMuYkxOPMYJmuBC4CcQRhCfg8EbiU5QSRi0myQACnJbDKZQzB0IhFBIgEqIcMFtDoswakdnimmJIYfyMdYiycUMqjfgagagR0-Q0kB9yDLZ-GbA5TkucWbniZJXl0L5-mBfsACqKEMGF4USVFFCYhc2LqQlBKWKoTJmqY9ETUkFhJEk3zAk8hi0vYPFmHxdr2fyB6iAARjtWg1R5UkyQ1fkBRQQUhWFEU9TFcXXENdzEotDhst03TWMkUa9EyX76FY3GsuC61pkuh7oFoW6wIhmaNPmiG7hAsCHXVJ2NedQXMG1HUBF1kWIdF93Ko+liAc8YaAoSIEDHSOXLMGAw6taEJkm4tr4KIEBwPIoPEL6D0BlY9KjTYgFqKovDDqBpUbeVjpCiK+BihKED88TVEGH8ziTLSgLUo4LHUqSsz-ZylK6JOugQXLF6riJG5q5RiVZSSYGAnpcb3KOVipM46QWDGBkTdbfKObBzn28WjsaQSnJTNaC2ftp5je+OE2WAHBl+yH6bbXtCTtgLJMpKNFJhgZtgW3OKc5V+fycW9jGccCyQ52DR6Q5m0Ow3mUAI5mSPR49iQgn20avWLs1RnlfSmJS5iSxbMZW3ZNvg53sDMGA+CCvDiPMAArjtqBChIGkUTHT2PB0Pa9BMnz-Yx3wN0YpOLIMKSsg4bMuEAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QAoC2BDAxgCwJYDswBKAYgFEAlCgeQoH0BZMgZWYEEBxMgbQAYBdRKAAOAe1i4ALrlH4hIAB6IArAHYANCACeiAEwAWXgDp9ANgCMqgJz7dvVadXLTAXxea0WPIVIUWZABU+QSQQMQlpWXklBDVNHQRzAA5lEwtrW3tHZzcPDBwCYhIONiY6AClqAEkAOTIAEWD5cKkZOVCY831VY1Mk6wBmU11lK10rAfjEJImjXmVbcytTXl5dAeVdXJBPAp8jCFxYTFlCTElIEgBhPzYAsjoSpibQlsj20BjuqyMrVQHzOt7MoARt9FMEBtjFZAf9hk5bDl3Dt8t5iAcjid8GcLhASJVao9SjwBM1xK0oh1EN9fv9AQNgaCFhD9PpUpZks4BqokoCrLxXMjdmiiEZMAAnMDoaT4KAcdCoMAkCCyMBGAgAN1EAGs1RKpRd5YqXiJye9oohzLxzKlTAzTCDzOYBvyHRDxkk5oDAas2bonOZtsLCqL9dKCHKFUqwOLxaJxUZhAAbaUAM3jqDFkulYCNYBNYTNbQtsRdaVU+gZ1l4lYGughDP0RgdPWWYz6G1UQdRIaMACtRAQI3mSAB1MgAIWY1CuAGlAnQrtQanUrgE6JQaBQC29i1TEtbbfbHc7XcoIZZUqzeMszGMnbpTIK8l5ewOh7KR08HswAncHkwrCcCSISmhEe6gAkHpzE+lgWGyyjOKYmidH0uhGNyCystkPJPt2r77FAUbFMSdC-v+jAsOwXA7kWlKfHoApGM6ui8iMDbWkYqiAroIyPkkZh4ds+CiBAcDyMGPhkuB9GKIgAC0+hJBCSSeiMMIjAsTh9EiL57OihzHKcYDnJA0kUh8ckIAYnrOPyTpPtyDgaNolqqKocwDPoEzJKovE8fh+mhtmMqRoq5nmvufnmBhah2gMvIck67pWKkSFwV0iFIYFIr9oO+DDlGEUQVZzpWnMiLKDMAwbFYMIpZ6ArpPBWVCXpuVEeFrx0ZZMS8BCCwxRyKR2jyfKBm4LhAA */
   context: defaultContext,
-
   initial: 'disconnected',
-
   on: {
     ERROR_MESSAGE: {
       target: '.disconnected',
@@ -150,14 +103,10 @@ const gameFsm = setup({
     RESET: {
       target: '.disconnected',
     },
-    GAME_STATE_MESSAGE: {
-      actions: 'assignGameState',
-    },
     GAME_JOINED: {
       actions: 'setGameJoinedToTrue',
     },
   },
-
   states: {
     disconnected: {
       entry: 'resetContext',
@@ -192,49 +141,10 @@ const gameFsm = setup({
       entry: 'setConnectToGameToTrue',
       on: {
         WEBSOCKET_CONNECT_ERROR: 'disconnected',
-        CHANGED_TO_LOBBY: 'lobby',
-        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: 'playersSubmittingWords',
-        CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD:
-          'playersSubmittingVotingWord',
-        CHANGED_TO_END_OF_ROUND: 'endOfRound',
-        CHANGED_TO_END_OF_GAME: 'endOfGame',
+        GAME_STATE_MESSAGE: 'game',
       },
     },
-    lobby: {
-      on: {
-        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: {
-          target: 'playersSubmittingWords',
-        },
-      },
-    },
-    playersSubmittingWords: {
-      on: {
-        CHANGED_TO_PLAYERS_SUBMITTING_VOTING_WORD: {
-          target: 'playersSubmittingVotingWord',
-        },
-        CHANGED_TO_END_OF_ROUND: {
-          target: 'endOfRound',
-        },
-      },
-    },
-    playersSubmittingVotingWord: {
-      on: {
-        CHANGED_TO_END_OF_ROUND: {
-          target: 'endOfRound',
-        },
-      },
-    },
-    endOfRound: {
-      on: {
-        CHANGED_TO_END_OF_GAME: {
-          target: 'endOfGame',
-        },
-        CHANGED_TO_PLAYERS_SUBMITTING_WORDS: {
-          target: 'playersSubmittingWords',
-        },
-      },
-    },
-    endOfGame: {},
+    game: {},
   },
 });
 
