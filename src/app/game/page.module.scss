@@ -27,47 +27,10 @@
     grid-template-rows: auto repeat(8, 70px);
     gap: 24px;
 
-    .lobby {
-      grid-column-start: 1;
-      grid-column-end: 2;
-      grid-row-start: 1;
-      grid-row-end: 2;
-    }
-
-    .joinedPlayersList {
-      grid-column-start: 1;
-      grid-column-end: 2;
-      grid-row-start: 2;
-      grid-row-end: 6;
-
-      &Playing {
-        grid-row-start: 6;
-        grid-row-end: 10;
-      }
+    .joinedPlayers {
     }
 
     .chat {
-      grid-column-start: 1;
-      grid-column-end: 2;
-      grid-row-start: 6;
-      grid-row-end: 10;
-
-      &Playing {
-        grid-row-start: 2;
-        grid-row-end: 6;
-      }
-    }
-
-    .wordsInput {
-      grid-column-start: 1;
-      grid-column-end: 2;
-      grid-row-start: 1;
-      grid-row-end: 7;
-
-      &Playing {
-        grid-row-start: 1;
-        grid-row-end: 2;
-      }
     }
   }
 }

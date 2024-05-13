@@ -49,10 +49,6 @@ const Game = () => {
     }
   }, [gameConnection, router, gameConnectionActor]);
 
-  const sendGameStart = (values: HostLobbyValues) => {
-    sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
-  };
-
   const sendPlayerWords = async (words: string[]) => {
     sendWebsocketMessage(playerWords({ words }));
     await artificialSleep(350);
