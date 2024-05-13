@@ -25,16 +25,12 @@
     "types": ["vitest/globals"]
   },
   "include": [
-    "next-env.d.ts",
     "**/*.js",
     "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
     "**/*.mts",
-    ".next/types/**/*.ts",
-    "vitest.config.ts",
-    "postcss.config.mjs",
-    "next.config.mjs"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
