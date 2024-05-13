@@ -48,10 +48,6 @@ const Game = () => {
     }
   }, [gameConnection, router, gameConnectionActor]);
 
-  const sendGameStart = (values: HostLobbyValues) => {
-    sendWebsocketMessage(startGame({ amountOfRounds: values.amountOfRounds }));
-  };
-
   const sendPlayerWords = async (words: string[]) => {
     sendWebsocketMessage(playerWords({ words }));
     await artificialSleep(350);
@@ -77,84 +73,14 @@ const Game = () => {
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          {game.state === GameState.Lobby && (
-            <>
-              {game.player.isHost ? (
-                <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
-              ) : (
-                <NonHostLobby className={styles.lobby} />
-              )}
-            </>
-          )}
-          {game.state === GameState.PlayersSubmittingWords && (
-            <WordsInput
-              player={game.player}
-              round={game.lastRound()}
-              onSubmit={sendPlayerWords}
-              className={classNames(
-                styles.wordsInput,
-                styles.wordsInputPlaying,
-              )}
-            />
-          )}
-          {game.state === GameState.PlayersSubmittingVotingWord && (
-            // TODO remove this VStack container
-            <VStack spacing='24px'>
-              <VotingItems
-                player={game.player}
-                round={game.lastRound()}
-                className={classNames(styles.width100)} // TODO remove this style
-              />
-              <VotingCard
-                player={game.player}
-                round={game.lastRound()}
-                onWordClicked={sendPlayerVotingWord}
-                className={classNames(styles.width100)} // TODO remove this style
-              />
-              <VotingSummary
-                player={game.player}
-                players={game.players}
-                round={game.lastRound()}
-                onAcceptButtonClicked={sendAcceptPlayersVotingWords}
-                className={classNames(styles.width100)} // TODO remove this style
-              />
-              <WordScoresCard
-                player={game.player}
-                round={game.lastRound()}
-                className={classNames(styles.width100)} // TODO remove this style
-              />
-            </VStack>
-          )}
-          {game.state === GameState.EndOfRound && (
-            <VStack spacing='24px'>
-              <EndOfRound
-                player={game.player}
-                isLastRound={game.isLastRound()}
-                onContinueClicked={sendContinueToNextRound}
-                className={classNames(styles.width100)} // TODO remove this style
-              />
-            </VStack>
-          )}
-          {game.state === GameState.EndOfGame ? <Text>End of game</Text> : null}
+          <Card header='Placeholder' className={styles.game}></Card>
           <JoinedPlayersList
             gameId={game.id}
             players={game.players}
             hideJoinUrl={game.state !== GameState.Lobby}
-            className={classNames(
-              [styles.joinedPlayersList],
-              game.state === GameState.PlayersSubmittingWords
-                ? styles.joinedPlayersListPlaying
-                : null,
-            )}
+            className={styles.joinedPlayers}
           />
-          <Chat
-            className={classNames(
-              [styles.chat],
-              game.state === GameState.PlayersSubmittingWords
-                ? styles.chatPlaying
-                : null,
-            )}
-          />
+          <Chat className={styles.chat} />
         </AnimatedParent>
       )}
     </Center>
