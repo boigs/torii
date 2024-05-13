@@ -8,7 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import Spinner from 'src/components/Shared/Spinner';
+import Spinner from 'src/components/shared/Spinner';
 
 import styles from './Lobby.module.scss';
 

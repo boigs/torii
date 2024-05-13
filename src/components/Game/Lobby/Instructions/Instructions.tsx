@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text } from '@chakra-ui/react';
 
-import Card from 'src/components/Shared/Card';
+import Card from 'src/components/shared/Card';
 
 import styles from './Instructions.module.scss';
 

@@ -1,8 +1,8 @@
 import { Button, HStack, Text, VStack } from '@chakra-ui/react';
 import debounce from 'debounce';
 
-import Card from 'src/components/Shared/Card';
-import Spinner from 'src/components/Shared/Spinner';
+import Card from 'src/components/shared/Card';
+import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 import Word from 'src/domain/word';

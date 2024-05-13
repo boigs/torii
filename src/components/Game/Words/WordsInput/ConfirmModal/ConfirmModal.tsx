@@ -5,7 +5,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-} from 'src/components/Shared/Modal';
+} from 'src/components/shared/Modal';
 
 export interface ConfirmModalProps {
   isOpen?: boolean;

@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import { Button, Flex, List, ListItem, Text } from '@chakra-ui/react';
 
-import Card from 'src/components/Shared/Card';
-import PlayerComponent from 'src/components/Shared/JoinedPlayersList/PlayerList/Player';
-import { Modal, ModalBody, ModalHeader } from 'src/components/Shared/Modal';
-import { WordScoresModal } from 'src/components/Shared/WordScores';
+import Card from 'src/components/shared/Card';
+import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
+import { Modal, ModalBody, ModalHeader } from 'src/components/shared/Modal';
+import { WordScoresModal } from 'src/components/shared/WordScores';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 
