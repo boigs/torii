@@ -1,0 +1,16 @@
+.lobbyContainer {
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: 'instructions lobby';
+  gap: 24px;
+
+  .instructions {
+    grid-area: instructions;
+  }
+
+  .lobby {
+    grid-area: lobby;
+  }
+}

@@ -7,10 +7,10 @@ import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 
 import EndOfRound from 'src/components/Game/EndOfRound';
+import Lobby from 'src/components/Game/Lobby';
 import HostLobby, {
   HostLobbyValues,
 } from 'src/components/Game/Lobby/HostLobby';
-import NonHostLobby from 'src/components/Game/Lobby/NonHostLobby';
 import VotingCard from 'src/components/Game/Voting/VotingCard';
 import VotingItems from 'src/components/Game/Voting/VotingItems';
 import VotingSummary from 'src/components/Game/Voting/VotingSummary';
@@ -74,7 +74,10 @@ const Game = () => {
         <LoadingCard />
       ) : (
         <AnimatedParent className={styles.gameContainerGrid}>
-          <Card header='Placeholder' className={styles.game}></Card>
+          {game.state === GameState.Lobby ? (
+            <Lobby className={styles.game} />
+          ) : null}
+
           <JoinedPlayersList
             gameId={game.id}
             players={game.players}
