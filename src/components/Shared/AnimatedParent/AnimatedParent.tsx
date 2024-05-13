@@ -6,7 +6,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import classNames from 'classnames';
 
 interface AnimatedParentProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
