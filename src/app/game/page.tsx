@@ -9,27 +9,14 @@ import { useRouter } from 'next/navigation';
 import { useGameContext } from 'src/components/GameContextProvider';
 import EndOfRound from 'src/components/game/EndOfRound';
 import Lobby from 'src/components/game/Lobby';
-import NonHostLobby from 'src/components/game/Lobby/NonHostLobby';
-import VotingCard from 'src/components/game/Voting/VotingCard';
-import VotingItems from 'src/components/game/Voting/VotingItems';
-import VotingSummary from 'src/components/game/Voting/VotingSummary';
+import Voting from 'src/components/game/Voting';
 import Words from 'src/components/game/Words';
-import WordsInput from 'src/components/game/Words/WordsInput';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 import Chat from 'src/components/shared/Chat';
 import JoinedPlayersList from 'src/components/shared/JoinedPlayersList';
 import LoadingCard from 'src/components/shared/LoadingCard';
-import { WordScoresCard } from 'src/components/shared/WordScores';
 import GameState from 'src/domain/gameState';
-import Word from 'src/domain/word';
-import { artificialSleep } from 'src/helpers/sleep';
-import {
-  acceptPlayersVotingWords,
-  continueToNextRound,
-  playerVotingWord,
-  playerWords,
-  startGame,
-} from 'src/websocket/out';
+import { continueToNextRound } from 'src/websocket/out';
 
 import styles from './page.module.scss';
 
@@ -47,16 +34,6 @@ const Game = () => {
     }
   }, [gameConnection, router, gameConnectionActor]);
 
-  const sendPlayerVotingWord = (word: Word | null) => {
-    sendWebsocketMessage(
-      playerVotingWord({ word: word === null ? null : word.value }),
-    );
-  };
-
-  const sendAcceptPlayersVotingWords = () => {
-    sendWebsocketMessage(acceptPlayersVotingWords());
-  };
-
   const sendContinueToNextRound = () => {
     sendWebsocketMessage(continueToNextRound());
   };
@@ -72,6 +49,9 @@ const Game = () => {
           ) : null}
           {game.state === GameState.PlayersSubmittingWords ? (
             <Words className={styles.game} />
+          ) : null}
+          {game.state === GameState.PlayersSubmittingVotingWord ? (
+            <Voting className={styles.game} />
           ) : null}
 
           <JoinedPlayersList
