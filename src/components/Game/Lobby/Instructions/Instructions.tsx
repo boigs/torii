@@ -6,9 +6,13 @@ import Card from 'src/components/Shared/Card';
 
 import styles from './Instructions.module.scss';
 
-const Instructions = () => {
+interface InstructionsProps {
+  className?: string;
+}
+
+const Instructions = ({ className }: InstructionsProps) => {
   return (
-    <Card header='How to Play'>
+    <Card header='How to Play' className={className}>
       <Text className={styles.instructions}>
         In each round, you will be presented with a random topic, you must write
         up to 8 words related to that topic. But beware! You should try to match
