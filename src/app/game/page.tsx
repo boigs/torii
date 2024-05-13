@@ -10,7 +10,7 @@ import EndOfRound from 'src/components/Game/EndOfRound';
 import HostLobby, {
   HostLobbyValues,
 } from 'src/components/Game/Lobby/HostLobby';
-import Lobby from 'src/components/Game/Lobby/NonHostLobby';
+import NonHostLobby from 'src/components/Game/Lobby/NonHostLobby';
 import VotingCard from 'src/components/Game/Voting/VotingCard';
 import VotingItems from 'src/components/Game/Voting/VotingItems';
 import VotingSummary from 'src/components/Game/Voting/VotingSummary';
@@ -82,7 +82,7 @@ const Game = () => {
               {game.player.isHost ? (
                 <HostLobby onSubmit={sendGameStart} className={styles.lobby} />
               ) : (
-                <Lobby className={styles.lobby} />
+                <NonHostLobby className={styles.lobby} />
               )}
             </>
           )}
