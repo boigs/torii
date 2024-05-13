@@ -21,8 +21,8 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 import Image from 'next/image';
 
-import CustomCard from 'src/components/Shared/Card';
-import Spinner from 'src/components/Shared/Spinner';
+import CustomCard from 'src/components/shared/Card';
+import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 import logger from 'src/logger';

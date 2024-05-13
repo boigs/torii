@@ -6,7 +6,7 @@ import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { useGameContext } from 'src/components/GameContextProvider';
-import JoinGameForm from 'src/components/JoinGame/JoinForm';
+import JoinGameForm from 'src/components/joinGame/JoinForm';
 
 interface JoinQuery {
   params: {

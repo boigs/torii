@@ -10,8 +10,8 @@ import {
 } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import Card from 'src/components/Shared/Card';
-import { Modal, ModalBody, ModalHeader } from 'src/components/Shared/Modal';
+import Card from 'src/components/shared/Card';
+import { Modal, ModalBody, ModalHeader } from 'src/components/shared/Modal';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 import Word from 'src/domain/word';

@@ -9,9 +9,9 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 
-import Card from 'src/components/Shared/Card';
-import PlayerComponent from 'src/components/Shared/JoinedPlayersList/PlayerList/Player';
-import Spinner from 'src/components/Shared/Spinner';
+import Card from 'src/components/shared/Card';
+import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
+import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 

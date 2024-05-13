@@ -9,8 +9,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import Card from 'src/components/Shared/Card';
-import Avatar from 'src/components/Shared/JoinedPlayersList/PlayerList/Player/Avatar';
+import Card from 'src/components/shared/Card';
+import Avatar from 'src/components/shared/JoinedPlayersList/PlayerList/Player/Avatar';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 

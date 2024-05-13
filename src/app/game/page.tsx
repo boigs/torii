@@ -6,21 +6,21 @@ import { Center, Text, VStack } from '@chakra-ui/react';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 
-import EndOfRound from 'src/components/Game/EndOfRound';
+import { useGameContext } from 'src/components/GameContextProvider';
+import EndOfRound from 'src/components/game/EndOfRound';
 import HostLobby, {
   HostLobbyValues,
-} from 'src/components/Game/Lobby/HostLobby';
-import NonHostLobby from 'src/components/Game/Lobby/NonHostLobby';
-import VotingCard from 'src/components/Game/Voting/VotingCard';
-import VotingItems from 'src/components/Game/Voting/VotingItems';
-import VotingSummary from 'src/components/Game/Voting/VotingSummary';
-import WordsInput from 'src/components/Game/Words/WordsInput';
-import { useGameContext } from 'src/components/GameContextProvider';
-import AnimatedParent from 'src/components/Shared/AnimatedParent';
-import Chat from 'src/components/Shared/Chat';
-import JoinedPlayersList from 'src/components/Shared/JoinedPlayersList';
-import LoadingCard from 'src/components/Shared/LoadingCard';
-import { WordScoresCard } from 'src/components/Shared/WordScores';
+} from 'src/components/game/Lobby/HostLobby';
+import NonHostLobby from 'src/components/game/Lobby/NonHostLobby';
+import VotingCard from 'src/components/game/Voting/VotingCard';
+import VotingItems from 'src/components/game/Voting/VotingItems';
+import VotingSummary from 'src/components/game/Voting/VotingSummary';
+import WordsInput from 'src/components/game/Words/WordsInput';
+import AnimatedParent from 'src/components/shared/AnimatedParent';
+import Chat from 'src/components/shared/Chat';
+import JoinedPlayersList from 'src/components/shared/JoinedPlayersList';
+import LoadingCard from 'src/components/shared/LoadingCard';
+import { WordScoresCard } from 'src/components/shared/WordScores';
 import GameState from 'src/domain/gameState';
 import Word from 'src/domain/word';
 import { artificialSleep } from 'src/helpers/sleep';

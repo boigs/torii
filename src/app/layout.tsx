@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { GameContextProvider } from 'src/components/GameContextProvider';
-import AnimatedParent from 'src/components/Shared/AnimatedParent';
+import AnimatedParent from 'src/components/shared/AnimatedParent';
 
 import { Providers } from './providers';
 
