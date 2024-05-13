@@ -13,6 +13,7 @@ import NonHostLobby from 'src/components/game/Lobby/NonHostLobby';
 import VotingCard from 'src/components/game/Voting/VotingCard';
 import VotingItems from 'src/components/game/Voting/VotingItems';
 import VotingSummary from 'src/components/game/Voting/VotingSummary';
+import Words from 'src/components/game/Words';
 import WordsInput from 'src/components/game/Words/WordsInput';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 import Chat from 'src/components/shared/Chat';
@@ -46,11 +47,6 @@ const Game = () => {
     }
   }, [gameConnection, router, gameConnectionActor]);
 
-  const sendPlayerWords = async (words: string[]) => {
-    sendWebsocketMessage(playerWords({ words }));
-    await artificialSleep(350);
-  };
-
   const sendPlayerVotingWord = (word: Word | null) => {
     sendWebsocketMessage(
       playerVotingWord({ word: word === null ? null : word.value }),
@@ -73,6 +69,9 @@ const Game = () => {
         <AnimatedParent className={styles.gameContainerGrid}>
           {game.state === GameState.Lobby ? (
             <Lobby className={styles.game} />
+          ) : null}
+          {game.state === GameState.PlayersSubmittingWords ? (
+            <Words className={styles.game} />
           ) : null}
 
           <JoinedPlayersList

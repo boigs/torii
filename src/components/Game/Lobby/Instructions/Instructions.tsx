@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Text } from '@chakra-ui/react';
 
 import Card from 'src/components/shared/Card';
