@@ -16,7 +16,7 @@ interface LobbyProps {
   className?: string;
 }
 
-const Lobby = ({ className }: LobbyProps) => (
+const NonHostLobby = ({ className }: LobbyProps) => (
   <Card size='sm' className={className}>
     <CardHeader>
       <Heading as='h3' textAlign='center' size='md'>
@@ -35,4 +35,4 @@ const Lobby = ({ className }: LobbyProps) => (
   </Card>
 );
 
-export default Lobby;
+export default NonHostLobby;
