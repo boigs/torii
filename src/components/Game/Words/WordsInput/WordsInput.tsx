@@ -88,6 +88,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
 
   return haveSentWordsSuccessfuly ? (
     <CustomCard
+      className={className}
       header={
         <Center gap='4px'>
           <div>Done</div>

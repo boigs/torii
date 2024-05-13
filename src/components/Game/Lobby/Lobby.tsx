@@ -1,5 +1,3 @@
-import React from 'react';
-
 import classNames from 'classnames';
 
 import { useGameContext } from 'src/components/GameContextProvider';
