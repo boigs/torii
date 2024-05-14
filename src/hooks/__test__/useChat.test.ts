@@ -2,8 +2,10 @@ import { renderHook } from '@testing-library/react';
 import { Mocked } from 'vitest';
 import { ActorRefFrom } from 'xstate';
 
-import { useGameContext } from 'src/components/GameContextProvider';
-import { GameContextType } from 'src/components/GameContextProvider/GameContextProvider';
+import {
+  GameContextType,
+  useGameContext,
+} from 'src/components/context/GameContextProvider';
 import Game from 'src/domain/game';
 import Player from 'src/domain/player';
 import gameConnectionFsm from 'src/fsm';
@@ -11,7 +13,7 @@ import { chatMessage } from 'src/websocket/out';
 
 import { useChat } from '../useChat';
 
-vi.mock('src/components/GameContextProvider');
+vi.mock('src/components/context/GameContextProvider');
 
 describe('useChat...', () => {
   const mockedUseGameContext = vi.mocked(useGameContext);

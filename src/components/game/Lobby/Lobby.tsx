@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { useGameContext } from 'src/components/GameContextProvider';
+import { useGameContext } from 'src/components/context/GameContextProvider';
 import { startGame } from 'src/websocket/out';
 
 import HostLobby, { HostLobbyValues } from './HostLobby';

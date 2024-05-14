@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-import { useGameContext } from 'src/components/GameContextProvider';
+import { useGameContext } from 'src/components/context/GameContextProvider';
 import CreateGameForm from 'src/components/createGame/CreateGameForm';
 
 const Home = () => {
