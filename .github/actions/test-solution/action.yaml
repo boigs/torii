@@ -12,7 +12,6 @@ runs:
     # https://nextjs.org/docs/pages/building-your-application/deploying/ci-build-caching#github-actions
     - name: Next.js Cache
       uses: actions/cache@v4
-      if: false
       with:
         path: |
           ~/.npm
