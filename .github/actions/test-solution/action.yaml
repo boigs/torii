@@ -20,13 +20,17 @@ runs:
       shell: bash
       run: npm ci
 
-    - name: Check Styles
+    - name: Run build
       shell: bash
-      run: npm run lint
+      run: npm run build
 
     - name: Run Tests
       shell: bash
       run: npm run test
+
+    - name: Check Styles
+      shell: bash
+      run: npm run lint
 
     - name: Set Node version variable
       id: node-version
