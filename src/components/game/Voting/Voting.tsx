@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import classNames from 'classnames';
 
-import { useGameContext } from 'src/components/GameContextProvider';
+import { useGameContext } from 'src/components/context/GameContextProvider';
 import { WordScoresCard } from 'src/components/shared/WordScores';
 import Word from 'src/domain/word';
 import { acceptPlayersVotingWords, playerVotingWord } from 'src/websocket/out';

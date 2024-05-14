@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react';
 import { Mocked } from 'vitest';
 import { ActorRefFrom } from 'xstate';
 
-import { useGameContext } from 'src/components/GameContextProvider';
-import { GameContextType } from 'src/components/GameContextProvider/GameContextProvider';
+import { useGameContext } from 'src/components/context/GameContextProvider';
+import { GameContextType } from 'src/components/context/GameContextProvider/GameContextProvider';
 import Game from 'src/domain/game';
 import Player from 'src/domain/player';
 import gameConnectionFsm from 'src/fsm';

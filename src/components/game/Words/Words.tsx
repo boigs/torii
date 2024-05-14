@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { useGameContext } from 'src/components/GameContextProvider';
+import { useGameContext } from 'src/components/context/GameContextProvider';
 import { artificialSleep } from 'src/helpers/sleep';
 import { playerWords } from 'src/websocket/out';
 
