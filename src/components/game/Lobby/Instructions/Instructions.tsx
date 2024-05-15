@@ -18,7 +18,7 @@ const Instructions = ({ className }: InstructionsProps) => {
         </ListItem>
         <ListItem>
           Try to write words you think will{' '}
-          <b>match other participant&quot;s words</b>.
+          <b>match other participants&apos; words</b>.
         </ListItem>
         <ListItem>
           After all rounds are over, whoever has{' '}
