@@ -13,16 +13,16 @@ const Instructions = ({ className }: InstructionsProps) => {
     <Card header='How to Play' className={className}>
       <UnorderedList className={styles.instructions} stylePosition='inside'>
         <ListItem>
-          Each round will present a random topic, and you must{' '}
-          <b>write up to 8 words related to that topic</b>.
+          Each round will present a random topic, you must{' '}
+          <strong>write up to 8 words related to that topic</strong>.
         </ListItem>
         <ListItem>
           Try to write words you think will{' '}
-          <b>match other participants&apos; words</b>.
+          <strong>match other participants&apos; words</strong>.
         </ListItem>
         <ListItem>
           After all rounds are over, whoever has{' '}
-          <b>matched more words with others wins</b> the game.
+          <strong>matched more words with others wins</strong> the game.
         </ListItem>
       </UnorderedList>
     </Card>
