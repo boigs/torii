@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import Lobby from 'src/components/game/Lobby';
+import RoundEnded from 'src/components/game/RoundEnded';
 import Voting from 'src/components/game/Voting';
 import Words from 'src/components/game/Words';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
@@ -45,6 +46,9 @@ const Game = () => {
           ) : null}
           {game.state === GameState.PlayersSubmittingVotingWord ? (
             <Voting className={styles.game} />
+          ) : null}
+          {game.state === GameState.EndOfRound ? (
+            <RoundEnded className={styles.game} />
           ) : null}
 
           <JoinedPlayersList
