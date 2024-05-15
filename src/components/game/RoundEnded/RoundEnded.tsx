@@ -2,11 +2,10 @@ import { Flex } from '@chakra-ui/react';
 import classNames from 'classnames';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
+import { RoundScoreCard } from 'src/components/game/Voting/RoundScore';
+import EndOfRound from 'src/components/shared/EndOfRound';
 import { WordScoresCard } from 'src/components/shared/WordScores';
 import { continueToNextRound } from 'src/websocket/out';
-
-import EndOfRound from '../../shared/EndOfRound';
-import { RoundScoreCard } from '../Voting/RoundScore';
 
 import styles from './RoundEnded.module.scss';
 
