@@ -5,8 +5,8 @@ import { useGameContext } from 'src/components/context/GameContextProvider';
 import { WordScoresCard } from 'src/components/shared/WordScores';
 import { continueToNextRound } from 'src/websocket/out';
 
+import EndOfRound from '../../shared/EndOfRound';
 import { RoundScoreCard } from '../Voting/RoundScore';
-import EndOfRound from './EndOfRound';
 
 import styles from './RoundEnded.module.scss';
 
