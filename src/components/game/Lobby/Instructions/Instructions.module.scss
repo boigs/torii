@@ -4,11 +4,7 @@
   text-align: center;
   margin-left: 0;
 
-  li {
+  li:not(:last-child) {
     margin-bottom: 12px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
   }
 }
