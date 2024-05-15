@@ -3,4 +3,12 @@
   min-width: 100%;
   text-align: center;
   margin-left: 0;
+
+  li {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
 }

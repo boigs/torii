@@ -1,4 +1,4 @@
-import { ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { ListItem, UnorderedList } from '@chakra-ui/react';
 
 import Card from 'src/components/shared/Card';
 
