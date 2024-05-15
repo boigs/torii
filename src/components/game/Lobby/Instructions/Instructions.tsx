@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { ListItem, UnorderedList } from '@chakra-ui/react';
 
 import Card from 'src/components/shared/Card';
 
@@ -11,13 +11,20 @@ interface InstructionsProps {
 const Instructions = ({ className }: InstructionsProps) => {
   return (
     <Card header='How to Play' className={className}>
-      <Text className={styles.instructions}>
-        In each round, you will be presented with a random topic, you must write
-        up to 8 words related to that topic. But beware! You should try to match
-        the answers of as many participants as possible. After all rounds are
-        over, whoever has matched the most answers with others will win the
-        game.
-      </Text>
+      <UnorderedList className={styles.instructions} stylePosition='inside'>
+        <ListItem>
+          Each round will present a random topic, you must{' '}
+          <strong>write up to 8 words related to that topic</strong>.
+        </ListItem>
+        <ListItem>
+          Try to write words you think will{' '}
+          <strong>match other participants&apos; words</strong>.
+        </ListItem>
+        <ListItem>
+          After all rounds are over, whoever has{' '}
+          <strong>matched more words with others wins</strong> the game.
+        </ListItem>
+      </UnorderedList>
     </Card>
   );
 };

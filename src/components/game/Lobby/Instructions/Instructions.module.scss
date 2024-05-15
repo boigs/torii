@@ -1,4 +1,10 @@
 .instructions {
   width: 0;
   min-width: 100%;
+  text-align: center;
+  margin-left: 0;
+
+  li:not(:last-child) {
+    margin-bottom: 12px;
+  }
 }
