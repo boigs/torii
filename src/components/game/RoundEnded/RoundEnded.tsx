@@ -1,9 +1,11 @@
+import { Flex } from '@chakra-ui/react';
 import classNames from 'classnames';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import { WordScoresCard } from 'src/components/shared/WordScores';
 import { continueToNextRound } from 'src/websocket/out';
 
+import { RoundScoreCard } from '../Voting/RoundScore';
 import EndOfRound from './EndOfRound';
 
 import styles from './RoundEnded.module.scss';
@@ -26,7 +28,10 @@ const RoundEnded = ({ className }: RoundEndedProps) => {
         isLastRound={game.isLastRound()}
         onContinueClicked={sendContinueToNextRound}
       />
-      <WordScoresCard player={game.player} round={game.lastRound()} />
+      <Flex className={styles.scoresContainer}>
+        <RoundScoreCard players={game.players} round={game.lastRound()} />
+        <WordScoresCard player={game.player} round={game.lastRound()} />
+      </Flex>
     </div>
   );
 };

@@ -3,4 +3,9 @@
   gap: 24px;
   grid-template-columns: 1fr 1fr;
   align-items: flex-start;
+
+  .scoresContainer {
+    flex-direction: column;
+    gap: 24px;
+  }
 }
