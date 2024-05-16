@@ -29,10 +29,9 @@ const roundOverLabels: Labels = {
 
 const gameOverLabels: Labels = {
   title: "Game's Over",
-  hostInstructions: "Press the button to view the game's summary.",
-  nonHostInstructions:
-    "Please wait until the hosts advances to game's summary.",
-  continueButtonText: 'Go to game summary',
+  hostInstructions: 'Press the button to continue to the scoreboard.',
+  nonHostInstructions: 'Please wait until the hosts advances to scoreboard.',
+  continueButtonText: 'Go to scoreboard',
 };
 
 const EndOfRound = ({
