@@ -6,6 +6,7 @@ import { Center } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
+import GameEnded from 'src/components/game/GameEnded';
 import Lobby from 'src/components/game/Lobby';
 import RoundEnded from 'src/components/game/RoundEnded';
 import Voting from 'src/components/game/Voting';
@@ -50,7 +51,9 @@ const Game = () => {
           {game.state === GameState.EndOfRound ? (
             <RoundEnded className={styles.game} />
           ) : null}
-
+          {game.state === GameState.EndOfGame ? (
+            <GameEnded className={styles.game} />
+          ) : null}
           <JoinedPlayersList
             gameId={game.id}
             players={game.players}
