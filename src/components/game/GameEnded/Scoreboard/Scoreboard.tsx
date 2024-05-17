@@ -1,4 +1,4 @@
-import { Button, Flex, List, ListItem } from '@chakra-ui/react';
+import { Center, Flex, List, ListItem, Text } from '@chakra-ui/react';
 
 import Card from 'src/components/shared/Card';
 import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
@@ -27,22 +27,37 @@ const Scoreboard = ({ players, rounds, className }: GameEndedProps) => {
     );
   };
 
+  const sortedPlayers = players.sort((a, b) => {
+    const scoreDiff = calculateScore(b) - calculateScore(a);
+    return scoreDiff === 0
+      ? players.indexOf(a) - players.indexOf(b)
+      : scoreDiff;
+  });
+
   return (
     <Card header='Scoreboard' className={className}>
-      <List className={styles.leaderBoardList}>
-        {players
-          .sort((a, b) => calculateScore(a) - calculateScore(b))
-          .map((player) => (
-            <ListItem key={player.nickname} className={styles.scoreRow}>
-              <Flex className={styles.scoreContainer}>
+      <Text className={styles.description}>
+        {sortedPlayers[0].nickname} wins!
+      </Text>
+      <List className={styles.scoreboardList}>
+        {sortedPlayers.map((player, index) => (
+          <ListItem key={player.nickname} className={styles.scoreRow}>
+            <Flex className={styles.scoreContainer}>
+              <Flex className={styles.scoreboardRank}>
+                <Center className={styles.rank}>
+                  <Text>{index + 1}.</Text>
+                </Center>
                 <PlayerComponent
                   player={player}
                   crownClassName={styles.hiddenCrown}
                 />
-                <Button colorScheme='blue'>{calculateScore(player)}</Button>
               </Flex>
-            </ListItem>
-          ))}
+              <Center className={styles.score}>
+                <Text> {calculateScore(player)}</Text>
+              </Center>
+            </Flex>
+          </ListItem>
+        ))}
       </List>
     </Card>
   );
