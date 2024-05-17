@@ -31,6 +31,7 @@
 
         .rank {
           @extend .numberBox;
+          background-color: var(--chakra-colors-gray-100);
         }
 
         .hiddenCrown {
