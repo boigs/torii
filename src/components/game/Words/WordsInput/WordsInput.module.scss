@@ -1,42 +1,67 @@
-.pleaseWaitContainer {
-  .pleaseWaitText {
-    text-align: center;
-    // https://stackoverflow.com/a/36092670
-    min-width: 100%;
-    width: 0;
-  }
-}
-
 .wordsInputCard {
-  .instructions {
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-bottom: 12px;
+  position: relative;
 
-    .chosenWord {
-      font-weight: 500;
+  .cardContent {
+    position: relative;
+    z-index: 1;
+
+    .instructions {
+      margin-left: 4px;
+      margin-right: 4px;
+      margin-bottom: 12px;
+
+      .chosenWord {
+        font-weight: 500;
+      }
+    }
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .wordInputLeftAddon {
+        width: 45px;
+        justify-content: center;
+      }
+
+      .wordInput {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .sendButton {
+        margin-top: 4px;
+      }
+    }
+
+    &Done {
+      pointer-events: none;
     }
   }
 
-  .body {
+  .cardOverlay {
+    border-radius: var(--card-radius);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(235, 235, 235, 0.2); /* Semi-transparent background */
+    backdrop-filter: blur(4px); /* Blur effect */
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 0;
-    padding-bottom: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding-left: 24px;
+    padding-right: 24px;
 
-    .wordInputLeftAddon {
-      width: 45px;
-      justify-content: center;
-    }
-
-    .wordInput {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    .sendButton {
-      margin-top: 4px;
+    .pleaseWaitContainer {
+      .pleaseWaitText {
+        text-align: center;
+      }
     }
   }
 }
