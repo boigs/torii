@@ -2,14 +2,8 @@ import { useState } from 'react';
 
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
   Center,
-  Divider,
   FormControl,
-  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -17,11 +11,12 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import classNames from 'classnames';
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 import Image from 'next/image';
 
-import CustomCard from 'src/components/shared/Card';
+import Card from 'src/components/shared/Card';
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
@@ -57,7 +52,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
     {},
   );
-  const haveSentWordsSuccessfuly =
+  const haveSentWordsSuccessfully =
     isDoneSubmitting && round.hasPlayerSentWords(player);
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -86,8 +81,8 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     setDoneSubmitting(true);
   };
 
-  return haveSentWordsSuccessfuly ? (
-    <CustomCard
+  return haveSentWordsSuccessfully ? (
+    <Card
       className={className}
       header={
         <Center gap='4px'>
@@ -108,56 +103,49 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
         </Text>
         <Spinner />
       </VStack>
-    </CustomCard>
+    </Card>
   ) : (
-    <Card size='sm' className={className}>
-      <CardHeader>
-        <Heading as='h3' textAlign='center' size='md'>
-          Word Board
-        </Heading>
-        <Divider marginTop='12px' marginBottom='12px' />
-        <div className={styles.instructions}>
-          <Text align='center' size='sm'>
-            Write the words that come to your mind for:{' '}
-            <span className={styles.chosenWord}>{round.word}</span>
-          </Text>
-        </div>
-      </CardHeader>
+    <Card
+      header='Word Board'
+      className={classNames(className, styles.wordsInputCard)}
+    >
+      <div className={styles.instructions}>
+        <Text align='center' size='sm'>
+          Write the words that come to your mind for:{' '}
+          <span className={styles.chosenWord}>{round.word}</span>
+        </Text>
+      </div>
       <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
         {(props: FormikProps<FormValues>) => (
           <>
-            <Form>
-              <CardBody className={styles.body}>
-                {wordsIndexes.map(({ formName, labelNumber }) => (
-                  <FormControl key={labelNumber}>
-                    <InputGroup>
-                      <InputLeftAddon className={styles.wordInputLeftAddon}>
-                        {labelNumber}.
-                      </InputLeftAddon>
-                      <Field
-                        as={Input}
-                        name={formName}
-                        placeholder='...'
-                        autoComplete='off'
-                        className={styles.wordInput}
-                      />
-                    </InputGroup>
-                  </FormControl>
-                ))}
-              </CardBody>
-              <CardFooter>
-                <Button
-                  className={styles.sendButton}
-                  type='submit'
-                  isLoading={props.isSubmitting && !isEmptyFieldsModalOpen}
-                  colorScheme='blue'
-                  variant='solid'
-                  size='md'
-                  width='full'
-                >
-                  Submit
-                </Button>
-              </CardFooter>
+            <Form className={styles.body}>
+              {wordsIndexes.map(({ formName, labelNumber }) => (
+                <FormControl key={labelNumber}>
+                  <InputGroup>
+                    <InputLeftAddon className={styles.wordInputLeftAddon}>
+                      {labelNumber}.
+                    </InputLeftAddon>
+                    <Field
+                      as={Input}
+                      name={formName}
+                      placeholder='...'
+                      autoComplete='off'
+                      className={styles.wordInput}
+                    />
+                  </InputGroup>
+                </FormControl>
+              ))}
+              <Button
+                className={styles.sendButton}
+                type='submit'
+                isLoading={props.isSubmitting && !isEmptyFieldsModalOpen}
+                colorScheme='blue'
+                variant='solid'
+                size='md'
+                width='full'
+              >
+                Submit
+              </Button>
             </Form>
 
             <ConfirmModal
