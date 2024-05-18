@@ -37,7 +37,7 @@ const VotingSummary = ({
   const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
 
   const playersExceptCurrentVotingItem = players.filter(
-    (player) => player.isConnected && player !== round.getVotingItem().player,
+    (player) => player !== round.getVotingItem().player,
   );
   const haveAllPlayersVoted = round.haveAllPlayersVoted(players);
 
