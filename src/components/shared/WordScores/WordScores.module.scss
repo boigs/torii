@@ -18,8 +18,10 @@
   }
 
   .word {
+    flex-grow: 1;
     border-top-right-radius: var(--input-border-radius);
     border-bottom-right-radius: var(--input-border-radius);
+    width: 0;
   }
 
   .score {
