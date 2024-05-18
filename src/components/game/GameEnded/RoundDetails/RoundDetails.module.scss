@@ -8,11 +8,12 @@
   margin-top: 8px;
 
   .roundItem {
-    display: flex;
-    justify-content: center;
-
     &:not(:last-child) {
       margin-bottom: 12px;
+    }
+
+    .button {
+      width: 100%;
     }
   }
 }

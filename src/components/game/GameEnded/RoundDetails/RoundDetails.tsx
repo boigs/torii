@@ -27,7 +27,11 @@ const RoundDetails = ({ rounds, players, className }: RoundSummaryProps) => {
       <List className={styles.roundList}>
         {rounds.map((round) => (
           <ListItem key={round.index} className={styles.roundItem}>
-            <Button colorScheme='blue' onClick={() => setSelectedRound(round)}>
+            <Button
+              colorScheme='blue'
+              onClick={() => setSelectedRound(round)}
+              className={styles.button}
+            >
               Round {round.index + 1}
             </Button>
             <RoundScoreModal
