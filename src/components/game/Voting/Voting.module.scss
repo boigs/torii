@@ -18,3 +18,13 @@
     gap: 24px;
   }
 }
+
+@media (max-width: 600px) {
+  .votingContainer {
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'col1'
+      'col2';
+  }
+}

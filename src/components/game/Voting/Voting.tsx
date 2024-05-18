@@ -39,21 +39,20 @@ const Voting = ({ className }: VotingProps) => {
           round={round}
           className={styles.items}
         />
-
+        <VotingCard
+          player={player}
+          round={round}
+          onWordClicked={sendPlayerVotingWord}
+          className={styles.card}
+        />
+      </Flex>
+      <Flex className={styles.col2}>
         <VotingSummary
           player={player}
           players={game.players}
           round={round}
           onAcceptButtonClicked={sendAcceptPlayersVotingWords}
           className={styles.summary}
-        />
-      </Flex>
-      <Flex className={styles.col2}>
-        <VotingCard
-          player={player}
-          round={round}
-          onWordClicked={sendPlayerVotingWord}
-          className={styles.card}
         />
         <WordScoresCard
           player={player}
