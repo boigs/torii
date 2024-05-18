@@ -5,7 +5,5 @@ services:
       dockerfile: ./Dockerfile
       args:
         NODE_VERSION: 20.13.1
-    environment:
-      - NODE_ENV=development
     ports:
       - 8081:8080
