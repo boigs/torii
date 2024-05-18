@@ -1,9 +1,11 @@
 .votingDescriptionText {
+  width: 0;
+  min-width: 100%;
   text-align: center;
 }
 
 .votingWordsList {
-  margin-top: 12px;
+  margin-top: 6px;
 
   .votingWord {
     margin-bottom: 12px;
