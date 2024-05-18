@@ -14,3 +14,13 @@
     grid-area: lobby;
   }
 }
+
+@media (max-width: 600px) {
+  .lobbyContainer {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'instructions'
+      'lobby';
+  }
+}
