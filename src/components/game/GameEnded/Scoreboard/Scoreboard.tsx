@@ -55,7 +55,7 @@ const Scoreboard = ({
       <Text className={styles.description}>
         {winners.length === 1
           ? `${winners[0].player.nickname} wins!`
-          : `It's a draw! We have ${winners.length} winners!`}
+          : `It's a draw! There are ${winners.length} winners!`}
       </Text>
       <List className={styles.scoreboardList}>
         {sortedPlayers.map(({ player, score }, index) => (
