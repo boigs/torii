@@ -1,9 +1,9 @@
 .lobbyContainer {
   display: grid;
-  align-items: flex-start;
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas: 'instructions lobby';
+  align-items: flex-start;
   gap: 24px;
 
   .instructions {

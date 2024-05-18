@@ -1,23 +1,23 @@
 .modalHeader {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding-left: 16px;
+  align-items: center;
   padding-right: 16px;
   padding-bottom: 12px;
+  padding-left: 16px;
 
   .closeButton {
     position: unset;
-    height: 30px;
     width: 30px;
+    height: 30px;
   }
 }
 
 .modalBody {
   padding-top: 0;
+  padding-right: 16px;
   padding-bottom: 0;
   padding-left: 16px;
-  padding-right: 16px;
 }
 
 .modalBodyPadding {
@@ -25,6 +25,6 @@
 }
 
 .modalFooter {
-  padding-left: 16px;
   padding-right: 16px;
+  padding-left: 16px;
 }

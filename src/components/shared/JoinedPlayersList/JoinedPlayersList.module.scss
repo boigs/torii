@@ -6,15 +6,15 @@
     padding-bottom: 12px;
 
     .playerList {
-      height: 0px; // any fixed value will do
       flex-grow: 1;
       align-items: start;
-      padding: 20px;
-      overflow-y: auto;
       box-shadow: var(--card-shadow);
-      border-radius: var(--card-radius);
       border-width: var(--card-border-width, 0);
       border-color: var(--card-border-color);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      height: 0px; // any fixed value will do
+      overflow-y: auto;
     }
   }
 
@@ -23,15 +23,15 @@
     padding-top: 0;
 
     .joinUrlInput {
-      width: 0;
       flex-grow: 1;
+      width: 0;
       user-select: auto;
     }
 
     .copyButton {
-      width: 76px;
-      padding-left: 16px;
       padding-right: 16px;
+      padding-left: 16px;
+      width: 76px;
     }
   }
 }

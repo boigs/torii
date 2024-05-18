@@ -1,8 +1,8 @@
 .roundEndedContainer {
   display: grid;
-  gap: 24px;
   grid-template-columns: 1fr 1fr;
   align-items: flex-start;
+  gap: 24px;
 
   .scoresContainer {
     flex-direction: column;
