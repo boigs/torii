@@ -46,7 +46,7 @@ export const useWebsocket = ({
   nickname,
   nicknameToPlayerRef,
 }: WebsocketHookIn): WebsocketHook => {
-  const websocketUrl = `${headcrabWsBaseUrl}/game/${gameId}/player/${nickname}/ws`;
+  const websocketUrl = `${headcrabWsBaseUrl}/game/${encodeURIComponent(gameId)}/player/${encodeURIComponent(nickname)}/ws`;
   const { sendMessage, lastMessage } = useWebSocket(
     websocketUrl,
     {
