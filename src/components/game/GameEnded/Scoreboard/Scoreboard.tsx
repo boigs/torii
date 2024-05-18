@@ -1,4 +1,4 @@
-import { Center, Flex, List, ListItem, Text } from '@chakra-ui/react';
+import { Button, Center, Flex, List, ListItem, Text } from '@chakra-ui/react';
 
 import Card from 'src/components/shared/Card';
 import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
@@ -8,12 +8,20 @@ import Round from 'src/domain/round';
 import styles from './Scoreboard.module.scss';
 
 interface GameEndedProps {
-  className?: string;
+  player: Player;
   players: Player[];
   rounds: Round[];
+  onStartNewGameClicked: () => void;
+  className?: string;
 }
 
-const Scoreboard = ({ players, rounds, className }: GameEndedProps) => {
+const Scoreboard = ({
+  player,
+  players,
+  rounds,
+  onStartNewGameClicked,
+  className,
+}: GameEndedProps) => {
   const calculateRoundScore = (player: Player, round: Round) => {
     return round
       .getPlayerWords(player)
@@ -58,6 +66,15 @@ const Scoreboard = ({ players, rounds, className }: GameEndedProps) => {
             </Flex>
           </ListItem>
         ))}
+        {player.isHost ? (
+          <Button
+            onClick={onStartNewGameClicked}
+            colorScheme='blue'
+            className={styles.startNewGameButton}
+          >
+            Start new game
+          </Button>
+        ) : null}
       </List>
     </Card>
   );

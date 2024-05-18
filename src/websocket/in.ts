@@ -114,6 +114,8 @@ const gameErrorTypeDtoToDomain = (error: string): GameErrorType => {
       return GameErrorType.RepeatedWords;
     case 'VOTING_ITEM_PLAYER_CANNOT_SUBMIT_VOTING_WORD':
       return GameErrorType.VotingItemPlayerCannotSubmitVotingWord;
+    case 'NON_HOST_PLAYER_CANNOT_SEND_PLAY_AGAIN':
+      return GameErrorType.NonHostPlayerCannotSendPlayAgain;
     // External
     case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
       return GameErrorType.UnprocessableWebsocketMessage;

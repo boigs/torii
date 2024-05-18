@@ -53,3 +53,7 @@ export const acceptPlayersVotingWords: () => WsMessageOut = () => ({
 export const continueToNextRound: () => WsMessageOut = () => ({
   kind: 'continueToNextRound',
 });
+
+export const playAgain: () => WsMessageOut = () => ({
+  kind: 'playAgain',
+});

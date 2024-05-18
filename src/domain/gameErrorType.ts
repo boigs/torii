@@ -14,6 +14,7 @@ export enum GameErrorType {
   PlayerCannotSubmitVotingWordWhenVotingItemIsNone = 'PlayerCannotSubmitVotingWordWhenVotingItemIsNone',
   RepeatedWords = 'RepeatedWords',
   VotingItemPlayerCannotSubmitVotingWord = 'VotingItemPlayerCannotSubmitVotingWord',
+  NonHostPlayerCannotSendPlayAgain = 'NonHostPlayerCannotSendPlayAgain',
   // External
   UnprocessableWebsocketMessage = 'UnprocessableMessage',
   WebsocketClosed = 'WebsocketClosed',
