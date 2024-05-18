@@ -4,20 +4,20 @@
 
   .amountOfRoundsFormItem {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 
     .amountOfRoundsLabel {
-      font-weight: normal;
-      margin-left: 2px;
       margin-bottom: 0;
+      margin-left: 2px;
+      font-weight: normal;
     }
 
     .amountOfRoundsInput {
-      max-width: 120px;
       flex-grow: 1;
       flex-shrink: 1;
       flex-basis: 0;
+      max-width: 120px;
     }
   }
 }

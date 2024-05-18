@@ -1,7 +1,7 @@
 .gameContainerGrid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
   grid-template-rows: repeat(2, 373px);
+  grid-template-columns: 2fr 1fr;
   grid-template-areas:
     'game joinedPlayers'
     'game chat';
@@ -23,8 +23,8 @@
 @media (max-width: 600px) {
   .gameContainerGrid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
     grid-template-rows: auto repeat(8, 70px);
+    grid-template-columns: repeat(1, 1fr);
     gap: 24px;
 
     .joinedPlayers {
