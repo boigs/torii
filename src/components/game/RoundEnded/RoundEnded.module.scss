@@ -9,3 +9,10 @@
     gap: 24px;
   }
 }
+
+@media (max-width: 600px) {
+  .roundEndedContainer {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+  }
+}
