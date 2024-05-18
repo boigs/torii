@@ -22,15 +22,11 @@
 
 @media (max-width: 600px) {
   .gameContainerGrid {
-    display: grid;
-    grid-template-rows: auto repeat(8, 70px);
-    grid-template-columns: repeat(1, 1fr);
-    gap: 24px;
-
-    .joinedPlayers {
-    }
-
-    .chat {
-    }
+    grid-template-rows: min-content repeat(2, 373px);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'game'
+      'chat'
+      'joinedPlayers';
   }
 }
