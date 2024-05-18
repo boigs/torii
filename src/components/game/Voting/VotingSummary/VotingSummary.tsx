@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import {
   Button,
   Center,
@@ -32,10 +34,22 @@ const VotingSummary = ({
   onAcceptButtonClicked,
   className,
 }: VotingSummaryProps) => {
+  const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
+
   const playersExceptCurrentVotingItem = players.filter(
-    (player) => player !== round.getVotingItem().player,
+    (player) => player.isConnected && player !== round.getVotingItem().player,
   );
   const haveAllPlayersVoted = round.haveAllPlayersVoted(players);
+
+  useEffect(() => {
+    setTimeout(() => setAcceptButtonEnabled(true), 5000);
+  }, []);
+
+  const onAcceptClicked = () => {
+    setAcceptButtonEnabled(false);
+    onAcceptButtonClicked();
+    setTimeout(() => setAcceptButtonEnabled(true), 5000);
+  };
 
   return (
     <Card header={<Text>Voting Summary</Text>} className={className}>
@@ -79,7 +93,7 @@ const VotingSummary = ({
         <Tooltip
           hasArrow
           label={
-            haveAllPlayersVoted
+            haveAllPlayersVoted || acceptButtonEnabled
               ? undefined
               : 'Please wait until all players cast their vote'
           }
@@ -87,8 +101,8 @@ const VotingSummary = ({
           <Button
             colorScheme='blue'
             className={styles.acceptBallotButton}
-            onClick={onAcceptButtonClicked}
-            isDisabled={!haveAllPlayersVoted}
+            onClick={onAcceptClicked}
+            isDisabled={!haveAllPlayersVoted && !acceptButtonEnabled}
           >
             Accept
           </Button>
