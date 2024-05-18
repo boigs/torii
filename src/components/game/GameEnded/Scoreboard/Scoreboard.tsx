@@ -15,6 +15,19 @@ interface GameEndedProps {
   className?: string;
 }
 
+const calculateRoundScore = (player: Player, round: Round) => {
+  return round
+    .getPlayerWords(player)
+    .reduce((score, word) => score + word.score, 0);
+};
+
+const calculateScore = (player: Player, rounds: Round[]) => {
+  return rounds.reduce(
+    (score, round) => score + calculateRoundScore(player, round),
+    0,
+  );
+};
+
 const Scoreboard = ({
   player,
   players,
@@ -22,33 +35,30 @@ const Scoreboard = ({
   onStartNewGameClicked,
   className,
 }: GameEndedProps) => {
-  const calculateRoundScore = (player: Player, round: Round) => {
-    return round
-      .getPlayerWords(player)
-      .reduce((score, word) => score + word.score, 0);
-  };
+  const scores = players.map((player) => ({
+    player,
+    score: calculateScore(player, rounds),
+  }));
 
-  const calculateScore = (player: Player) => {
-    return rounds.reduce(
-      (score, round) => score + calculateRoundScore(player, round),
-      0,
-    );
-  };
-
-  const sortedPlayers = players.sort((a, b) => {
-    const scoreDiff = calculateScore(b) - calculateScore(a);
+  const sortedPlayers = [...scores].sort((a, b) => {
+    const scoreDiff = a.score - b.score;
     return scoreDiff === 0
-      ? players.indexOf(a) - players.indexOf(b)
+      ? players.indexOf(a.player) - players.indexOf(b.player)
       : scoreDiff;
   });
+
+  const highestScore = sortedPlayers[0].score;
+  const winners = sortedPlayers.filter(({ score }) => score === highestScore);
 
   return (
     <Card header='Scoreboard' className={className}>
       <Text className={styles.description}>
-        {sortedPlayers[0].nickname} wins!
+        {winners.length === 1
+          ? `${winners[0].player.nickname} wins!`
+          : `It's a draw! We have ${winners.length} winners!`}
       </Text>
       <List className={styles.scoreboardList}>
-        {sortedPlayers.map((player, index) => (
+        {sortedPlayers.map(({ player, score }, index) => (
           <ListItem key={player.nickname} className={styles.scoreRow}>
             <Flex className={styles.scoreContainer}>
               <Flex className={styles.scoreboardRank}>
@@ -61,7 +71,7 @@ const Scoreboard = ({
                 />
               </Flex>
               <Center className={styles.score}>
-                <Text> {calculateScore(player)}</Text>
+                <Text>{score}</Text>
               </Center>
             </Flex>
           </ListItem>
