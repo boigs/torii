@@ -41,7 +41,7 @@ const Scoreboard = ({
   }));
 
   const sortedPlayers = [...scores].sort((a, b) => {
-    const scoreDiff = a.score - b.score;
+    const scoreDiff = b.score - a.score;
     return scoreDiff === 0
       ? players.indexOf(a.player) - players.indexOf(b.player)
       : scoreDiff;
