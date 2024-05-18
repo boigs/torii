@@ -113,14 +113,14 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     <Card size='sm' className={className}>
       <CardHeader>
         <Heading as='h3' textAlign='center' size='md'>
-          Be Unoriginal!
+          Word Board
         </Heading>
         <Divider marginTop='12px' marginBottom='12px' />
         <div className={styles.instructions}>
           <Text align='center' size='sm'>
-            Write the words that come to your mind for:
+            Write the words that come to your mind for:{' '}
+            <span className={styles.chosenWord}>{round.word}</span>
           </Text>
-          <Text className={styles.chosenWord}>{round.word}.</Text>
         </div>
       </CardHeader>
       <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
