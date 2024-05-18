@@ -32,6 +32,8 @@ export const gameErrorToString = (error: GameError): string => {
       return `You cannot submit the same word more than once. Repeated words: ${error.detail}`;
     case GameErrorType.VotingItemPlayerCannotSubmitVotingWord:
       return 'You cannot perform that action.';
+    case GameErrorType.NonHostPlayerCannotSendPlayAgain:
+      return 'You cannot start a new game.';
     // External
     case GameErrorType.UnprocessableWebsocketMessage:
       return 'This action cannot be processed at this moment.';
