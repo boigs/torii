@@ -2,14 +2,8 @@ import { useState } from 'react';
 
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
   Center,
-  Divider,
   FormControl,
-  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -17,11 +11,12 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
+import classNames from 'classnames';
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 import Image from 'next/image';
 
-import CustomCard from 'src/components/shared/Card';
+import Card from 'src/components/shared/Card';
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
@@ -57,7 +52,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     (accumulator, current) => ({ ...accumulator, [current.formName]: '' }),
     {},
   );
-  const haveSentWordsSuccessfuly =
+  const haveSentWordsSuccessfully =
     isDoneSubmitting && round.hasPlayerSentWords(player);
 
   const onFormSubmit = async (formValues: FormValues) => {
@@ -86,48 +81,27 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
     setDoneSubmitting(true);
   };
 
-  return haveSentWordsSuccessfuly ? (
-    <CustomCard
-      className={className}
-      header={
-        <Center gap='4px'>
-          <div>Done</div>
-          <Image
-            style={{ marginBottom: '-2px' }}
-            src='/svg/check.svg'
-            alt='check'
-            width='24'
-            height='24'
-          />
-        </Center>
-      }
+  return (
+    <Card
+      header='Word Board'
+      className={classNames(className, styles.wordsInputCard)}
     >
-      <VStack className={styles.pleaseWaitContainer}>
-        <Text className={styles.pleaseWaitText}>
-          Please wait while the rest of the players finish their submissions.
-        </Text>
-        <Spinner />
-      </VStack>
-    </CustomCard>
-  ) : (
-    <Card size='sm' className={className}>
-      <CardHeader>
-        <Heading as='h3' textAlign='center' size='md'>
-          Word Board
-        </Heading>
-        <Divider marginTop='12px' marginBottom='12px' />
+      <div
+        className={classNames(
+          styles.cardContent,
+          haveSentWordsSuccessfully ? styles.cardContentDone : null,
+        )}
+      >
         <div className={styles.instructions}>
           <Text align='center' size='sm'>
             Write the words that come to your mind for:{' '}
             <span className={styles.chosenWord}>{round.word}</span>
           </Text>
         </div>
-      </CardHeader>
-      <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
-        {(props: FormikProps<FormValues>) => (
-          <>
-            <Form>
-              <CardBody className={styles.body}>
+        <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
+          {(props: FormikProps<FormValues>) => (
+            <>
+              <Form className={styles.body}>
                 {wordsIndexes.map(({ formName, labelNumber }) => (
                   <FormControl key={labelNumber}>
                     <InputGroup>
@@ -144,8 +118,6 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
                     </InputGroup>
                   </FormControl>
                 ))}
-              </CardBody>
-              <CardFooter>
                 <Button
                   className={styles.sendButton}
                   type='submit'
@@ -157,22 +129,51 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
                 >
                   Submit
                 </Button>
-              </CardFooter>
-            </Form>
+              </Form>
 
-            <ConfirmModal
-              isOpen={isEmptyFieldsModalOpen}
-              isSubmitting={props.isSubmitting}
-              onClose={closeEmptyFieldsModal}
-              onSubmit={() => {
-                onModalSubmit(props).catch((error: unknown) => {
-                  logger.error(error, 'ConfirmModal submit');
-                });
-              }}
-            />
-          </>
-        )}
-      </Formik>
+              <ConfirmModal
+                isOpen={isEmptyFieldsModalOpen}
+                isSubmitting={props.isSubmitting}
+                onClose={closeEmptyFieldsModal}
+                onSubmit={() => {
+                  onModalSubmit(props).catch((error: unknown) => {
+                    logger.error(error, 'ConfirmModal submit');
+                  });
+                }}
+              />
+            </>
+          )}
+        </Formik>
+      </div>
+      {haveSentWordsSuccessfully ? (
+        <div className={styles.cardOverlay}>
+          <Center>
+            <Card
+              className={className}
+              header={
+                <Center gap='4px'>
+                  <div>Done</div>
+                  <Image
+                    style={{ marginBottom: '-2px' }}
+                    src='/svg/check.svg'
+                    alt='check'
+                    width='24'
+                    height='24'
+                  />
+                </Center>
+              }
+            >
+              <VStack className={styles.pleaseWaitContainer}>
+                <Text className={styles.pleaseWaitText}>
+                  Please wait while the rest of the players finish their
+                  submissions.
+                </Text>
+                <Spinner />
+              </VStack>
+            </Card>
+          </Center>
+        </div>
+      ) : null}
     </Card>
   );
 };
