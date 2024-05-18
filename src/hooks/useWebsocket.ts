@@ -69,6 +69,15 @@ export const useWebsocket = ({
   );
 
   useEffect(() => {
+    // Clear the last messages when disconnecting, so that we don't reuse old/invalid messages when connecting again
+    if (!connect) {
+      setLastGameState(null);
+      setLastChatMessage(null);
+      setLastWebsocketError(null);
+    }
+  }, [connect]);
+
+  useEffect(() => {
     if (connect && lastMessage) {
       const message = lastMessage.data as string;
 
