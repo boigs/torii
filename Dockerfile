@@ -1,7 +1,9 @@
 ARG NODE_VERSION
 # Based on https://github.com/vercel/next.js/tree/canary/examples/with-docker
 FROM node:${NODE_VERSION}-alpine3.19 as base
-
+# Create non-root user, copied from https://github.com/dotnet/dotnet-docker/blob/main/src/runtime-deps/8.0/alpine3.19/amd64/Dockerfile
+ENV APP_UID=1654
+RUN addgroup --gid=$APP_UID app && adduser --uid=$APP_UID --ingroup=app --disabled-password app
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -23,29 +25,20 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS final
+# Run the container as non-root
+USER $APP_UID
 WORKDIR /app
+
+COPY --from=builder /app/public ./public
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 -g nodejs nextjs
-
-COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+ENV HOSTNAME "0.0.0.0"
+ENV PORT 8080
 
 EXPOSE 8080
-ENV PORT 8080
-ENV HOSTNAME "0.0.0.0"
-
 ENTRYPOINT ["node", "server.js"]
