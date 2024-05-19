@@ -10,7 +10,7 @@ enum Environment {
 }
 
 const getEnvironment: () => Environment = () => {
-  switch (process.env.NODE_ENV) {
+  switch (import.meta.env.MODE) {
     case 'development':
       return Environment.DEV;
     case 'production':
@@ -21,7 +21,7 @@ const getEnvironment: () => Environment = () => {
 };
 
 const getHeadcrabBaseUrl: () => string = () => {
-  const headcrabBaseUrl = process.env.NEXT_PUBLIC_HEADCRAB_BASE_URL;
+  const headcrabBaseUrl = import.meta.env.VITE_HEADCRAB_BASE_URL;
   if (typeof headcrabBaseUrl === 'undefined') {
     throw new Error('Headcrab base url not set.');
   }
