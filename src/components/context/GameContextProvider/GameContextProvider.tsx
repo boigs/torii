@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, createContext, useEffect, useRef, useState } from 'react';
 
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 import { useActor } from '@xstate/react';
@@ -33,7 +26,7 @@ export interface GameContextType {
   lastChatMessage: ChatMessage | null;
 }
 
-const GameContext = createContext<GameContextType>({
+export const GameContext = createContext<GameContextType>({
   gameConnectionActor: {} as ActorRefFrom<typeof gameConnectionFsm>,
   game: Game.default,
   sendWebsocketMessage: () => {
@@ -175,5 +168,3 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     </GameContext.Provider>
   );
 };
-
-export const useGameContext = (): GameContextType => useContext(GameContext);
