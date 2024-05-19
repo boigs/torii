@@ -11,7 +11,13 @@
   // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
   // Vitest rules https://www.npmjs.com/package/eslint-plugin-vitest
   // Disable rules that are unnecessary or might conflict with Prettier https://github.com/prettier/eslint-config-prettier
-  "plugins": ["@typescript-eslint", "react", "react-hooks", "vitest"],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-refresh",
+    "react-hooks",
+    "vitest"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/strict-type-checked",
@@ -54,6 +60,7 @@
     "func-style": ["error", "expression"],
     "prefer-arrow-callback": ["error", { "allowUnboundThis": false }],
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    "react-refresh/only-export-components": "error"
   }
 }

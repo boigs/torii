@@ -35,6 +35,7 @@
     "pino": "9.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-router-dom": "6.23.1",
     "react-use-websocket": "4.8.1",
     "xstate": "5.13.0"
   },
@@ -53,6 +54,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-react": "7.34.1",
     "eslint-plugin-react-hooks": "4.6.2",
+    "eslint-plugin-react-refresh": "0.4.7",
     "eslint-plugin-vitest": "0.4.1",
     "husky": "9.0.11",
     "jsdom": "24.0.0",
@@ -62,6 +64,8 @@
     "prettier-plugin-css-order": "2.1.2",
     "sass": "1.77.1",
     "typescript": "5.4.5",
+    "vite": "5.2.0",
+    "vite-tsconfig-paths": "4.3.2",
     "vitest": "1.6.0"
   }
 }
