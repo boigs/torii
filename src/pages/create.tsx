@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import CreateGameForm from 'src/components/createGame/CreateGameForm';
 
 const Home = () => {
-  // const router = useRouter();
+  const navigate = useNavigate();
   const { gameConnectionActor } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
@@ -14,9 +15,9 @@ const Home = () => {
     if (gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'RESET' });
     } else if (gameConnection.matches('game')) {
-      // router.push('/game');
+      navigate('/game');
     }
-  }, [gameConnection, /*router,*/ gameConnectionActor]);
+  }, [gameConnection, navigate, gameConnectionActor]);
 
   return (
     <Center>

@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import JoinGameForm from 'src/components/joinGame/JoinForm';
 
 const Join = () => {
-  // const router = useRouter();
+  const navigate = useNavigate();
   const { gameId } = useParams();
   const { gameConnectionActor } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
@@ -16,9 +16,9 @@ const Join = () => {
     if (gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'RESET' });
     } else if (gameConnection.matches('game')) {
-      // router.push('/game');
+      navigate('/game');
     }
-  }, [gameConnection, /*router,*/ gameConnectionActor]);
+  }, [gameConnection, navigate, gameConnectionActor]);
 
   return (
     <Center>
