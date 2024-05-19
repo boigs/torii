@@ -1,15 +1,12 @@
-'use client';
-
 import { useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import CreateGameForm from 'src/components/createGame/CreateGameForm';
 
 const Home = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { gameConnectionActor } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
@@ -17,9 +14,9 @@ const Home = () => {
     if (gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'RESET' });
     } else if (gameConnection.matches('game')) {
-      router.push('/game');
+      // router.push('/game');
     }
-  }, [gameConnection, router, gameConnectionActor]);
+  }, [gameConnection, /*router,*/ gameConnectionActor]);
 
   return (
     <Center>
