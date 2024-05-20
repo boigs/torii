@@ -7,8 +7,8 @@ import { Providers } from 'src/app/providers';
 import { GameContextProvider } from 'src/components/context/GameContextProvider';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 
-import Create from './create';
-import Join from './join';
+import Create from './Create';
+import Join from './Join';
 
 const router = createBrowserRouter([
   {
