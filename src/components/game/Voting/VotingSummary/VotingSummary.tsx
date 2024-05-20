@@ -9,7 +9,6 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import Image from 'next/image';
 
 import Card from 'src/components/shared/Card';
 import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
@@ -74,7 +73,7 @@ const VotingSummary = ({
               ) : round.getPlayerVotingWord(player) === null ? (
                 <Tooltip placement='left' hasArrow label='Skipped'>
                   <span className={styles.skippedCross}>
-                    <Image
+                    <img
                       src='/svg/cross.svg'
                       alt='skipped'
                       width='20'

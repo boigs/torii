@@ -1,9 +1,7 @@
-'use client';
-
 import { useEffect } from 'react';
 
 import { Center } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import GameEnded from 'src/components/game/GameEnded';
@@ -17,21 +15,21 @@ import JoinedPlayersList from 'src/components/shared/JoinedPlayersList';
 import LoadingCard from 'src/components/shared/LoadingCard';
 import GameState from 'src/domain/gameState';
 
-import styles from './page.module.scss';
+import styles from './Game.module.scss';
 
 const Game = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { gameConnectionActor, game } = useGameContext();
   const [gameConnection] = [gameConnectionActor.getSnapshot()];
 
   useEffect(() => {
     if (gameConnection.matches('disconnected')) {
-      router.replace('/join');
+      navigate('/join', { replace: true });
     }
     if (gameConnection.matches('game') && !gameConnection.context.gameJoined) {
       gameConnectionActor.send({ type: 'GAME_JOINED' });
     }
-  }, [gameConnection, router, gameConnectionActor]);
+  }, [gameConnection, navigate, gameConnectionActor]);
 
   return (
     <Center>
