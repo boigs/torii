@@ -8,6 +8,7 @@ import { GameContextProvider } from 'src/components/context/GameContextProvider'
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 
 import Create from './Create';
+import Game from './Game';
 import Join from './Join';
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: 'join/:gameId?',
     element: <Join />,
+  },
+  {
+    path: 'game',
+    element: <Game />,
   },
 ]);
 

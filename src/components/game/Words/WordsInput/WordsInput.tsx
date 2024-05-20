@@ -14,7 +14,6 @@ import {
 import classNames from 'classnames';
 import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
-import Image from 'next/image';
 
 import Card from 'src/components/shared/Card';
 import Spinner from 'src/components/shared/Spinner';
@@ -153,7 +152,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
               header={
                 <Center gap='4px'>
                   <div>Done</div>
-                  <Image
+                  <img
                     style={{ marginBottom: '-2px' }}
                     src='/svg/check.svg'
                     alt='check'
