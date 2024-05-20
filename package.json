@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "format": "prettier --write \"**/*.{js,ts,tsx,mjs,mts,cjs,cts,json,css,scss,yaml,yml,webmanifest,md}\"",
+    "format": "prettier --write \"**/*.{js,ts,tsx,mjs,mts,cjs,cts,json,css,scss,yaml,yml,webmanifest,md,html}\"",
     "lint": "npx eslint . && prettier --check .",
     "precommit": "lint-staged",
     "test": "vitest"

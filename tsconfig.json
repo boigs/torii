@@ -21,6 +21,13 @@
     },
     "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "**/*.mts"],
+  "include": [
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "**/*.html"
+  ],
   "exclude": ["node_modules"]
 }
