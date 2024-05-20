@@ -5,7 +5,7 @@ import { afterEach, expect } from 'vitest';
 expect.extend(matchers);
 
 vi.stubEnv('NODE_ENV', 'development');
-vi.stubEnv('NEXT_PUBLIC_HEADCRAB_BASE_URL', 'headcrab-base-url');
+vi.stubEnv('VITE_PUBLIC_HEADCRAB_BASE_URL', 'headcrab-base-url');
 
 afterEach(() => {
   cleanup();

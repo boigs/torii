@@ -16,23 +16,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "paths": {
       "src/*": ["./src/*"]
     },
     "types": ["vite/client", "vitest/globals"]
   },
-  "include": [
-    "**/*.js",
-    "**/*.mjs",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.mts",
-    ".next/types/**/*.ts"
-  ],
+  "include": ["**/*.js", "**/*.mjs", "**/*.ts", "**/*.tsx", "**/*.mts"],
   "exclude": ["node_modules"]
 }
