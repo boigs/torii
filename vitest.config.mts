@@ -9,6 +9,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './tests/setup.ts',
+    env: {
+      MODE: 'development',
+      VITE_HEADCRAB_BASE_URL: 'headcrab-base-url',
+    },
   },
   resolve: {
     alias: {
