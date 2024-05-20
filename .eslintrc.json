@@ -7,6 +7,7 @@
       "jsx": true
     }
   },
+  "ignorePatterns": ["dist/"],
   // Recommended TS rules https://typescript-eslint.io/users/configs/#recommended-configurations
   // React and ReactHooks rules https://www.npmjs.com/package/eslint-plugin-react https://www.npmjs.com/package/eslint-plugin-react-hooks
   // Vitest rules https://www.npmjs.com/package/eslint-plugin-vitest
