@@ -1,4 +1,3 @@
-import { Link } from '@chakra-ui/next-js';
 import {
   Button,
   Card,
@@ -6,6 +5,7 @@ import {
   CardFooter,
   CardHeader,
   Center,
+  Link as ChakraLink,
   Container,
   Flex,
   FormControl,
@@ -15,6 +15,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps } from 'formik';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 import { validateNonEmpty } from 'src/helpers/formValidators';
 
@@ -104,9 +105,9 @@ const JoinGameForm = ({ gameId, loading, onSubmit }: JoinGameFormProps) => {
                 <Center>
                   <Text fontSize='xs'>
                     Looking to create a new game?{' '}
-                    <Link color='blue' href='/'>
+                    <ChakraLink as={ReactRouterLink} color='blue' to='/'>
                       Click here
-                    </Link>
+                    </ChakraLink>
                   </Text>
                 </Center>
               </Container>
