@@ -26,9 +26,6 @@
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "plugin:vitest/recommended",
-    // Manually add the next linter https://nextjs.org/docs/pages/building-your-application/configuring/eslint#recommended-plugin-ruleset
-    "plugin:@next/next/recommended",
-    "plugin:@next/next/core-web-vitals",
     // It is important for prettier to be the last, so that it can disable any previous rule
     "prettier"
   ],
