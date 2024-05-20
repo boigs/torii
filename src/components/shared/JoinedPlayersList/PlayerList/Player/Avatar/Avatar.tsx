@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useMemo } from 'react';
 
 import { thumbs } from '@dicebear/collection';
