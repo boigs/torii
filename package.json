@@ -40,7 +40,6 @@
     "xstate": "5.13.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "14.2.3",
     "@testing-library/jest-dom": "6.4.5",
     "@testing-library/react": "15.0.7",
     "@trivago/prettier-plugin-sort-imports": "4.3.0",
