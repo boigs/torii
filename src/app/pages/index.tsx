@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { ChakraProvider } from '@chakra-ui/react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import { Providers } from 'src/app/providers';
 import { GameContextProvider } from 'src/components/context/GameContextProvider';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 
@@ -29,12 +29,12 @@ const router = createBrowserRouter([
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Providers>
+    <ChakraProvider>
       <GameContextProvider>
         <AnimatedParent>
           <RouterProvider router={router} />
         </AnimatedParent>
       </GameContextProvider>
-    </Providers>
+    </ChakraProvider>
   </React.StrictMode>,
 );
