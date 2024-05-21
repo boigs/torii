@@ -1,6 +1,16 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  screen,
+  render as testingLibraryRender,
+  waitFor,
+} from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import JoinGameForm from '../JoinGameForm';
+
+const render = (node: React.ReactNode) => {
+  return testingLibraryRender(<MemoryRouter>{node}</MemoryRouter>);
+};
 
 describe('JoinForm...', () => {
   it('should render both input fields when no props are passed', () => {
