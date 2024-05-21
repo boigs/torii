@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { GameContextProvider } from 'src/components/context/GameContextProvider';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 
+import NotFound from './404';
 import Create from './Create';
 import Game from './Game';
 import Join from './Join';
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: 'game',
     element: <Game />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 
