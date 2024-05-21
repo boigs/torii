@@ -6,4 +6,4 @@ services:
       args:
         NODE_VERSION: 20.13.1
     ports:
-      - 8081:8080
+      - 8080:8080
