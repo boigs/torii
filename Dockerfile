@@ -25,21 +25,15 @@ ENV NODE_ENV production
 RUN npm run build
 
 
-# Production image, copy all the files and run next
-FROM base AS final
+# Production image, copy all the files and run nginx
+FROM nginx:alpine3.19 AS final
 # Run the container as non-root
 USER $APP_UID
 WORKDIR /app
 
-COPY --from=builder /app/public ./public
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV HOSTNAME "0.0.0.0"
-ENV PORT 8080
+COPY --from=builder /app/dist /app/dist
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8080
-ENTRYPOINT ["node", "server.js"]
+# https://stackoverflow.com/a/28099946
+CMD ["nginx", "-g", "daemon off;"]
