@@ -33,6 +33,27 @@
         padding: 24px;
       }
     </style>
+    <script>
+      // Workaround for https://github.com/vitejs/vite/issues/3924
+      document.addEventListener('DOMContentLoaded', function () {
+        const head = document.head;
+        const body = document.body;
+
+        // Select and move <style type="text/css"> tags
+        const styleTags = head.querySelectorAll('style[type="text/css"]');
+        styleTags.forEach(function (styleTag) {
+          head.removeChild(styleTag);
+          body.appendChild(styleTag);
+        });
+
+        // Select and move <link rel="stylesheet"> tags
+        const linkTags = head.querySelectorAll('link[rel="stylesheet"]');
+        linkTags.forEach(function (linkTag) {
+          head.removeChild(linkTag);
+          body.appendChild(linkTag);
+        });
+      });
+    </script>
   </head>
   <body id="body">
     <div id="root"></div>
