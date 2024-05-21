@@ -31,7 +31,13 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.body).render(
+const root = document.getElementById('root');
+
+if (root === null) {
+  throw new Error('root element not found');
+}
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <ChakraProvider>
       <GameContextProvider>
