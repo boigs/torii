@@ -1,5 +1,3 @@
-'use client';
-
 import { assertEvent, assign, fromPromise, setup } from 'xstate';
 
 interface CreateGameEvent {
