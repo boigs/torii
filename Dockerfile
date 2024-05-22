@@ -20,9 +20,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# The NODE_ENV is used by next build, we cannot change it after building the app with our current setup
-ENV NODE_ENV production
-RUN npm run build
+RUN npm run build -- --mode $NODE_ENV
 
 
 # Production image, copy all the files and run nginx
