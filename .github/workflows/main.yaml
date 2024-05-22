@@ -46,7 +46,7 @@ jobs:
           image-name: ${{ env.SERVICE_IMAGE_NAME }}
           build-args: |
             NODE_VERSION=${{ needs.test-solution.outputs.node-version }}
-            NODE_ENV=production
+            ENVIRONMENT=production
 
   deploy-service:
     name: Service -> Deploy
