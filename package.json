@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "dev": "vite dev",
     "format": "prettier --write \"**/*.{js,ts,tsx,mjs,mts,cjs,cts,json,css,scss,yaml,yml,webmanifest,md,html}\"",
     "lint": "npx eslint . && prettier --check .",
     "precommit": "lint-staged",
