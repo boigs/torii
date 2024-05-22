@@ -11,6 +11,7 @@ import NotFound from './404';
 import Create from './Create';
 import Game from './Game';
 import Join from './Join';
+import theme from './theme';
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ if (root === null) {
 
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <GameContextProvider>
         <AnimatedParent>
           <RouterProvider router={router} />
