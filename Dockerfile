@@ -1,4 +1,5 @@
 ARG NODE_VERSION
+
 # Based on https://github.com/vercel/next.js/tree/canary/examples/with-docker
 FROM node:${NODE_VERSION}-alpine3.19 as base
 # Create non-root user, copied from https://github.com/dotnet/dotnet-docker/blob/main/src/runtime-deps/8.0/alpine3.19/amd64/Dockerfile
@@ -17,10 +18,11 @@ RUN npm ci
 
 # Rebuild the source code only when needed
 FROM base AS builder
+ARG ENVIRONMENT
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build -- --mode $NODE_ENV
+RUN npm run build -- --mode $ENVIRONMENT
 
 
 # Production image, copy all the files and run nginx
