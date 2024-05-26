@@ -69,7 +69,7 @@ const WordScoresCard = ({ player, round, className }: WordScoresProps) => {
           <Text
             className={classNames(styles.description, styles.cardDescription)}
           >
-            These are the words you submitted and their score on the right.
+            These are the words you submitted and their score.
           </Text>
           <WordScores player={player} round={round} />
         </>
