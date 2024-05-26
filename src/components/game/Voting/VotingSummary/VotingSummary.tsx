@@ -51,9 +51,9 @@ const VotingSummary = ({
   };
 
   return (
-    <Card header={<Text>Voting Summary</Text>} className={className}>
+    <Card header='Matching Summary' className={className}>
       <Text className={styles.votingDescriptionText}>
-        This is what other players are casting as their vote:
+        This is what other players have submitted as their match:
       </Text>
       <List className={styles.votingWordsList}>
         {playersExceptCurrentVotingItem.map((player) => (
@@ -94,7 +94,7 @@ const VotingSummary = ({
           label={
             haveAllPlayersVoted || acceptButtonEnabled
               ? undefined
-              : 'Please wait until all players cast their vote'
+              : 'Please wait until all players have submitted a match'
           }
         >
           <Button
