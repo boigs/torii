@@ -33,11 +33,11 @@ const VotingCard = ({
   }, 100);
 
   return (
-    <Card className={className} header={<Text>Voting Card</Text>}>
+    <Card className={className} header='Matching Panel'>
       {votingItem.player === player ? (
         <VStack>
           <Text className={styles.hostInstructions}>
-            Please wait while the players cast their votes for the words you
+            Please wait while the players find matches for the words you
             submitted (currently <i>{votingItem.word}</i>).
           </Text>
           <Spinner size='lg' />
@@ -48,15 +48,16 @@ const VotingCard = ({
             <>
               <Text className={styles.votingInstructions}>
                 You have already used all your words, so you cannot use them for
-                voting. Please wait while other players cast their votes.
+                try to match them anymore. Please wait while other players cast
+                propose their matches.
               </Text>
               <Spinner size='lg' />
             </>
           ) : (
             <>
               <Text className={styles.votingInstructions}>
-                From the words you submitted, click the word you think matches
-                with: <i>{votingItem.word}.</i>
+                From the words you submitted, click the word that matches with:{' '}
+                <i>{votingItem.word}.</i>
               </Text>
               <HStack className={styles.buttonsContainer}>
                 {words.map((submittedWord) => (

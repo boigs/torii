@@ -49,7 +49,7 @@ const WordScores = ({ player, round }: WordScoresProps) => {
           <Tooltip
             placement='right'
             hasArrow
-            label={hasWordBeenUsed(word) ? undefined : 'Not used in a vote yet'}
+            label={hasWordBeenUsed(word) ? undefined : 'Not matched yet'}
           >
             <Center className={styles.score}>
               <Text>{hasWordBeenUsed(word) ? word.score : '-'}</Text>
@@ -69,8 +69,7 @@ const WordScoresCard = ({ player, round, className }: WordScoresProps) => {
           <Text
             className={classNames(styles.description, styles.cardDescription)}
           >
-            These are the words you submitted and their current score on the
-            right.
+            These are the words you submitted and their score on the right.
           </Text>
           <WordScores player={player} round={round} />
         </>
