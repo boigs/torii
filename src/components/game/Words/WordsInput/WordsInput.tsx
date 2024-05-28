@@ -109,6 +109,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
                       </InputLeftAddon>
                       <Field
                         as={Input}
+                        isDisabled={isDoneSubmitting}
                         name={formName}
                         placeholder='...'
                         autoComplete='off'
@@ -119,6 +120,7 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
                 ))}
                 <Button
                   className={styles.sendButton}
+                  isDisabled={isDoneSubmitting}
                   type='submit'
                   isLoading={props.isSubmitting && !isEmptyFieldsModalOpen}
                   colorScheme='blue'
