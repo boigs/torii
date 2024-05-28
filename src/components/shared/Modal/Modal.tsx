@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 import {
   Modal as ChakraModal,
@@ -53,6 +53,8 @@ const Modal = ({
   children,
   onClose,
 }: React.PropsWithChildren<ModalProps>) => {
+  const nullRef = useRef(null);
+
   const header = React.Children.toArray(children).find(
     (child) => React.isValidElement(child) && child.type === ModalHeader,
   );
@@ -66,7 +68,11 @@ const Modal = ({
   );
 
   return (
-    <ChakraModal isOpen={isOpen ?? false} onClose={() => onClose?.()}>
+    <ChakraModal
+      isOpen={isOpen ?? false}
+      onClose={() => onClose?.()}
+      finalFocusRef={nullRef}
+    >
       <ModalOverlay />
       <ModalContent>
         {header && (
