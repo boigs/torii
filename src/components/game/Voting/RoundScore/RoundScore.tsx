@@ -41,13 +41,25 @@ const RoundScore = ({ players, round }: RoundScoreProps) => {
 
   const isOpen = (player: Player) => openedModals[player.nickname];
 
+  const sortedPlayers = players
+    .map((player) => ({
+      player,
+      score: calculateScore(player, round),
+    }))
+    .sort((a, b) => {
+      const scoreDiff = b.score - a.score;
+      return scoreDiff === 0
+        ? players.indexOf(a.player) - players.indexOf(b.player)
+        : scoreDiff;
+    });
+
   return (
     <>
       <Text className={styles.scoreDescription}>
         Players&apos; points for: {round.word}.
       </Text>
       <List className={styles.scoresList}>
-        {players.map((player) => (
+        {sortedPlayers.map(({ player, score }) => (
           <ListItem key={player.nickname} className={styles.scoreRow}>
             <Flex className={styles.scoreContainer}>
               <PlayerComponent
@@ -58,7 +70,7 @@ const RoundScore = ({ players, round }: RoundScoreProps) => {
                 colorScheme='blue'
                 onClick={() => setOpened(player, true)}
               >
-                {calculateScore(player, round)}
+                {score}
               </Button>
             </Flex>
             <WordScoresModal
