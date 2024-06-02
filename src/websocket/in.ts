@@ -116,6 +116,20 @@ const gameErrorTypeDtoToDomain = (error: string): GameErrorType => {
       return GameErrorType.VotingItemPlayerCannotSubmitVotingWord;
     case 'NON_HOST_PLAYER_CANNOT_SEND_PLAY_AGAIN':
       return GameErrorType.NonHostPlayerCannotSendPlayAgain;
+    case 'CANNOT_REJECT_MATCHED_WORDS_WHEN_VOTING_ITEM_IS_NONE':
+      return GameErrorType.CannotRejectMatchedWordsWhenVotingItemIsNone;
+    case 'CANNOT_RESUBMIT_REJECTED_MATCHED_WORD':
+      return GameErrorType.CannotResubmitRejectedMatchedWord;
+    case 'INVALID_STATE_FOR_REJECTING_MATCHED_WORDS':
+      return GameErrorType.InvalidStateForRejectingMatchedWords;
+    case 'NON_HOST_CANNOT_REJECT_MATCHED_WORDS':
+      return GameErrorType.NonHostCannotRejectMatchedWords;
+    case 'REJECTED_MATCHED_PLAYER_DOES_NOT_EXIST':
+      return GameErrorType.RejectedMatchedPlayerDoesNotExist;
+    case 'REJECTED_MATCHED_WORD_DOES_NOT_EXIST':
+      return GameErrorType.RejectedMatchedWordDoesNotExist;
+    case 'REJECTED_MATCHED_WORD_WAS_NOT_PICKED_BY_PLAYER':
+      return GameErrorType.RejectedMatchedWordWasNotPickedByPlayer;
     // External
     case 'UNPROCESSABLE_WEBSOCKET_MESSAGE':
       return GameErrorType.UnprocessableWebsocketMessage;
@@ -204,6 +218,7 @@ const wordDtoToDomain = (word: WordDto): Word => {
 interface VotingItemDto {
   playerNickname: string;
   word: string;
+  rejectedMatches: Record<string, string[]>;
 }
 
 const votingItemDtoToDomain = (
@@ -215,6 +230,12 @@ const votingItemDtoToDomain = (
     : {
         player: getPlayer(nicknameToPlayer, item.playerNickname),
         word: item.word,
+        rejectedMatches: new Map(
+          Object.entries(item.rejectedMatches).map(([nickname, words]) => [
+            getPlayer(nicknameToPlayer, nickname),
+            new Set(words),
+          ]),
+        ),
       };
 };
 
