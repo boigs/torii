@@ -57,3 +57,15 @@ export const continueToNextRound: () => WsMessageOut = () => ({
 export const playAgain: () => WsMessageOut = () => ({
   kind: 'playAgain',
 });
+
+export interface RejectMatchedWordOptions {
+  rejectedPlayer: string;
+  rejectedWord: string;
+}
+
+export const rejectMatchedWord: (
+  options: RejectMatchedWordOptions,
+) => WsMessageOut = (options) => ({
+  kind: 'rejectMatchedWord',
+  ...options,
+});

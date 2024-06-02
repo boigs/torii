@@ -34,6 +34,27 @@ export const gameErrorToString = (error: GameError): string => {
       return 'You cannot perform that action.';
     case GameErrorType.NonHostPlayerCannotSendPlayAgain:
       return 'You cannot start a new game.';
+    case GameErrorType.CannotRejectMatchedWordsWhenVotingItemIsNone: {
+      return 'Cannot reject matched word when voting item is none.';
+    }
+    case GameErrorType.CannotResubmitRejectedMatchedWord: {
+      return 'You cannot resubmit a word as a match when it has been rejected.';
+    }
+    case GameErrorType.InvalidStateForRejectingMatchedWords: {
+      return 'Invalid state.';
+    }
+    case GameErrorType.NonHostCannotRejectMatchedWords: {
+      return "You cannot reject other player's words.";
+    }
+    case GameErrorType.RejectedMatchedPlayerDoesNotExist: {
+      return 'That player does not exist.';
+    }
+    case GameErrorType.RejectedMatchedWordDoesNotExist: {
+      return 'That word does not exist.';
+    }
+    case GameErrorType.RejectedMatchedWordWasNotPickedByPlayer: {
+      return 'That word was not picked as a match by the player.';
+    }
     // External
     case GameErrorType.UnprocessableWebsocketMessage:
       return 'This action cannot be processed at this moment.';
