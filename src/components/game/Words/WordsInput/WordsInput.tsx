@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   Button,
   Center,
+  Flex,
   FormControl,
   Input,
   InputGroup,
@@ -16,6 +17,7 @@ import { Field, Form, Formik, FormikProps } from 'formik';
 import _ from 'lodash';
 
 import Card from 'src/components/shared/Card';
+import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/Player';
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
@@ -27,6 +29,7 @@ import styles from './WordsInput.module.scss';
 
 interface WordInputProps {
   player: Player;
+  players: Player[];
   round: Round;
   onSubmit: (words: string[]) => Promise<void>;
   className?: string;
@@ -36,7 +39,13 @@ type FormValues = Record<string, string>;
 
 const NUM_INPUTS = 8;
 
-const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
+const WordsInput = ({
+  player,
+  players,
+  round,
+  onSubmit,
+  className,
+}: WordInputProps) => {
   const [isDoneSubmitting, setDoneSubmitting] = useState(false);
   const {
     isOpen: isEmptyFieldsModalOpen,
@@ -166,10 +175,33 @@ const WordsInput = ({ player, round, onSubmit, className }: WordInputProps) => {
             >
               <VStack className={styles.pleaseWaitContainer}>
                 <Text className={styles.pleaseWaitText}>
-                  Please wait while the rest of the players finish their
-                  submissions.
+                  Please wait while the rest of the
+                  <br />
+                  players finish their submissions.
                 </Text>
-                <Spinner />
+                <Flex className={styles.submissionStatus}>
+                  {players.map((p) => (
+                    <Flex key={p.nickname} className={styles.submission}>
+                      <PlayerComponent
+                        player={p}
+                        crownClassName={styles.hiddenCrown}
+                      />
+                      {round.hasPlayerSentWords(p) ? (
+                        <img
+                          style={{ marginBottom: '-2px', marginRight: '-2px' }}
+                          src='/svg/check.svg'
+                          alt='check'
+                          width='30'
+                          height='30'
+                        />
+                      ) : (
+                        <div>
+                          <Spinner size='md' className={styles.spinner} />
+                        </div>
+                      )}
+                    </Flex>
+                  ))}
+                </Flex>
               </VStack>
             </Card>
           </Center>

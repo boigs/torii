@@ -23,6 +23,7 @@ const Words = ({ className }: WordsProps) => {
   return (
     <WordsInput
       player={game.player}
+      players={game.players}
       round={game.lastRound()}
       onSubmit={sendPlayerWords}
       className={classNames(className, styles.wordsInput)}
