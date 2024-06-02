@@ -15,7 +15,6 @@ import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
-import Word from 'src/domain/word';
 
 import RejectWordModal from './RejectWordModal';
 
@@ -26,12 +25,8 @@ interface VotingSummaryProps {
   players: Player[];
   round: Round;
   onAcceptButtonClicked: () => void;
+  onWordRejected: (player: Player, word: string) => void;
   className?: string;
-}
-
-interface ItemToReject {
-  player: Player;
-  word: string;
 }
 
 const VotingSummary = ({
@@ -39,10 +34,11 @@ const VotingSummary = ({
   players,
   round,
   onAcceptButtonClicked,
+  onWordRejected,
   className,
 }: VotingSummaryProps) => {
   const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
-  const [itemToReject, setItemToReject] = useState<ItemToReject | null>(null);
+  const [playerToReject, setPlayerToReject] = useState<Player | null>(null);
 
   const playersExceptCurrentVotingItem = players.filter(
     (player) => player !== round.getVotingItem().player,
@@ -98,13 +94,7 @@ const VotingSummary = ({
                     colorScheme='red'
                     variant='ghost'
                     className={styles.rejectButton}
-                    onClick={() =>
-                      setItemToReject({
-                        player,
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        word: round.getPlayerVotingWord(player)!,
-                      })
-                    }
+                    onClick={() => setPlayerToReject(player)}
                   >
                     <img
                       src='/svg/block.svg'
@@ -112,17 +102,6 @@ const VotingSummary = ({
                       className={styles.rejectIcon}
                     />
                   </Button>
-                  <RejectWordModal
-                    player={player}
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    word={round.getPlayerVotingWord(player)!}
-                    votingItem={round.getVotingItem()}
-                    isOpen={
-                      itemToReject?.player === player &&
-                      itemToReject.word === round.getPlayerVotingWord(player)
-                    }
-                    onClose={() => setItemToReject(null)}
-                  />
                 </Flex>
               )}
             </Flex>
@@ -148,6 +127,14 @@ const VotingSummary = ({
           </Button>
         </Tooltip>
       )}
+      <RejectWordModal
+        player={playerToReject}
+        word={playerToReject ? round.getPlayerVotingWord(playerToReject) : null}
+        votingItem={round.getVotingItem()}
+        isOpen={playerToReject !== null}
+        onClose={() => setPlayerToReject(null)}
+        onReject={onWordRejected}
+      />
     </Card>
   );
 };
