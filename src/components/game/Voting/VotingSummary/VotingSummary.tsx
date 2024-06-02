@@ -15,6 +15,9 @@ import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
+import Word from 'src/domain/word';
+
+import RejectWordModal from './RejectWordModal';
 
 import styles from './VotingSummary.module.scss';
 
@@ -26,6 +29,11 @@ interface VotingSummaryProps {
   className?: string;
 }
 
+interface ItemToReject {
+  player: Player;
+  word: string;
+}
+
 const VotingSummary = ({
   player,
   players,
@@ -34,6 +42,7 @@ const VotingSummary = ({
   className,
 }: VotingSummaryProps) => {
   const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
+  const [itemToReject, setItemToReject] = useState<ItemToReject | null>(null);
 
   const playersExceptCurrentVotingItem = players.filter(
     (player) => player !== round.getVotingItem().player,
@@ -89,6 +98,13 @@ const VotingSummary = ({
                     colorScheme='red'
                     variant='ghost'
                     className={styles.rejectButton}
+                    onClick={() =>
+                      setItemToReject({
+                        player,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        word: round.getPlayerVotingWord(player)!,
+                      })
+                    }
                   >
                     <img
                       src='/svg/cross.svg'
@@ -96,6 +112,17 @@ const VotingSummary = ({
                       className={styles.rejectCross}
                     />
                   </Button>
+                  <RejectWordModal
+                    player={player}
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    word={round.getPlayerVotingWord(player)!}
+                    votingItem={round.getVotingItem()}
+                    isOpen={
+                      itemToReject?.player === player &&
+                      itemToReject.word === round.getPlayerVotingWord(player)
+                    }
+                    onClose={() => setItemToReject(null)}
+                  />
                 </Flex>
               )}
             </Flex>
