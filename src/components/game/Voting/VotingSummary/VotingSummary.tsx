@@ -89,7 +89,7 @@ const VotingSummary = ({
               ) : (
                 <Flex className={styles.wordContainer}>
                   <Text>{round.getPlayerVotingWord(p)}</Text>
-                  {player.isHost ? (
+                  {player.isHost && p !== player ? (
                     <Button
                       size='xs'
                       colorScheme='red'
