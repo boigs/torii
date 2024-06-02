@@ -107,9 +107,9 @@ const VotingSummary = ({
                     }
                   >
                     <img
-                      src='/svg/cross.svg'
-                      alt='skipped'
-                      className={styles.rejectCross}
+                      src='/svg/block.svg'
+                      alt='reject'
+                      className={styles.rejectIcon}
                     />
                   </Button>
                   <RejectWordModal

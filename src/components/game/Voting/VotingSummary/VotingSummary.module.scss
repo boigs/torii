@@ -22,6 +22,16 @@
         align-items: center;
         gap: 8px;
 
+        .rejectButton {
+          padding-right: 5px;
+          padding-left: 5px;
+
+          .rejectIcon {
+            width: 14px;
+            height: 14px;
+          }
+        }
+
         .rejectButton:not(:hover) {
           background-color: var(--chakra-colors-red-50);
         }
@@ -32,14 +42,6 @@
 
         .rejectButton:active {
           background-color: var(--chakra-colors-red-200);
-        }
-
-        .rejectCross {
-          // https://stackoverflow.com/a/53336754
-          filter: brightness(0) saturate(100%) invert(29%) sepia(54%)
-            saturate(5804%) hue-rotate(346deg) brightness(101%) contrast(79%);
-          width: 8px;
-          height: 8px;
         }
       }
 
