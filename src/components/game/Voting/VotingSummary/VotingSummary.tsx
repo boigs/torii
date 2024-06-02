@@ -82,7 +82,21 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.getPlayerVotingWord(p)}</Text>
+                <Flex className={styles.wordContainer}>
+                  <Text>{round.getPlayerVotingWord(player)}</Text>
+                  <Button
+                    size='xs'
+                    colorScheme='red'
+                    variant='ghost'
+                    className={styles.rejectButton}
+                  >
+                    <img
+                      src='/svg/cross.svg'
+                      alt='skipped'
+                      className={styles.rejectCross}
+                    />
+                  </Button>
+                </Flex>
               )}
             </Flex>
           </ListItem>
