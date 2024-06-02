@@ -59,6 +59,7 @@
     "prefer-arrow-callback": ["error", { "allowUnboundThis": false }],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "react-refresh/only-export-components": "error"
+    "react-refresh/only-export-components": "error",
+    "no-shadow": "error"
   }
 }
