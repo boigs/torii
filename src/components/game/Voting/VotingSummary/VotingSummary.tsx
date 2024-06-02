@@ -56,21 +56,21 @@ const VotingSummary = ({
         This is what other players have submitted as their match:
       </Text>
       <List className={styles.votingWordsList}>
-        {playersExceptCurrentVotingItem.map((player) => (
-          <ListItem key={player.nickname} className={styles.votingWord}>
+        {playersExceptCurrentVotingItem.map((p) => (
+          <ListItem key={p.nickname} className={styles.votingWord}>
             <Flex className={styles.votingWordLine}>
               <PlayerComponent
-                player={player}
+                player={p}
                 // The crown in this component does not look good as it makes it look like the spacing between items is inconsistent
                 crownClassName={styles.hiddenCrown}
               />
-              {!round.hasPlayerVoted(player) ? (
+              {!round.hasPlayerVoted(p) ? (
                 <Tooltip placement='left' hasArrow label='Waiting for vote'>
                   <Center>
                     <Spinner size='md' />
                   </Center>
                 </Tooltip>
-              ) : round.getPlayerVotingWord(player) === null ? (
+              ) : round.getPlayerVotingWord(p) === null ? (
                 <Tooltip placement='left' hasArrow label='Skipped'>
                   <span className={styles.skippedCross}>
                     <img
@@ -82,7 +82,7 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.getPlayerVotingWord(player)}</Text>
+                <Text>{round.getPlayerVotingWord(p)}</Text>
               )}
             </Flex>
           </ListItem>
