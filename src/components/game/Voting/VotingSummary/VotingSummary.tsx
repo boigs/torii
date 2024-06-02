@@ -88,20 +88,22 @@ const VotingSummary = ({
                 </Tooltip>
               ) : (
                 <Flex className={styles.wordContainer}>
-                  <Text>{round.getPlayerVotingWord(player)}</Text>
-                  <Button
-                    size='xs'
-                    colorScheme='red'
-                    variant='ghost'
-                    className={styles.rejectButton}
-                    onClick={() => setPlayerToReject(player)}
-                  >
-                    <img
-                      src='/svg/block.svg'
-                      alt='reject'
-                      className={styles.rejectIcon}
-                    />
-                  </Button>
+                  <Text>{round.getPlayerVotingWord(p)}</Text>
+                  {player.isHost ? (
+                    <Button
+                      size='xs'
+                      colorScheme='red'
+                      variant='ghost'
+                      className={styles.rejectButton}
+                      onClick={() => setPlayerToReject(p)}
+                    >
+                      <img
+                        src='/svg/block.svg'
+                        alt='reject'
+                        className={styles.rejectIcon}
+                      />
+                    </Button>
+                  ) : null}
                 </Flex>
               )}
             </Flex>
@@ -133,7 +135,10 @@ const VotingSummary = ({
         votingItem={round.getVotingItem()}
         isOpen={playerToReject !== null}
         onClose={() => setPlayerToReject(null)}
-        onReject={onWordRejected}
+        onReject={(player, word) => {
+          setPlayerToReject(null);
+          onWordRejected(player, word);
+        }}
       />
     </Card>
   );
