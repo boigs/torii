@@ -62,6 +62,25 @@
       .pleaseWaitText {
         text-align: center;
       }
+
+      .submissionStatus {
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+
+        .hiddenCrown {
+          display: none;
+        }
+
+        .submission {
+          justify-content: space-between;
+          align-items: center;
+
+          .spinner {
+            margin-bottom: -6.25px;
+          }
+        }
+      }
     }
   }
 }
