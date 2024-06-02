@@ -16,6 +16,8 @@ import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 
+import RejectWordModal from './RejectWordModal';
+
 import styles from './VotingSummary.module.scss';
 
 interface VotingSummaryProps {
@@ -23,6 +25,7 @@ interface VotingSummaryProps {
   players: Player[];
   round: Round;
   onAcceptButtonClicked: () => void;
+  onWordRejected: (player: Player, word: string) => void;
   className?: string;
 }
 
@@ -31,9 +34,11 @@ const VotingSummary = ({
   players,
   round,
   onAcceptButtonClicked,
+  onWordRejected,
   className,
 }: VotingSummaryProps) => {
   const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
+  const [playerToReject, setPlayerToReject] = useState<Player | null>(null);
 
   const playersExceptCurrentVotingItem = players.filter(
     (player) => player !== round.getVotingItem().player,
@@ -82,7 +87,24 @@ const VotingSummary = ({
                   </span>
                 </Tooltip>
               ) : (
-                <Text>{round.getPlayerVotingWord(p)}</Text>
+                <Flex className={styles.wordContainer}>
+                  <Text>{round.getPlayerVotingWord(p)}</Text>
+                  {player.isHost && p !== player ? (
+                    <Button
+                      size='xs'
+                      colorScheme='red'
+                      variant='ghost'
+                      className={styles.rejectButton}
+                      onClick={() => setPlayerToReject(p)}
+                    >
+                      <img
+                        src='/svg/block.svg'
+                        alt='reject'
+                        className={styles.rejectIcon}
+                      />
+                    </Button>
+                  ) : null}
+                </Flex>
               )}
             </Flex>
           </ListItem>
@@ -107,6 +129,17 @@ const VotingSummary = ({
           </Button>
         </Tooltip>
       )}
+      <RejectWordModal
+        player={playerToReject}
+        word={playerToReject ? round.getPlayerVotingWord(playerToReject) : null}
+        votingItem={round.getVotingItem()}
+        isOpen={playerToReject !== null}
+        onClose={() => setPlayerToReject(null)}
+        onReject={(player, word) => {
+          setPlayerToReject(null);
+          onWordRejected(player, word);
+        }}
+      />
     </Card>
   );
 };

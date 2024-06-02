@@ -3,8 +3,13 @@ import classNames from 'classnames';
 
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import { WordScoresCard } from 'src/components/shared/WordScores';
+import Player from 'src/domain/player';
 import Word from 'src/domain/word';
-import { acceptPlayersVotingWords, playerVotingWord } from 'src/websocket/out';
+import {
+  acceptPlayersVotingWords,
+  playerVotingWord,
+  rejectMatchedWord,
+} from 'src/websocket/out';
 
 import VotingCard from './VotingCard';
 import VotingItems from './VotingItems';
@@ -31,6 +36,15 @@ const Voting = ({ className }: VotingProps) => {
     sendWebsocketMessage(acceptPlayersVotingWords());
   };
 
+  const rejectMatchingWord = (player: Player, word: string) => {
+    sendWebsocketMessage(
+      rejectMatchedWord({
+        rejectedPlayer: player.nickname,
+        rejectedWord: word,
+      }),
+    );
+  };
+
   return (
     <div className={classNames(className, styles.votingContainer)}>
       <Flex className={styles.col1}>
@@ -53,6 +67,7 @@ const Voting = ({ className }: VotingProps) => {
           round={round}
           onAcceptButtonClicked={sendAcceptPlayersVotingWords}
           className={styles.summary}
+          onWordRejected={rejectMatchingWord}
         />
         <WordScoresCard
           player={player}

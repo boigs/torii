@@ -63,7 +63,12 @@ const VotingCard = ({
                 {words.map((submittedWord) => (
                   <Button
                     key={submittedWord.value}
-                    isDisabled={submittedWord.isUsed}
+                    isDisabled={
+                      submittedWord.isUsed ||
+                      votingItem.rejectedMatches
+                        .get(player)
+                        ?.has(submittedWord.value)
+                    }
                     onClick={() => onWordVoted(submittedWord)}
                     isActive={
                       !submittedWord.isUsed && votedWord === submittedWord.value

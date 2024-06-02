@@ -18,6 +18,33 @@
       justify-content: space-between;
       align-items: center;
 
+      .wordContainer {
+        align-items: center;
+        gap: 8px;
+
+        .rejectButton {
+          padding-right: 5px;
+          padding-left: 5px;
+
+          .rejectIcon {
+            width: 14px;
+            height: 14px;
+          }
+        }
+
+        .rejectButton:not(:hover) {
+          background-color: var(--chakra-colors-red-50);
+        }
+
+        .rejectButton:hover {
+          background-color: var(--chakra-colors-red-100);
+        }
+
+        .rejectButton:active {
+          background-color: var(--chakra-colors-red-200);
+        }
+      }
+
       .skippedCross {
         display: flex;
         justify-content: center;
