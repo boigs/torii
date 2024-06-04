@@ -46,7 +46,9 @@ const VotingSummary = ({
   const haveAllPlayersVoted = round.haveAllPlayersVoted(players);
 
   useEffect(() => {
-    setTimeout(() => setAcceptButtonEnabled(true), 5000);
+    const timeoutId = setTimeout(() => setAcceptButtonEnabled(true), 5000);
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const onAcceptClicked = () => {
