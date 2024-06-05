@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   Button,
@@ -21,11 +21,16 @@ import PlayerComponent from 'src/components/shared/JoinedPlayersList/PlayerList/
 import Spinner from 'src/components/shared/Spinner';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
+import useTimer from 'src/hooks/useTimer';
 import logger from 'src/logger';
 
 import ConfirmModal from './ConfirmModal';
 
 import styles from './WordsInput.module.scss';
+
+const NUM_INPUTS = 8;
+
+type FormValues = Record<string, string>;
 
 interface WordInputProps {
   player: Player;
@@ -35,9 +40,15 @@ interface WordInputProps {
   className?: string;
 }
 
-type FormValues = Record<string, string>;
+const parseFormValues = (values: FormValues) => {
+  return Object.entries(values)
+    .sort(([key1], [key2]) => key1.localeCompare(key2))
+    .map(([_, word]) => word);
+};
 
-const NUM_INPUTS = 8;
+const padZeros = (value: number) => {
+  return value.toString().padStart(2, '0');
+};
 
 const WordsInput = ({
   player,
@@ -52,6 +63,10 @@ const WordsInput = ({
     onOpen: openEmptyFieldsModal,
     onClose: closeEmptyFieldsModal,
   } = useDisclosure();
+  const formRef = useRef<FormikProps<FormValues>>(null);
+
+  const { minutes, seconds } = useTimer(2 * 60);
+
   const wordsIndexes = _.range(1, NUM_INPUTS + 1).map((number) => ({
     labelNumber: number,
     formName: `word${number}`,
@@ -64,9 +79,7 @@ const WordsInput = ({
     isDoneSubmitting && round.hasPlayerSentWords(player);
 
   const onFormSubmit = async (formValues: FormValues) => {
-    const words = Object.entries(formValues)
-      .sort(([key1], [key2]) => key1.localeCompare(key2))
-      .map(([_, word]) => word);
+    const words = parseFormValues(formValues);
 
     // if there is an empty word
     if (words.includes('')) {
@@ -78,9 +91,7 @@ const WordsInput = ({
   };
 
   const onModalSubmit = async (formikProps: FormikProps<FormValues>) => {
-    const words = Object.entries(formikProps.values)
-      .sort(([key1], [key2]) => key1.localeCompare(key2))
-      .map(([_, word]) => word);
+    const words = parseFormValues(formikProps.values);
 
     formikProps.setSubmitting(true);
     await onSubmit(words);
@@ -88,6 +99,23 @@ const WordsInput = ({
     formikProps.setSubmitting(false);
     setDoneSubmitting(true);
   };
+
+  useEffect(() => {
+    if (
+      minutes === 0 &&
+      seconds === 0 &&
+      !isDoneSubmitting &&
+      formRef.current
+    ) {
+      const words = _.uniq(
+        parseFormValues(formRef.current.values).map((w) => w.toLowerCase()),
+      );
+      onSubmit(words).catch(() => {
+        logger.error({}, 'Submitting words');
+      });
+      setDoneSubmitting(true);
+    }
+  }, [minutes, seconds, onSubmit, isDoneSubmitting]);
 
   return (
     <Card
@@ -101,12 +129,21 @@ const WordsInput = ({
         )}
       >
         <div className={styles.instructions}>
-          <Text align='center' size='sm'>
+          <Text size='sm'>
             Write the words that come to your mind for:{' '}
-            <span className={styles.chosenWord}>{round.word}</span>
+            <span className={styles.chosenWord}>{round.word}</span>.
+          </Text>
+          <Text>
+            {seconds !== 0 || minutes !== 0
+              ? `Time left: ${padZeros(minutes)}:${padZeros(seconds)}`
+              : "Time's up!"}
           </Text>
         </div>
-        <Formik initialValues={initialValues} onSubmit={onFormSubmit}>
+        <Formik<FormValues>
+          initialValues={initialValues}
+          onSubmit={onFormSubmit}
+          innerRef={formRef}
+        >
           {(props: FormikProps<FormValues>) => (
             <>
               <Form className={styles.body}>
