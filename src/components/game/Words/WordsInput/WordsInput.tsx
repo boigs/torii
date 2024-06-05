@@ -114,8 +114,9 @@ const WordsInput = ({
         logger.error({}, 'Submitting words');
       });
       setDoneSubmitting(true);
+      closeEmptyFieldsModal();
     }
-  }, [minutes, seconds, onSubmit, isDoneSubmitting]);
+  }, [minutes, seconds, onSubmit, isDoneSubmitting, closeEmptyFieldsModal]);
 
   return (
     <Card
