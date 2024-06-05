@@ -1,20 +1,20 @@
-.votingDescriptionText {
+.matchingDescriptionText {
   width: 0;
   min-width: 100%;
   text-align: center;
 }
 
-.votingWordsList {
+.matchingWordsList {
   margin-top: 6px;
 
-  .votingWord {
+  .matchingWord {
     margin-bottom: 12px;
 
     &:last-of-type {
       margin-bottom: 0;
     }
 
-    .votingWordLine {
+    .matchingWordLine {
       justify-content: space-between;
       align-items: center;
 

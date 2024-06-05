@@ -7,21 +7,21 @@ import Player from 'src/domain/player';
 import Round from 'src/domain/round';
 import Word from 'src/domain/word';
 
-import styles from './VotingCard.module.scss';
+import styles from './MatchingPanel.module.scss';
 
-interface VotingCardProps {
+interface MatchingPanelProps {
   player: Player;
   round: Round;
   onWordClicked: (word: Word | null) => void;
   className?: string;
 }
 
-const VotingCard = ({
+const MatchingPanel = ({
   player,
   round,
   onWordClicked,
   className,
-}: VotingCardProps) => {
+}: MatchingPanelProps) => {
   const votingItem = round.getVotingItem();
   const words = round.getPlayerWords(player);
   const votedWord = round.getPlayerVotingWord(player);
@@ -46,7 +46,7 @@ const VotingCard = ({
         <VStack className={styles.wordsContainer}>
           {haveAllWordsBeenUsed ? (
             <>
-              <Text className={styles.votingInstructions}>
+              <Text className={styles.matchingInstructions}>
                 You have already used all your words, so you cannot use them for
                 try to match them anymore. Please wait while other players
                 propose their matches.
@@ -55,7 +55,7 @@ const VotingCard = ({
             </>
           ) : (
             <>
-              <Text className={styles.votingInstructions}>
+              <Text className={styles.matchingInstructions}>
                 From the words you submitted, click the word that matches with:{' '}
                 <b>{votingItem.word}</b>.
               </Text>
@@ -94,4 +94,4 @@ const VotingCard = ({
   );
 };
 
-export default VotingCard;
+export default MatchingPanel;

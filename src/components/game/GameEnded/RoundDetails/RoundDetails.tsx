@@ -2,11 +2,10 @@ import { useState } from 'react';
 
 import { Button, List, ListItem, Text } from '@chakra-ui/react';
 
+import { RoundScoreModal } from 'src/components/game/Matching/RoundScore';
 import Card from 'src/components/shared/Card';
 import Player from 'src/domain/player';
 import Round from 'src/domain/round';
-
-import { RoundScoreModal } from '../../Voting/RoundScore';
 
 import styles from './RoundDetails.module.scss';
 
