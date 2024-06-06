@@ -18,9 +18,9 @@ import Round from 'src/domain/round';
 
 import RejectWordModal from './RejectWordModal';
 
-import styles from './VotingSummary.module.scss';
+import styles from './MatchingSummary.module.scss';
 
-interface VotingSummaryProps {
+interface MatchingSummaryProps {
   player: Player;
   players: Player[];
   round: Round;
@@ -29,14 +29,14 @@ interface VotingSummaryProps {
   className?: string;
 }
 
-const VotingSummary = ({
+const MatchingSummary = ({
   player,
   players,
   round,
   onAcceptButtonClicked,
   onWordRejected,
   className,
-}: VotingSummaryProps) => {
+}: MatchingSummaryProps) => {
   const [acceptButtonEnabled, setAcceptButtonEnabled] = useState(false);
   const [playerToReject, setPlayerToReject] = useState<Player | null>(null);
 
@@ -59,13 +59,13 @@ const VotingSummary = ({
 
   return (
     <Card header='Matching Summary' className={className}>
-      <Text className={styles.votingDescriptionText}>
+      <Text className={styles.matchingDescriptionText}>
         This is what other players have submitted as their match:
       </Text>
-      <List className={styles.votingWordsList}>
+      <List className={styles.matchingWordsList}>
         {playersExceptCurrentVotingItem.map((p) => (
-          <ListItem key={p.nickname} className={styles.votingWord}>
-            <Flex className={styles.votingWordLine}>
+          <ListItem key={p.nickname} className={styles.matchingWord}>
+            <Flex className={styles.matchingWordLine}>
               <PlayerComponent
                 player={p}
                 // The crown in this component does not look good as it makes it look like the spacing between items is inconsistent
@@ -146,4 +146,4 @@ const VotingSummary = ({
   );
 };
 
-export default VotingSummary;
+export default MatchingSummary;

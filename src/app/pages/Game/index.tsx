@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGameContext } from 'src/components/context/GameContextProvider';
 import GameEnded from 'src/components/game/GameEnded';
 import Lobby from 'src/components/game/Lobby';
+import Matching from 'src/components/game/Matching';
 import RoundEnded from 'src/components/game/RoundEnded';
-import Voting from 'src/components/game/Voting';
 import Words from 'src/components/game/Words';
 import AnimatedParent from 'src/components/shared/AnimatedParent';
 import Chat from 'src/components/shared/Chat';
@@ -44,7 +44,7 @@ const Game = () => {
             <Words className={styles.game} />
           ) : null}
           {game.state === GameState.PlayersSubmittingVotingWord ? (
-            <Voting className={styles.game} />
+            <Matching className={styles.game} />
           ) : null}
           {game.state === GameState.EndOfRound ? (
             <RoundEnded className={styles.game} />

@@ -11,17 +11,17 @@ import {
   rejectMatchedWord,
 } from 'src/websocket/out';
 
-import VotingCard from './VotingCard';
+import MatchingPanel from './MatchingPanel';
+import MatchingSummary from './MatchingSummary';
 import VotingItems from './VotingItems';
-import VotingSummary from './VotingSummary';
 
-import styles from './Voting.module.scss';
+import styles from './Matching.module.scss';
 
-interface VotingProps {
+interface MatchingProps {
   className?: string;
 }
 
-const Voting = ({ className }: VotingProps) => {
+const Matching = ({ className }: MatchingProps) => {
   const { game, sendWebsocketMessage } = useGameContext();
   const player = game.player;
   const round = game.lastRound();
@@ -46,14 +46,14 @@ const Voting = ({ className }: VotingProps) => {
   };
 
   return (
-    <div className={classNames(className, styles.votingContainer)}>
+    <div className={classNames(className, styles.matchingContainer)}>
       <Flex className={styles.col1}>
         <VotingItems
           player={game.player}
           round={round}
           className={styles.items}
         />
-        <VotingCard
+        <MatchingPanel
           player={player}
           round={round}
           onWordClicked={sendPlayerVotingWord}
@@ -61,7 +61,7 @@ const Voting = ({ className }: VotingProps) => {
         />
       </Flex>
       <Flex className={styles.col2}>
-        <VotingSummary
+        <MatchingSummary
           player={player}
           players={game.players}
           round={round}
@@ -79,4 +79,4 @@ const Voting = ({ className }: VotingProps) => {
   );
 };
 
-export default Voting;
+export default Matching;
