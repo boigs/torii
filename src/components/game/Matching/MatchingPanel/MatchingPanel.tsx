@@ -44,7 +44,12 @@ const MatchingPanel = ({
         </VStack>
       ) : (
         <VStack className={styles.wordsContainer}>
-          {haveAllWordsBeenUsed ? (
+          {words.length == 0 ? (
+            <Text className={styles.matchingInstructions}>
+              It seems like you did not submit any words, so you cannot match
+              anything.
+            </Text>
+          ) : haveAllWordsBeenUsed ? (
             <>
               <Text className={styles.matchingInstructions}>
                 You have already used all your words, so you cannot use them for
