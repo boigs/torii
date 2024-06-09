@@ -14,8 +14,13 @@
   .accordionButton {
     justify-content: space-between;
     border-radius: 6px;
+    background-color: var(--chakra-colors-gray-50);
     padding-right: 8px;
     padding-left: 8px;
+
+    &:hover {
+      background-color: var(--chakra-colors-gray-100);
+    }
 
     .showAll {
       width: 100%;

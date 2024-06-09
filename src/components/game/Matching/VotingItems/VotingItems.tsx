@@ -65,7 +65,9 @@ const VotingItems = ({ round, player, className }: ScoringProps) => {
         <Accordion allowToggle className={styles.accordion}>
           <AccordionItem>
             <AccordionButton className={styles.accordionButton}>
-              <Text className={styles.showAll}>Show all</Text>
+              <Text className={styles.showAll} fontSize='small'>
+                Show all
+              </Text>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel className={styles.accordionPanel}>
