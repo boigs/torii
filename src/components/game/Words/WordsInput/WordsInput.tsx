@@ -131,8 +131,7 @@ const WordsInput = ({
       >
         <div className={styles.instructions}>
           <Text size='sm'>
-            Write the words that come to your mind for:{' '}
-            <span className={styles.chosenWord}>{round.word}</span>.
+            Write the words that come to your mind for: <b>{round.word}</b>.
           </Text>
           <Text>
             {seconds !== 0 || minutes !== 0
