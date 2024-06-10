@@ -78,7 +78,7 @@ const MatchingPanel = ({
                     isActive={
                       !submittedWord.isUsed && votedWord === submittedWord.value
                     }
-                    colorScheme='blue'
+                    colorScheme='gray'
                   >
                     {submittedWord.value}
                   </Button>
@@ -86,7 +86,7 @@ const MatchingPanel = ({
               </HStack>
               <Button
                 isActive={hasVoted && votedWord === null}
-                colorScheme='gray'
+                colorScheme='blue'
                 onClick={() => onWordVoted(null)}
               >
                 Skip
