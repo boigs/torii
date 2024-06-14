@@ -7,6 +7,34 @@
   width: 45px;
 }
 
+.accordion {
+  border-color: white;
+  width: 100%;
+
+  .accordionButton {
+    justify-content: space-between;
+    border-radius: 6px;
+    background-color: var(--chakra-colors-gray-50);
+    padding-right: 8px;
+    padding-left: 8px;
+
+    &:hover {
+      background-color: var(--chakra-colors-gray-100);
+    }
+
+    .showAll {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .accordionPanel {
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+  }
+}
+
 .skeleton {
   border-top-right-radius: var(--input-border-radius);
   border-bottom-right-radius: var(--input-border-radius);

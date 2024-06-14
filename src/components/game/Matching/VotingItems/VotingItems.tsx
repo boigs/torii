@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Center,
   HStack,
   Input,
@@ -44,28 +49,52 @@ const VotingItems = ({ round, player, className }: ScoringProps) => {
       <VStack>
         <Text className={styles.instructions}>
           {votingItem.player === player
-            ? 'These are the words you submitted:'
-            : `These are the words submitted by ${votingItem.player.nickname}:`}
+            ? 'You wrote:'
+            : `${votingItem.player.nickname} wrote:`}
         </Text>
-        {words.map((word, index) => (
-          <InputGroup key={index}>
-            <InputLeftAddon className={styles.wordInputLeftAddon}>
-              {index + 1}.
-            </InputLeftAddon>
-            <Skeleton
-              className={styles.skeleton}
-              startColor='gray.300'
-              endColor='gray.200'
-              isLoaded={index <= votingWordIndex}
-            >
-              <Input
-                readOnly={true}
-                className={styles.wordInput}
-                value={word.value}
-              />
-            </Skeleton>
-          </InputGroup>
-        ))}
+        <InputGroup>
+          <InputLeftAddon className={styles.wordInputLeftAddon}>
+            {votingWordIndex + 1}.
+          </InputLeftAddon>
+          <Input
+            readOnly={true}
+            className={styles.wordInput}
+            value={votingItem.word}
+          />
+        </InputGroup>
+        <Accordion allowToggle className={styles.accordion}>
+          <AccordionItem>
+            <AccordionButton className={styles.accordionButton}>
+              <Text className={styles.showAll} fontSize='small'>
+                Show all
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel className={styles.accordionPanel}>
+              <VStack>
+                {words.map((word, index) => (
+                  <InputGroup key={index}>
+                    <InputLeftAddon className={styles.wordInputLeftAddon}>
+                      {index + 1}.
+                    </InputLeftAddon>
+                    <Skeleton
+                      className={styles.skeleton}
+                      startColor='gray.300'
+                      endColor='gray.200'
+                      isLoaded={index <= votingWordIndex}
+                    >
+                      <Input
+                        readOnly={true}
+                        className={styles.wordInput}
+                        value={word.value}
+                      />
+                    </Skeleton>
+                  </InputGroup>
+                ))}
+              </VStack>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </VStack>
     </Card>
   );
